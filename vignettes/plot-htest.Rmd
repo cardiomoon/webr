@@ -1,0 +1,113 @@
+---
+title: "Plot for distribution of statistic and p-value"
+author: "Keon-Woong Moon"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{plot.htest}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,comment = NA,fig.width=6,fig.height = 5, fig.align='center',out.width="90%")
+```
+
+To understand the concept of p value is very important. To teach the the distribution of common statistic( $\chi^2$ for chisq.test() , t for Student's t-test , F for F-test) and concept of the p-value, plot.htest() function can be used.
+
+## Package Installation
+
+You can install this package form the github. Currently, package `webr` is under construction and consists of only one function - plot.htest().   
+
+```{r,eval=FALSE}
+#install.packages("devtools")
+devtools::install_github("cardiomoon/webr")
+```
+
+## Coverage of plot.htest() 
+
+The plot.htest() function is a S3 method for class "htest". Currently, this function covers Welch Two Sample t-test, Pearson's Chi-squared test, Two Sample t-test, One Sample t-test, Paired t-test and F test to compare two variances.
+ 
+
+## For Chi-squared Test
+
+You can show the distribution of chi-squre statistic and p-value. 
+
+```{r,message=FALSE}
+ require(moonBook)
+ require(webr)
+ 
+ # chi-squared test
+ x=chisq.test(table(acs$sex,acs$DM))
+ x
+ plot(x)
+```
+
+## For one sample t-test
+
+You can show the distribution of t-statistic and p-value in one sample t-test.
+
+```{r}
+t.test(acs$age,mu=63)
+
+plot(t.test(acs$age,mu=63))
+```
+ 
+## Student t-test to compare means for two independent samples
+
+Before performing a t-test, you have to compare two variances.
+
+### F test to compare two variances
+
+
+```{r}
+x=var.test(age~DM,data=acs)
+x
+plot(x)
+``` 
+
+### Use for Two Sample t-test for independence samples 
+
+Based on the result of var.test(), you can perform t.test with default option(var.equal=FALSE).
+```{r}
+x=t.test(age~DM,data=acs)
+x
+plot(x)
+```
+
+## Student t-test using pooled variance
+
+To compare means of body-mass index between male and female patients, perform F test first.
+ 
+```{r}
+var.test(BMI~sex,data=acs)
+plot(var.test(BMI~sex,data=acs))
+```
+Based on the result of F test, you can perform t-test using pooled variance.
+
+```{r}
+x=t.test(BMI~sex,data=acs,var.equal=TRUE)
+x
+plot(x)
+```
+
+
+## Paired t-test
+
+You can show the distribution of t-statistic and p-value in paired t-test.
+
+```{r}
+x=t.test(iris$Sepal.Width,iris$Petal.Width,paired=TRUE)
+plot(x)
+```
+ 
+
+## Options for t-test
+
+You can change the options of t.test. 
+
+```{r}
+x=t.test(BMI~sex, data=acs,conf.level=0.99,alternative="greater",var.equal=TRUE)
+plot(x)
+```
+ 
