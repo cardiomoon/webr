@@ -9,9 +9,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
-
 To understand the concept of p value is very important. To teach the the distribution of common statistic( $\chi^2$ for chisq.test() , t for Student's t-test , F for F-test) and concept of the p-value, plot.htest() function can be used.
+
+## Homepage of this package
+
+https://cardiomoon.github.io/webr/
+
 
 ## Package Installation
 
