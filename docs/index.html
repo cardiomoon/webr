@@ -93,7 +93,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 data:  table(acs$sex, acs$DM)
 X-squared = 3.1296, df = 1, p-value = 0.07688</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">plot</span>(x)</code></pre></div>
-<p><img src="figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="90%" style="display: block; margin: auto;"></p>
+<p><img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="90%" style="display: block; margin: auto;"></p>
 </div>
 <div id="for-one-sample-t-test" class="section level2">
 <h2 class="hasAnchor">
@@ -112,7 +112,7 @@ sample estimates:
 mean of x 
  63.31155 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">t.test</span>(acs<span class="op">$</span>age,<span class="dt">mu=</span><span class="dv">63</span>))</code></pre></div>
-<p><img src="figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="90%" style="display: block; margin: auto;"></p>
+<p><img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="90%" style="display: block; margin: auto;"></p>
 </div>
 <div id="student-t-test-to-compare-means-for-two-independent-samples" class="section level2">
 <h2 class="hasAnchor">
@@ -135,7 +135,7 @@ sample estimates:
 ratio of variances 
           1.238288 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(x)</code></pre></div>
-<p><img src="figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="90%" style="display: block; margin: auto;"></p>
+<p><img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="90%" style="display: block; margin: auto;"></p>
 </div>
 <div id="use-for-two-sample-t-test-for-independence-samples" class="section level3">
 <h3 class="hasAnchor">
@@ -155,7 +155,7 @@ sample estimates:
  mean in group No mean in group Yes 
          63.48101          63.00329 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(x)</code></pre></div>
-<p><img src="figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="90%" style="display: block; margin: auto;"></p>
+<p><img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="90%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div id="student-t-test-using-pooled-variance" class="section level2">
@@ -175,7 +175,7 @@ sample estimates:
 ratio of variances 
           1.207759 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">var.test</span>(BMI<span class="op">~</span>sex,<span class="dt">data=</span>acs))</code></pre></div>
-<p><img src="figure/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="90%" style="display: block; margin: auto;"> Based on the result of F test, you can perform t-test using pooled variance.</p>
+<p><img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="90%" style="display: block; margin: auto;"> Based on the result of F test, you can perform t-test using pooled variance.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x=<span class="kw">t.test</span>(BMI<span class="op">~</span>sex,<span class="dt">data=</span>acs,<span class="dt">var.equal=</span><span class="ot">TRUE</span>)
 x</code></pre></div>
 <pre><code>
@@ -190,7 +190,7 @@ sample estimates:
 mean in group Female   mean in group Male 
             24.19492             24.32548 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(x)</code></pre></div>
-<p><img src="figure/unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="90%" style="display: block; margin: auto;"></p>
+<p><img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="90%" style="display: block; margin: auto;"></p>
 </div>
 <div id="paired-t-test" class="section level2">
 <h2 class="hasAnchor">
@@ -198,7 +198,7 @@ mean in group Female   mean in group Male
 <p>You can show the distribution of t-statistic and p-value in paired t-test.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x=<span class="kw">t.test</span>(iris<span class="op">$</span>Sepal.Width,iris<span class="op">$</span>Petal.Width,<span class="dt">paired=</span><span class="ot">TRUE</span>)
 <span class="kw">plot</span>(x)</code></pre></div>
-<p><img src="figure/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="90%" style="display: block; margin: auto;"></p>
+<p><img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="90%" style="display: block; margin: auto;"></p>
 </div>
 <div id="options-for-t-test" class="section level2">
 <h2 class="hasAnchor">
@@ -206,7 +206,7 @@ mean in group Female   mean in group Male
 <p>You can change the options of t.test.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x=<span class="kw">t.test</span>(BMI<span class="op">~</span>sex, <span class="dt">data=</span>acs,<span class="dt">conf.level=</span><span class="fl">0.99</span>,<span class="dt">alternative=</span><span class="st">"greater"</span>,<span class="dt">var.equal=</span><span class="ot">TRUE</span>)
 <span class="kw">plot</span>(x)</code></pre></div>
-<p><img src="figure/unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="90%" style="display: block; margin: auto;"></p>
+<p><img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="90%" style="display: block; margin: auto;"></p>
 </div>
 
   </div>
