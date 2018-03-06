@@ -1,7 +1,7 @@
 ---
 title: "Plot for distribution of statistic and p-value"
 author: "Keon-Woong Moon"
-date: "2017-11-11"
+date: "2017-11-16"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{plot.htest}
@@ -9,9 +9,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
-
 To understand the concept of p value is very important. To teach the the distribution of common statistic( $\chi^2$ for chisq.test() , t for Student's t-test , F for F-test) and concept of the p-value, plot.htest() function can be used.
+
+## Homepage of this package
+
+https://cardiomoon.github.io/webr/
+
 
 ## Package Installation
 
@@ -54,7 +57,7 @@ X-squared = 3.1296, df = 1, p-value = 0.07688
  plot(x)
 ```
 
-<img src="figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="90%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="90%" style="display: block; margin: auto;" />
 
 ## For one sample t-test
 
@@ -83,7 +86,7 @@ mean of x
 plot(t.test(acs$age,mu=63))
 ```
 
-<img src="figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="90%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="90%" style="display: block; margin: auto;" />
  
 ## Student t-test to compare means for two independent samples
 
@@ -116,7 +119,7 @@ ratio of variances
 plot(x)
 ```
 
-<img src="figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="90%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="90%" style="display: block; margin: auto;" />
 
 ### Use for Two Sample t-test for independence samples 
 
@@ -145,7 +148,7 @@ sample estimates:
 plot(x)
 ```
 
-<img src="figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="90%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="90%" style="display: block; margin: auto;" />
 
 ## Student t-test using pooled variance
 
@@ -174,7 +177,7 @@ ratio of variances
 plot(var.test(BMI~sex,data=acs))
 ```
 
-<img src="figure/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="90%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="90%" style="display: block; margin: auto;" />
 Based on the result of F test, you can perform t-test using pooled variance.
 
 
@@ -201,7 +204,7 @@ mean in group Female   mean in group Male
 plot(x)
 ```
 
-<img src="figure/unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="90%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="90%" style="display: block; margin: auto;" />
 
 
 ## Paired t-test
@@ -214,7 +217,7 @@ x=t.test(iris$Sepal.Width,iris$Petal.Width,paired=TRUE)
 plot(x)
 ```
 
-<img src="figure/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="90%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="90%" style="display: block; margin: auto;" />
  
 
 ## Options for t-test
@@ -227,5 +230,5 @@ x=t.test(BMI~sex, data=acs,conf.level=0.99,alternative="greater",var.equal=TRUE)
 plot(x)
 ```
 
-<img src="figure/unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="90%" style="display: block; margin: auto;" />
+<img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="90%" style="display: block; margin: auto;" />
  
