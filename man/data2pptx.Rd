@@ -5,8 +5,8 @@
 \title{Make a powerpoint file with a data.frame}
 \usage{
 data2pptx(data, title = "Web-based Meta-Analysis", template = "myppt.pptx",
-  preprocessing = "", filename = file, width = 7, height = 5,
-  units = "in", res = 300, type = "cairo")
+  preprocessing = "", filename = "Report.pptx", width = 7, height = 5,
+  units = "in", res = 300)
 }
 \arguments{
 \item{data}{A data.frame}
@@ -26,16 +26,13 @@ data2pptx(data, title = "Web-based Meta-Analysis", template = "myppt.pptx",
 \item{units}{The units in which height and width are given. Can be px (pixels, the default), in (inches), cm or mm.}
 
 \item{res}{The nominal resolution in ppi}
-
-\item{type}{A character}
 }
 \description{
 Make a powerpoint file with a data.frame
 }
 \examples{
-type=c("mytable","table","plot","ggplot","Rcode")
-title=c("mytable","iris[1:10,]","plot","ggplot","Regression Analysis")
-code=c("mytable(sex~.,data=acs)","df2FlexTable(iris[1:10,])","plot(iris)","ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+geom_point()","summary(mtcars)\\nfit=lm(mpg~wt*hp,data=mtcars)\\nsummary(fit)")
-data=data.frame(type=type,title=title,code=code,stringsAsFactors = FALSE)
-data2pptx(data)
+library(moonBook)
+library(ztable)
+library(webr)
+data2pptx(sampleData)
 }

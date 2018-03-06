@@ -24,7 +24,7 @@
 #' @examples
 #' library(ReporteRs)
 #' df2FlexTable(head(iris))
-#' df2FlexTable(head(iris),type="latex")
+#' df2FlexTable(head(iris),mode="pptx")
 df2FlexTable=function(df,vanilla=FALSE,bg="#5B7778",add.rownames=TRUE,header.columns=TRUE,mode="html",bordercolor="#EDBD3E",oddcolor = "#FFFFFF", evencolor = "#DDDDDD",
                       parRight=TRUE,parLeft=TRUE,padding.left=5,padding.right=5,padding.top=2,padding.bottom=2,widths=NULL,digits=NULL,NA2space=FALSE,pcol=NULL){
         if(!is.null(digits)){
@@ -48,9 +48,9 @@ df2FlexTable=function(df,vanilla=FALSE,bg="#5B7778",add.rownames=TRUE,header.col
                         colnames(df)[colnames(df)=="x2df"]="&#967;<sup>2</sup>/df"
                         colnames(df)[colnames(df)=="p"]="<i>p</i>"
                 } else if(mode=="pptx"){
-                        colnames(df)[colnames(df)=="\u03B2"]="β"
-                        colnames(df)[colnames(df)=="chisq"]="χ2"
-                        colnames(df)[colnames(df)=="x2df"]="χ2/df"
+                        colnames(df)[colnames(df)=="\u03B2"]="\u03B2"
+                        colnames(df)[colnames(df)=="chisq"]="\u03C72"
+                        colnames(df)[colnames(df)=="x2df"]="\u03C72/df"
                         colnames(df)[colnames(df)=="p"]="p"
                 }
                 if(vanilla) {

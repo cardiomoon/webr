@@ -19,9 +19,6 @@ Make a HTML5 file with a data.frame
 \examples{
 library(moonBook)
 library(ztable)
-type=c("mytable","table","plot","ggplot","Rcode")
-title=c("mytable","iris[1:10,]","plot","ggplot","Regression Analysis")
-code=c("mytable(sex~.,data=moonBook::acs)","df2FlexTable(iris[1:10,])","plot(iris)","ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+geom_point()","summary(mtcars)\\nfit=lm(mpg~wt*hp,data=mtcars)\\nsummary(fit)")
-data=data.frame(type=type,title=title,code=code,stringsAsFactors = FALSE)
-data2HTML(data)
+library(webr)
+data2HTML(sampleData)
 }

@@ -30,8 +30,6 @@ Make FlexTable with mytable : Internal function used in mytable2doc or mytable2p
 require(moonBook)
 require(ReporteRs)
 res=mytable(Dx~.,data=acs)
-mytable2doc(res)
-mytable2ppt(res)
 res=mytable(Dx+sex~.,data=acs)
 mytable2FTable(res)
 

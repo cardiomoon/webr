@@ -4,7 +4,8 @@
 \alias{data2word}
 \title{Make a word file with a data.frame}
 \usage{
-data2word(data, title, preprocessing = "", filename = "MetaReport.docx")
+data2word(data, title, preprocessing = "", filename = "Report.docx",
+  width = 7, height = 5, units = "in", res = 300)
 }
 \arguments{
 \item{data}{A data.frame}
@@ -14,14 +15,21 @@ data2word(data, title, preprocessing = "", filename = "MetaReport.docx")
 \item{preprocessing}{A character string of R code}
 
 \item{filename}{A path of destination file}
+
+\item{width}{A plot width}
+
+\item{height}{A plot height}
+
+\item{units}{The units in which height and width are given. Can be px (pixels, the default), in (inches), cm or mm.}
+
+\item{res}{The nominal resolution in ppi}
 }
 \description{
 Make a word file with a data.frame
 }
 \examples{
-type=c("mytable","table","plot","ggplot","Rcode")
-title=c("mytable","iris[1:10,]","plot","ggplot","Regression Analysis")
-code=c("mytable(sex~.,data=acs)","df2FlexTable(iris[1:10,])","plot(iris)","ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+geom_point()","summary(mtcars)\\nfit=lm(mpg~wt*hp,data=mtcars)\\nsummary(fit)")
-data=data.frame(type=type,title=title,code=code,stringsAsFactors = FALSE)
-data2word(data)
+library(moonBook)
+library(ztable)
+library(webr)
+data2word(sampleData)
 }

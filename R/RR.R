@@ -1,3 +1,14 @@
+#' Sample data for PPTxList
+#' A dataset containing five objects for reproducible research
+#'
+#' @format A data frame with 5 rows and three columns
+#' \describe{
+#'    \item{type}{type of data}
+#'    \item{title}{title of data}
+#'    \item{code}{R code of data}
+#' }
+"sampleData"
+
 #' UI of pptxList shiny module
 #' @param id A string
 #' @importFrom shiny NS textAreaInput
@@ -9,6 +20,7 @@
 #' library(editData)
 #' library(moonBook)
 #' library(readr)
+#' if(interactive()){
 #' ui=fluidPage(
 #'     pptxListInput("pptxlist")
 #'     )
@@ -16,6 +28,7 @@
 #'     mydf=callModule(pptxList,"pptxlist")
 #' }
 #' shinyApp(ui,server)
+#' }
 pptxListInput=function(id){
      ns=NS(id)
 
@@ -37,7 +50,7 @@ pptxListInput=function(id){
 #' @param preprocessing A character string of R code
 #' @importFrom shiny reactiveValues updateTextAreaInput reactive h4 fileInput actionButton downloadButton hr p callModule
 #' @importFrom shiny downloadHandler tagList conditionalPanel uiOutput observe observeEvent column fluidRow renderUI
-#' @importFrom editData numericInput3 radioButtons3 editableDT editableDTUI
+#' @importFrom editData numericInput3 radioButtons3 editableDT editableDTUI selectInput3
 #' @importFrom readr read_csv
 #' @export
 pptxList<-function(input,output,session,data=reactive(""),preprocessing=reactive(""))
@@ -219,7 +232,8 @@ pptxList<-function(input,output,session,data=reactive(""),preprocessing=reactive
 
                data2word(data,title="Web-based Meta-Analysis",
                          preprocessing=input$preprocessing,
-                         filename=file)
+                         filename=file,width=input$plotWidth,height=input$plotHeight,
+                         units=input$plotUnit,res=input$plotRes)
 
 
           },
@@ -394,11 +408,10 @@ plotPNG2=function(fun,file,width=7,height=7,units="in",res=300,ggplot=FALSE){
 #' @importFrom utils zip
 #' @export
 #' @examples
-#' type=c("mytable","table","plot","ggplot","Rcode")
-#' title=c("mytable","iris[1:10,]","plot","ggplot","Regression Analysis")
-#' code=c("mytable(sex~.,data=acs)","df2FlexTable(iris[1:10,])","plot(iris)","ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+geom_point()","summary(mtcars)\nfit=lm(mpg~wt*hp,data=mtcars)\nsummary(fit)")
-#' data=data.frame(type=type,title=title,code=code,stringsAsFactors = FALSE)
-#' data2plotzip(data)
+#' library(moonBook)
+#' library(ztable)
+#' library(webr)
+#' data2plotzip(sampleData)
 data2plotzip=function(data,filename="Plot.zip",format="PNG",width=8,height=6,units="in",res=300,start=0,preprocessing=""){
 
      fs=myplot2(data,format=format,width=width,height=height,units=units,res=res,start=start,preprocessing=preprocessing)
@@ -410,15 +423,20 @@ data2plotzip=function(data,filename="Plot.zip",format="PNG",width=8,height=6,uni
 #' @param title The title of a word file
 #' @param preprocessing A character string of R code
 #' @param filename A path of destination file
+#' @param width A plot width
+#' @param height A plot height
+#' @param units The units in which height and width are given. Can be px (pixels, the default), in (inches), cm or mm.
+#' @param res The nominal resolution in ppi
 #' @importFrom ReporteRs addFlexTable addPlot addImage docx
 #' @export
 #' @examples
-#' type=c("mytable","table","plot","ggplot","Rcode")
-#' title=c("mytable","iris[1:10,]","plot","ggplot","Regression Analysis")
-#' code=c("mytable(sex~.,data=acs)","df2FlexTable(iris[1:10,])","plot(iris)","ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+geom_point()","summary(mtcars)\nfit=lm(mpg~wt*hp,data=mtcars)\nsummary(fit)")
-#' data=data.frame(type=type,title=title,code=code,stringsAsFactors = FALSE)
-#' data2word(data)
-data2word=function(data,title,preprocessing="",filename="MetaReport.docx"){
+#' library(moonBook)
+#' library(ztable)
+#' library(webr)
+#' data2word(sampleData)
+data2word=function(data,title,preprocessing="",filename="Report.docx",
+                   width=7,height=5,units="in",
+                   res=300){
 
      mydoc=docx(title="Web-based Meta-Analysis")
      if(preprocessing!="") eval(parse(text=preprocessing))
@@ -450,8 +468,8 @@ data2word=function(data,title,preprocessing="",filename="MetaReport.docx"){
 
           } else if(data$type[i]=="PNG"){
 
-               png(filename="temp.png",width=input$plotWidth,height=input$plotHeight,units=input$plotUnit,
-                   res=input$plotRes,type="cairo")
+               png(filename="temp.png",width=width,height=height,units=units,
+                   res=res,type="cairo")
                eval(parse(text=data$code[i]))
                dev.off()
                mydoc=addImage(mydoc,"temp.png",width=6,height=4)
@@ -597,6 +615,19 @@ makePot=function(result=NULL,pre=NULL,post=NULL,fontsize=NULL,fontfamily="Monaco
 }
 
 
+#' Add a plot into a document object
+#' @param mydoc A document object
+#' @param image Character vector indicating path to image file
+#' @param title title of the slide
+addImageSlide=function(mydoc,image,title=""){
+    if(title=="") mydoc=addSlide(mydoc,"Content")
+    else mydoc=addSlide(mydoc,"Title and Content")
+    if(title!="") mydoc=addTitle(mydoc,title)
+    mydoc=addImage(mydoc,image)
+    mydoc
+}
+
+
 #' Add a paragraph slide into a document object
 #' @param mydoc A document object
 #' @param result Character string encoding R codes as a main text
@@ -616,7 +647,7 @@ addParagraphSlide=function(mydoc,result=NULL,pre=NULL,post=NULL,title="",
      text1<-makePot(result=result,pre=pre,post=post,
                     fontsize=fontsize,fontfamily=fontfamily,cat=cat,precat=precat)
      if(new){
-          mydoc = addSlide( mydoc, "Title and Content2" )
+          mydoc = addSlide( mydoc, "Title and Content" )
           mydoc = addTitle( mydoc, title )
      }
      mydoc = addParagraph(mydoc,text1)
@@ -660,7 +691,7 @@ addRcodeSlide=function(mydoc,code,title="",showCode=FALSE,preprocessing=""){
           }
      } else {
           if(title!="") {
-               mydoc = addSlide( mydoc, "Title and Content2" )
+               mydoc = addSlide( mydoc, "Title and Content" )
                mydoc = addTitle( mydoc, title )
           } else{
                mydoc = addSlide( mydoc, "Content2" )
@@ -685,19 +716,17 @@ addRcodeSlide=function(mydoc,code,title="",showCode=FALSE,preprocessing=""){
 #' @param height A plot height
 #' @param units The units in which height and width are given. Can be px (pixels, the default), in (inches), cm or mm.
 #' @param res The nominal resolution in ppi
-#' @param type A character
 #' @importFrom ReporteRs pptx writeDoc
 #' @export
 #' @examples
-#' type=c("mytable","table","plot","ggplot","Rcode")
-#' title=c("mytable","iris[1:10,]","plot","ggplot","Regression Analysis")
-#' code=c("mytable(sex~.,data=acs)","df2FlexTable(iris[1:10,])","plot(iris)","ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+geom_point()","summary(mtcars)\nfit=lm(mpg~wt*hp,data=mtcars)\nsummary(fit)")
-#' data=data.frame(type=type,title=title,code=code,stringsAsFactors = FALSE)
-#' data2pptx(data)
+#' library(moonBook)
+#' library(ztable)
+#' library(webr)
+#' data2pptx(sampleData)
 data2pptx=function(data,title="Web-based Meta-Analysis",
                    template="myppt.pptx",preprocessing="",
-                   filename=file,width=7,height=5,units="in",
-                   res=300,type="cairo"){
+                   filename="Report.pptx",width=7,height=5,units="in",
+                   res=300){
 
      if(file.exists(template)) {
           mydoc = pptx(template=template)
@@ -755,11 +784,8 @@ data2pptx=function(data,title="Web-based Meta-Analysis",
 #' @examples
 #' library(moonBook)
 #' library(ztable)
-#' type=c("mytable","table","plot","ggplot","Rcode")
-#' title=c("mytable","iris[1:10,]","plot","ggplot","Regression Analysis")
-#' code=c("mytable(sex~.,data=moonBook::acs)","df2FlexTable(iris[1:10,])","plot(iris)","ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+geom_point()","summary(mtcars)\nfit=lm(mpg~wt*hp,data=mtcars)\nsummary(fit)")
-#' data=data.frame(type=type,title=title,code=code,stringsAsFactors = FALSE)
-#' data2HTML(data)
+#' library(webr)
+#' data2HTML(sampleData)
 data2HTML=function(data,preprocessing="",filename="report.HTML"){
 
 
@@ -820,11 +846,9 @@ data2HTML=function(data,preprocessing="",filename="report.HTML"){
 #' @importFrom rmarkdown render
 #' @export
 #' @examples
-#' type=c("mytable","table","plot","ggplot","Rcode")
-#' title=c("mytable","iris[1:10,]","plot","ggplot","Regression Analysis")
-#' code=c("mytable(sex~.,data=acs)","df2FlexTable(iris[1:10,])","plot(iris)","ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+geom_point()","summary(mtcars)\nfit=lm(mpg~wt*hp,data=mtcars)\nsummary(fit)")
-#' data=data.frame(type=type,title=title,code=code,stringsAsFactors = FALSE)
-#' data2HTML(data)
+#' library(moonBook)
+#' library(ztable)
+#' data2pdf(sampleData)
 data2pdf=function(data,preprocessing="",filename="report.pdf"){
 
      if(file.exists("report2.Rmd")) file.remove("report2.Rmd")
@@ -915,15 +939,14 @@ data2pdf=function(data,preprocessing="",filename="report.pdf"){
 #' @param padding Paragraph left and right padding - 0 or positive integer value
 #' @param widths A numeric vector specifying columns widths in inches.
 #' @importFrom utils read.csv
-#' @importFrom ReporteRs addHeaderRow cellProperties spanFlexTableRows chprop
+#' @importFrom ReporteRs addHeaderRow cellProperties spanFlexTableRows spanFlexTableColumns chprop
 #' @importFrom moonBook mycsv
 #' @return An object of ReporteRs::FlexTable
+#' @export
 #' @examples
 #' require(moonBook)
 #' require(ReporteRs)
 #' res=mytable(Dx~.,data=acs)
-#' mytable2doc(res)
-#' mytable2ppt(res)
 #' res=mytable(Dx+sex~.,data=acs)
 #' mytable2FTable(res)
 #'
@@ -933,6 +956,7 @@ mytable2FTable=function(res, vanilla=FALSE,bg="#5B7778",parRight=TRUE,padding=5,
      res
      mycsv(res,"test.csv",row.names = FALSE)
      test=read.csv("test.csv",colClasses = "character")
+     file.remove("test.csv")
      #str(test)
 
      if("cbind.mytable" %in% class(res)){

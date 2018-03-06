@@ -59,5 +59,5 @@ Convert data.frame to FlexTable
 \examples{
 library(ReporteRs)
 df2FlexTable(head(iris))
-df2FlexTable(head(iris),type="latex")
+df2FlexTable(head(iris),mode="pptx")
 }
