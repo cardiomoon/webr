@@ -1,5 +1,5 @@
 ---
-title: "Plot for distribution of statistic and p-value"
+title: "Plot for distribution of common statistics and p-value"
 author: "Keon-Woong Moon"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
