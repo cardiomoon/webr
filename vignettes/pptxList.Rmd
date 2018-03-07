@@ -15,7 +15,7 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE,comment =NA,fig.align='center',out.width="70%")
 ```
 
-If you a data scientist or researcher, you are interested in reproducible research. I have developed several functions to make reports with variable formats from R code. 
+If you are a data scientist or researcher, you will certainly be interested in reproducible research. I have developed several functions to make reports with variable formats from R code. 
 
 ## Package Installation
 
