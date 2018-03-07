@@ -29,6 +29,7 @@ devtools::install_github("cardiomoon/webr")
 You can load the `webr` package with the folowing R command.
 ```{r}
 require(webr)
+require(moonBook)  # for data acs and mytable()
 ```
 
 ## Sample Data 
