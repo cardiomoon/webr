@@ -1,10 +1,11 @@
 ---
-title: "pptxList: A Shiny Module for Reproducible Research"
+title: "Simple is beautiful"
+subtitle: "pptxList: A Shiny Module for Reproducible Research"
 author: "Keon-Woong Moon"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{pptxList}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -99,6 +100,7 @@ If you are a shiny app develper, you can use my 'pptxList' shiny module in your 
 ```{r,eval=FALSE}
 shiny::runApp(system.file('pptxList',package='webr'))
 ```
+
 
 After loading the shiny app, please click the 'load sample Data' button. You can edit the sample data by clicking 'edit Data' button. You can download report as a "HTML" or "docx" or "pptx" format. You can download report as a 'pdf' file(You have to set the LaTex in your computer).
 
