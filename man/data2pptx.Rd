@@ -34,5 +34,5 @@ Make a powerpoint file with a data.frame
 library(moonBook)
 library(ztable)
 library(webr)
-data2pptx(sampleData)
+data2pptx(sampleData2)
 }

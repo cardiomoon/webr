@@ -31,5 +31,5 @@ Make a word file with a data.frame
 library(moonBook)
 library(ztable)
 library(webr)
-data2word(sampleData)
+data2word(sampleData2)
 }

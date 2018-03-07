@@ -20,5 +20,5 @@ Make a HTML5 file with a data.frame
 library(moonBook)
 library(ztable)
 library(webr)
-data2HTML(sampleData)
+data2HTML(sampleData2)
 }

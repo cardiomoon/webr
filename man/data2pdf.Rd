@@ -19,5 +19,5 @@ Make a pdf file with a data.frame
 \examples{
 library(moonBook)
 library(ztable)
-data2pdf(sampleData)
+data2pdf(sampleData2)
 }

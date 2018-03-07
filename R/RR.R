@@ -7,11 +7,11 @@
 #'    \item{title}{title of data}
 #'    \item{code}{R code of data}
 #' }
-"sampleData"
+"sampleData2"
 
 #' UI of pptxList shiny module
 #' @param id A string
-#' @importFrom shiny NS textAreaInput
+#' @importFrom shiny NS textAreaInput checkboxInput
 #' @export
 #' @examples
 #' library(shiny)
@@ -33,8 +33,9 @@ pptxListInput=function(id){
      ns=NS(id)
 
      tagList(
-          conditionalPanel(condition="true==false",
-                           textAreaInput(ns("preprocessing"),"preprocessing",value="")
+         checkboxInput("showpreprocessing","show preprocessing"),
+         conditionalPanel(condition="input.showpreprocessing==true",
+                           textAreaInput(ns("preprocessing"),"preprocessing",value="",width='100%',height = '100%')
           ),
           uiOutput(ns("pptListUI"))
      )
@@ -121,7 +122,11 @@ pptxList<-function(input,output,session,data=reactive(""),preprocessing=reactive
                            h4("Upload PPTList(*.csv)"),
                            fileInput(ns("pptfile"),NA)  #"Upload PPTList(*.csv)"
                     ),
-                    column(4,
+                    column(3,
+                           h4("Load sampleData "),
+                           actionButton(ns("loadSample"),"load sampleData")
+                    ),
+                    column(5,
                            h4("Reset PPT List "),
                            actionButton(ns("ResetPPT"),"reset PPT List")
                     )
@@ -157,6 +162,16 @@ pptxList<-function(input,output,session,data=reactive(""),preprocessing=reactive
           savedPPT$code=c()
 
           updateTextAreaInput(session,"preprocessing",value="")
+
+     })
+
+     observeEvent(input$loadSample,{
+
+         savedPPT$type=webr::sampleData2$type
+         savedPPT$title=webr::sampleData2$title
+         savedPPT$code=webr::sampleData2$code
+
+         updateTextAreaInput(session,"preprocessing",value="")
 
      })
 
@@ -411,7 +426,7 @@ plotPNG2=function(fun,file,width=7,height=7,units="in",res=300,ggplot=FALSE){
 #' library(moonBook)
 #' library(ztable)
 #' library(webr)
-#' data2plotzip(sampleData)
+#' data2plotzip(sampleData2)
 data2plotzip=function(data,filename="Plot.zip",format="PNG",width=8,height=6,units="in",res=300,start=0,preprocessing=""){
 
      fs=myplot2(data,format=format,width=width,height=height,units=units,res=res,start=start,preprocessing=preprocessing)
@@ -433,7 +448,7 @@ data2plotzip=function(data,filename="Plot.zip",format="PNG",width=8,height=6,uni
 #' library(moonBook)
 #' library(ztable)
 #' library(webr)
-#' data2word(sampleData)
+#' data2word(sampleData2)
 data2word=function(data,title,preprocessing="",filename="Report.docx",
                    width=7,height=5,units="in",
                    res=300){
@@ -722,7 +737,7 @@ addRcodeSlide=function(mydoc,code,title="",showCode=FALSE,preprocessing=""){
 #' library(moonBook)
 #' library(ztable)
 #' library(webr)
-#' data2pptx(sampleData)
+#' data2pptx(sampleData2)
 data2pptx=function(data,title="Web-based Meta-Analysis",
                    template="myppt.pptx",preprocessing="",
                    filename="Report.pptx",width=7,height=5,units="in",
@@ -785,7 +800,7 @@ data2pptx=function(data,title="Web-based Meta-Analysis",
 #' library(moonBook)
 #' library(ztable)
 #' library(webr)
-#' data2HTML(sampleData)
+#' data2HTML(sampleData2)
 data2HTML=function(data,preprocessing="",filename="report.HTML"){
 
 
@@ -848,7 +863,7 @@ data2HTML=function(data,preprocessing="",filename="report.HTML"){
 #' @examples
 #' library(moonBook)
 #' library(ztable)
-#' data2pdf(sampleData)
+#' data2pdf(sampleData2)
 data2pdf=function(data,preprocessing="",filename="report.pdf"){
 
      if(file.exists("report2.Rmd")) file.remove("report2.Rmd")
