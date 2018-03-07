@@ -26,7 +26,7 @@
 #' df2FlexTable(head(iris))
 #' df2FlexTable(head(iris),mode="pptx")
 df2FlexTable=function(df,vanilla=FALSE,bg="#5B7778",add.rownames=TRUE,header.columns=TRUE,mode="html",bordercolor="#EDBD3E",oddcolor = "#FFFFFF", evencolor = "#DDDDDD",
-                      parRight=TRUE,parLeft=TRUE,padding.left=5,padding.right=5,padding.top=2,padding.bottom=2,widths=NULL,digits=NULL,NA2space=FALSE,pcol=NULL){
+                      parRight=FALSE,parLeft=TRUE,padding.left=5,padding.right=5,padding.top=2,padding.bottom=2,widths=NULL,digits=NULL,NA2space=FALSE,pcol=NULL){
         if(!is.null(digits)){
                 for(i in 1:length(digits)){
                         if(is.na(digits[i])) next

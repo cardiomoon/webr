@@ -1,9 +1,5 @@
 library(shiny)
-library(ggplot2)
-library(ReporteRs)
-library(editData)
 library(moonBook)
-library(readr)
 library(webr)
 
 ui=fluidPage(
