@@ -50,7 +50,7 @@ df2FlexTable(sampleData2)
 You can make report with a powerpoint format.
 
 ```{r,eval=FALSE}
-data2pptx(data)
+data2pptx(sampleData2)
 ```
 
 ### Make a Report As a MS-Word Format.
@@ -58,7 +58,7 @@ data2pptx(data)
 You can make report with a docx format.
 
 ```{r,eval=FALSE}
-data2word(data)
+data2word(sampleData2)
 ```
 
 ### Make a Report As a HTML Format.
@@ -66,7 +66,7 @@ data2word(data)
 You can make report with a HTML format.
 
 ```{r,eval=FALSE}
-data2HTML(data)
+data2HTML(sampleData2)
 ```
 
 ### Make a Report As a pdf Format.
@@ -74,7 +74,7 @@ data2HTML(data)
 You can make report with a pdf format. A LaTex should be installed to your computer to get 'pdf' file.
 
 ```{r,eval=FALSE}
-data2pdf(data)
+data2pdf(sampleData2)
 ```
 
 ### Make a zipped plot file 
@@ -82,7 +82,7 @@ data2pdf(data)
 You can get a zipped plot file. Available format is 'PNG','SVG' and 'PDF'. 
 
 ```{r,eval=FALSE}
-data2plotzip(data,format="PNG")
+data2plotzip(sampleData2,format="PNG")
 ```
 
 You can set the width, height, resolution, units of your plots. You can see the manual of this function by entering the following command.
