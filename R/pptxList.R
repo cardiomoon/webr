@@ -9,38 +9,33 @@
 #' }
 "sampleData2"
 
-#' UI of pptxList shiny module
-#' @param id A string
-#' @importFrom shiny NS textAreaInput checkboxInput
-#' @export
-#' @examples
-#' library(shiny)
-#' library(ggplot2)
-#' library(ReporteRs)
-#' library(editData)
-#' library(moonBook)
-#' library(readr)
-#' if(interactive()){
-#' ui=fluidPage(
-#'     pptxListInput("pptxlist")
-#'     )
-#' server=function(input,output,session){
-#'     mydf=callModule(pptxList,"pptxlist")
-#' }
-#' shinyApp(ui,server)
-#' }
-pptxListInput=function(id){
-     ns=NS(id)
 
-     tagList(
-         checkboxInput("showpreprocessing","show preprocessing"),
-         conditionalPanel(condition="input.showpreprocessing==true",
-                           textAreaInput(ns("preprocessing"),"preprocessing",value="",width='100%',height = '100%')
-          ),
-          uiOutput(ns("pptListUI"))
-     )
+#'A dataset containing demographic data and laboratory data of 857 pateints with
+#'acute coronary syndrome(ACS).
+#'
+#'
+#'@format A data frame with 857 rows and 17 variables:
+#'\describe{
+#'  \item{age}{patient age in years}
+#'  \item{sex}{"Male" or "Female"}
+#'  \item{cardiogenicShock}{"No" or "Yes"}
+#'  \item{entry}{vascular access route, either "Femoral" or "Radial"}
+#'  \item{Dx}{Final diagnosis, One of the followings : STEMI, NSTEMI or Unstable Angina}
+#'  \item{EF}{ejection fraction, percentage by echocardiography}
+#'  \item{height}{height in centimeter}
+#'  \item{weight}{weight in kilogram}
+#'  \item{BMI}{body mass index in kg/m2}
+#'  \item{obesity}{obesity, "No" or "Yes"}
+#'  \item{TC}{total cholesterol level in mg/dL}
+#'  \item{LDLC}{low density lipoprotein cholesterol level in mg/dL}
+#'  \item{HDLC}{high density lipoprotein cholesterol level in mg/dL}
+#'  \item{TG}{triglyceride level in mg/dL}
+#'  \item{DM}{history of diabetes mellitus,"No" or "Yes"}
+#'  \item{HBP}{history of hypertension,"No" or "Yes"}
+#'  \item{smoking}{history of smoking, One of the followings : "Never","Ex-smoker","Smoker"}
+#'}
+"acs"
 
-}
 
 #' Server function of pptxList shiny module
 #'
@@ -1159,3 +1154,13 @@ readComment=function(filename,comment="#"){
      result
 }
 
+
+#' Export pptList file to desired format
+#' @param file The name of the file which the data are to be read from.
+#' @param format desired ouput format. Possible choices are one of the c("HTML","pdf","word","pptx","plotzip")
+exportCSV=function(file,format="HTML"){
+    data<-readr::read_csv(file,comment="#")
+    preprocessing<-webr::readComment(file)
+    temp=paste0("webr::data2",format,'(data,preprocessing="',preprocessing,'")')
+    eval(parse(text=temp))
+}

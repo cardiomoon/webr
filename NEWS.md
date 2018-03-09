@@ -1,9 +1,7 @@
-# webr version 0.1.1
+# webr version 0.1.3
 =====================
-(11-Nov-2017)
 
-* new function plot.htest() added
-
+* new function exportCSV() added
 
 # webr version 0.1.2
 =====================
@@ -18,3 +16,13 @@
 * new functions df2FlexTable() and mytable2FTable() added
 
 * new functions readComment() and writeCSVComment() added
+
+
+# webr version 0.1.1
+=====================
+(11-Nov-2017)
+
+* new function plot.htest() added
+
+
+
