@@ -111,7 +111,6 @@ The followings are the source codes of this app. The source file is very simple.
 
 ```{r,eval=FALSE}
 library(shiny)
-library(moonBook)
 library(webr)
 
 ui=fluidPage(
