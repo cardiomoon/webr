@@ -1158,8 +1158,13 @@ readComment=function(filename,comment="#"){
 #' Export pptList file to desired format
 #' @param file The name of the file which the data are to be read from.
 #' @param format desired ouput format. Possible choices are one of the c("HTML","pdf","word","pptx","plotzip")
-#' @export
-exportCSV=function(file,format="HTML"){
+#' @param rawDataName The name of the rawData
+#' @param rawDataFile The name of the rawData file which the data are to be read from.
+exportCSV=function(file,format="HTML",rawDataName=NULL,rawDataFile="rawData.RDS"){
+    if(!is.null(rawDataName)){
+        rawData=readRDS(rawDataFile)
+        assign(rawDataName,rawData)
+    }
     data<-readr::read_csv(file,comment="#")
     preprocessing<-webr::readComment(file)
     temp=paste0("webr::data2",format,'(data,preprocessing="',preprocessing,'")')
