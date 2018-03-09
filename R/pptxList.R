@@ -305,9 +305,18 @@ pptxList<-function(input,output,session,data=reactive(""),preprocessing=reactive
 #' @param res The nominal resolution in ppi
 #' @param start Plot start number
 #' @param preprocessing A character string of R code
-myplot2=function(data,format="PNG",width=7,height=7,units="in",res=300,start=0,preprocessing=""){
+#' @param rawDataName The name of the rawData
+#' @param rawDataFile The name of the rawData file which the data are to be read from.
+myplot2=function(data,format="PNG",width=7,height=7,units="in",res=300,start=0,preprocessing="",rawDataName=NULL,rawDataFile="rawData.RDS"){
      filename=c()
      count=nrow(data)
+
+
+     if(!is.null(rawDataName)){
+         rawData=readRDS(rawDataFile)
+         assign(rawDataName,rawData)
+     }
+
      if(preprocessing!=""){
          eval(parse(text=preprocessing))
      }
@@ -415,6 +424,8 @@ plotPNG2=function(fun,file,width=7,height=7,units="in",res=300,ggplot=FALSE){
 #' @param res The nominal resolution in ppi
 #' @param start Plot start number
 #' @param preprocessing A character string of R code
+#' @param rawDataName The name of the rawData
+#' @param rawDataFile The name of the rawData file which the data are to be read from.
 #' @importFrom utils zip
 #' @export
 #' @examples
@@ -422,9 +433,11 @@ plotPNG2=function(fun,file,width=7,height=7,units="in",res=300,ggplot=FALSE){
 #' library(ztable)
 #' library(webr)
 #' data2plotzip(sampleData2)
-data2plotzip=function(data,filename="Plot.zip",format="PNG",width=8,height=6,units="in",res=300,start=0,preprocessing=""){
+data2plotzip=function(data,filename="Plot.zip",format="PNG",width=8,height=6,units="in",res=300,start=0,preprocessing="",
+                      rawDataName=NULL,rawDataFile="rawData.RDS"){
 
-     fs=myplot2(data,format=format,width=width,height=height,units=units,res=res,start=start,preprocessing=preprocessing)
+     fs=myplot2(data,format=format,width=width,height=height,units=units,res=res,start=start,preprocessing=preprocessing,
+                rawDataName=rawDataName,rawDataFile=rawDataFile)
      zip(zipfile=filename, files=fs)
 }
 
@@ -437,6 +450,8 @@ data2plotzip=function(data,filename="Plot.zip",format="PNG",width=8,height=6,uni
 #' @param height A plot height
 #' @param units The units in which height and width are given. Can be px (pixels, the default), in (inches), cm or mm.
 #' @param res The nominal resolution in ppi
+#' @param rawDataName The name of the rawData
+#' @param rawDataFile The name of the rawData file which the data are to be read from.
 #' @importFrom ReporteRs addFlexTable addPlot addImage docx
 #' @export
 #' @examples
@@ -446,9 +461,16 @@ data2plotzip=function(data,filename="Plot.zip",format="PNG",width=8,height=6,uni
 #' data2word(sampleData2)
 data2word=function(data,title,preprocessing="",filename="Report.docx",
                    width=7,height=5,units="in",
-                   res=300){
+                   res=300,rawDataName=NULL,rawDataFile="rawData.RDS"){
 
      mydoc=docx(title="Web-based Meta-Analysis")
+
+     if(!is.null(rawDataName)){
+         rawData=readRDS(rawDataFile)
+         assign(rawDataName,rawData)
+     }
+
+
      if(preprocessing!="") eval(parse(text=preprocessing))
 
 
@@ -726,6 +748,8 @@ addRcodeSlide=function(mydoc,code,title="",showCode=FALSE,preprocessing=""){
 #' @param height A plot height
 #' @param units The units in which height and width are given. Can be px (pixels, the default), in (inches), cm or mm.
 #' @param res The nominal resolution in ppi
+#' @param rawDataName The name of the rawData
+#' @param rawDataFile The name of the rawData file which the data are to be read from.
 #' @importFrom ReporteRs pptx writeDoc
 #' @export
 #' @examples
@@ -736,7 +760,7 @@ addRcodeSlide=function(mydoc,code,title="",showCode=FALSE,preprocessing=""){
 data2pptx=function(data,title="Web-based Meta-Analysis",
                    template="myppt.pptx",preprocessing="",
                    filename="Report.pptx",width=7,height=5,units="in",
-                   res=300){
+                   res=300,rawDataName=NULL,rawDataFile="rawData.RDS"){
 
      if(file.exists(template)) {
           mydoc = pptx(template=template)
@@ -744,6 +768,11 @@ data2pptx=function(data,title="Web-based Meta-Analysis",
           mydoc = pptx()
      }
      mydoc=addTitleSlide(mydoc,"Web-based Meta-Analysis")
+
+     if(!is.null(rawDataName)){
+         rawData=readRDS(rawDataFile)
+         assign(rawDataName,rawData)
+     }
 
      if(preprocessing!="") eval(parse(text=preprocessing))
 
@@ -787,6 +816,8 @@ data2pptx=function(data,title="Web-based Meta-Analysis",
 #' @param data A data.frame
 #' @param preprocessing A character string of R code
 #' @param filename A path of destination file
+#' @param rawDataName The name of the rawData
+#' @param rawDataFile The name of the rawData file which the data are to be read from.
 #' @importFrom rmarkdown render
 #' @importFrom moonBook mytable
 #' @importFrom ztable ztable print.ztable
@@ -796,7 +827,7 @@ data2pptx=function(data,title="Web-based Meta-Analysis",
 #' library(ztable)
 #' library(webr)
 #' data2HTML(sampleData2)
-data2HTML=function(data,preprocessing="",filename="report.HTML"){
+data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL,rawDataFile="rawData.RDS"){
 
 
      if(file.exists("report2.Rmd")) file.remove("report2.Rmd")
@@ -811,6 +842,21 @@ data2HTML=function(data,preprocessing="",filename="report.HTML"){
          file=tempReport,append=TRUE)
      cat("```\n",file=tempReport,append=TRUE)
 
+     cat("```{r,echo=FALSE,message=FALSE}\n",file=tempReport,append=TRUE)
+     cat("require(moonBook)\n",file=tempReport,append=TRUE)
+     cat("require(ztable)\n",file=tempReport,append=TRUE)
+     cat("require(webr)\n",file=tempReport,append=TRUE)
+     cat("```\n\n",file=tempReport,append=TRUE)
+
+     if(!is.null(rawDataName)){
+         cat("```{r}\n",file=tempReport,append=TRUE)
+         cat("# Read Raw Data\n",file=tempReport,append=TRUE)
+         temp=paste0("rawData=readRDS('",rawDataFile,"')\n")
+         cat(temp,file=tempReport,append=TRUE)
+         temp=paste0("assign('",rawDataName,"',rawData)\n")
+         cat(temp,file=tempReport,append=TRUE)
+         cat("```\n\n",file=tempReport,append=TRUE)
+     }
 
      if(preprocessing!="") {
           cat("```{r}\n",file=tempReport,append=TRUE)
@@ -853,13 +899,15 @@ data2HTML=function(data,preprocessing="",filename="report.HTML"){
 #' @param data A data.frame
 #' @param preprocessing A character string of R code
 #' @param filename A path of destination file
+#' @param rawDataName The name of the rawData
+#' @param rawDataFile The name of the rawData file which the data are to be read from.
 #' @importFrom rmarkdown render
 #' @export
 #' @examples
 #' library(moonBook)
 #' library(ztable)
 #' data2pdf(sampleData2)
-data2pdf=function(data,preprocessing="",filename="report.pdf"){
+data2pdf=function(data,preprocessing="",filename="report.pdf",rawDataName=NULL,rawDataFile="rawData.RDS"){
 
      if(file.exists("report2.Rmd")) file.remove("report2.Rmd")
      tempReport <-  "report2.Rmd"
@@ -878,12 +926,23 @@ data2pdf=function(data,preprocessing="",filename="report.pdf"){
      cat("```\n",file=tempReport,append=TRUE)
 
      cat("```{r,echo=FALSE,message=FALSE }\n",file=tempReport,append=TRUE)
+     cat("require(moonBook)\n",file=tempReport,append=TRUE)
      cat("require(ztable)\n",file=tempReport,append=TRUE)
+     cat("require(webr)\n",file=tempReport,append=TRUE)
      cat("options(ztable.type='latex')\n",file=tempReport,append=TRUE)
      cat("```\n\n",file=tempReport,append=TRUE)
 
+     if(!is.null(rawDataName)){
+         cat("```{r}\n",file=tempReport,append=TRUE)
+         cat("# Read Raw Data\n",file=tempReport,append=TRUE)
+         temp=paste0("rawData=readRDS('",rawDataFile,"')\n")
+         cat(temp,file=tempReport,append=TRUE)
+         temp=paste0("assign('",rawDataName,"',rawData)\n")
+         cat(temp,file=tempReport,append=TRUE)
+         cat("```\n\n",file=tempReport,append=TRUE)
+     }
 
-     if(preprocessing!="") {
+      if(preprocessing!="") {
           eval(parse(text=preprocessing))
           cat("```{r}\n",file=tempReport,append=TRUE)
           cat("# Preprocessing\n",file=tempReport,append=TRUE)
@@ -1168,6 +1227,7 @@ exportCSV=function(file,format="HTML",rawDataName=NULL,rawDataFile="rawData.RDS"
     }
     data<-readr::read_csv(file,comment="#")
     preprocessing<-webr::readComment(file)
-    temp=paste0("webr::data2",format,'(data,preprocessing="',preprocessing,'")')
+    temp=paste0("webr::data2",format,'(data,preprocessing="',preprocessing,'",rawDataName="',rawDataName,"\")")
+    print(temp)
     eval(parse(text=temp))
 }

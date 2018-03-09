@@ -4,7 +4,8 @@
 \alias{data2pdf}
 \title{Make a pdf file with a data.frame}
 \usage{
-data2pdf(data, preprocessing = "", filename = "report.pdf")
+data2pdf(data, preprocessing = "", filename = "report.pdf",
+  rawDataName = NULL, rawDataFile = "rawData.RDS")
 }
 \arguments{
 \item{data}{A data.frame}
@@ -12,6 +13,10 @@ data2pdf(data, preprocessing = "", filename = "report.pdf")
 \item{preprocessing}{A character string of R code}
 
 \item{filename}{A path of destination file}
+
+\item{rawDataName}{The name of the rawData}
+
+\item{rawDataFile}{The name of the rawData file which the data are to be read from.}
 }
 \description{
 Make a pdf file with a data.frame

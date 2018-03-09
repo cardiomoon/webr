@@ -5,7 +5,8 @@
 \title{Make zipped plot file with a data.frame}
 \usage{
 data2plotzip(data, filename = "Plot.zip", format = "PNG", width = 8,
-  height = 6, units = "in", res = 300, start = 0, preprocessing = "")
+  height = 6, units = "in", res = 300, start = 0, preprocessing = "",
+  rawDataName = NULL, rawDataFile = "rawData.RDS")
 }
 \arguments{
 \item{data}{A data.frame}
@@ -25,6 +26,10 @@ data2plotzip(data, filename = "Plot.zip", format = "PNG", width = 8,
 \item{start}{Plot start number}
 
 \item{preprocessing}{A character string of R code}
+
+\item{rawDataName}{The name of the rawData}
+
+\item{rawDataFile}{The name of the rawData file which the data are to be read from.}
 }
 \description{
 Make zipped plot file with a data.frame

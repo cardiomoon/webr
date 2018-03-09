@@ -5,7 +5,8 @@
 \title{Make a word file with a data.frame}
 \usage{
 data2word(data, title, preprocessing = "", filename = "Report.docx",
-  width = 7, height = 5, units = "in", res = 300)
+  width = 7, height = 5, units = "in", res = 300, rawDataName = NULL,
+  rawDataFile = "rawData.RDS")
 }
 \arguments{
 \item{data}{A data.frame}
@@ -23,6 +24,10 @@ data2word(data, title, preprocessing = "", filename = "Report.docx",
 \item{units}{The units in which height and width are given. Can be px (pixels, the default), in (inches), cm or mm.}
 
 \item{res}{The nominal resolution in ppi}
+
+\item{rawDataName}{The name of the rawData}
+
+\item{rawDataFile}{The name of the rawData file which the data are to be read from.}
 }
 \description{
 Make a word file with a data.frame
