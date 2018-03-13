@@ -1,5 +1,12 @@
+# webr version 0.1.4
+=====================
+(13-Mar-2018)
+
+* shiny module pptxList() can show pptxList preview
+
 # webr version 0.1.3
 =====================
+(9-Mar-2018)
 
 * new function exportCSV() added
 

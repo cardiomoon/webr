@@ -46,6 +46,8 @@
 #' @param preprocessing A character string of R code
 #' @importFrom shiny reactiveValues updateTextAreaInput reactive h4 fileInput actionButton downloadButton hr p callModule
 #' @importFrom shiny downloadHandler tagList conditionalPanel uiOutput observe observeEvent column fluidRow renderUI
+#' @importFrom shiny htmlOutput imageOutput plotOutput renderImage renderPlot renderPrint tableOutput updateCheckboxInput
+#' @importFrom ReporteRs renderFlexTable
 #' @importFrom editData numericInput3 radioButtons3 editableDT editableDTUI selectInput3
 #' @importFrom readr read_csv
 #' @export
@@ -127,7 +129,7 @@ pptxList<-function(input,output,session,data=reactive(""),preprocessing=reactive
                     )
                ),
 
-               #if(count>0) actionButton("showPPTList","show saved List"),
+
                if(count>0) downloadButton(ns("savePPTxList"),"download as csv"),
                if(count>0) downloadButton(ns("downloadPPTxHTML"),"download as HTML"),
                if(count>0) downloadButton(ns("downloadPPTxPDF"),"download as PDF"),
@@ -142,9 +144,118 @@ pptxList<-function(input,output,session,data=reactive(""),preprocessing=reactive
                if(count>0) radioButtons3(ns('plotformat'), 'Format As', c('PNG', 'SVG','PDF'),
                                          inline = TRUE,selected='PNG'),
 
-               if(count==0) p("There is no saved data.")
+               if(count==0) p("There is no saved data."),
+               if(count>0) hr(),
+               if(count>0) actionButton(ns("showPPTList"),"show/hide saved List"),
+               if(count>0) conditionalPanel("true==false",
+                                            checkboxInput(ns("showList"),"showList",value=FALSE)),
+               if(count>0) conditionalPanel(sprintf("input['%s']==true",ns("showList")),
+                                            hr(),
+                                            uiOutput(ns("PPTListUI2")))
 
           )
+     })
+
+     observeEvent(input$showPPTList,{
+         updateCheckboxInput(session,"showList",value=!input$showList)
+     })
+
+     output$PPTListUI2=renderUI({
+
+         input$showPPTList
+
+         ns<-session$ns
+
+         count= length(savedPPT$title)
+
+         mydf=data.frame(type=savedPPT$type,title=savedPPT$title,code=savedPPT$code,stringsAsFactors = FALSE)
+
+         for(i in 1:count){
+             local({
+                 j<-i
+                 outputname=paste0("output",j*2-1)
+                 output[[outputname]]=renderPrint({
+                     h4(mydf$title[j])
+                 })
+             })
+         }
+         for(i in 1:count){
+             local({
+                 j<-i
+                 outputname=paste0("output",j*2)
+                 if(savedPPT$type[j]=="table"){
+                     output[[outputname]]=renderFlexTable({
+                         mytable=eval(parse(text=mydf$code[j]))
+                         mytable
+                     })
+                 } else if(savedPPT$type[j]=="mytable"){
+                     output[[outputname]]=renderFlexTable({
+                         res=eval(parse(text=mydf$code[j]))
+                         MyFTable=mytable2FTable(res,vanilla=TRUE)
+                         MyFTable
+                     })
+                 } else if(savedPPT$type[j]=="ggplot"){
+                     output[[outputname]]=renderPlot({
+                         p<-eval(parse(text=mydf$code[j]))
+                         p
+                     })
+
+                 } else if(savedPPT$type[j]=="plot"){
+                     output[[outputname]]=renderPlot({
+                         p<-eval(parse(text=mydf$code[j]))
+                         p
+                     })
+
+                 } else if(savedPPT$type[j]=="Rcode"){
+                     output[[outputname]]=renderFlexTable({
+                         result=Rcode2FlexTable(mydf$code[j])
+                         result
+
+                     })
+
+                 } else if(savedPPT$type[j]=="PNG"){
+                     output[[outputname]]=renderImage({
+                         myfunction<-eval(parse(text=mydf$code[j]))
+                         png("temp.png",width=input$plotWidth,height=input$plotHeight,units=input$plotUnit,
+                             res=input$plotRes,type="cairo")
+                         myfunction
+                         dev.off()
+                         list(src = "temp.png",
+                              contentType = 'image/png',
+                              width = 400,
+                              height = 300,
+                              alt = "This is alternate text")
+                     }, deleteFile = TRUE)
+                 }
+             })
+
+         }
+         output_list <- lapply(1:count, function(j) {
+
+             outputname=paste0("output",j*2)
+             if(mydf$type[j] %in% c("table","mytable","Rcode")) tableOutput(ns(outputname))
+             else if(mydf$type[j] %in% c("ggplot","plot")) plotOutput(ns(outputname))
+             else if(mydf$type[j]=="PNG") imageOutput(ns(outputname))
+
+         })
+         output_list2 <- lapply(1:count, function(j) {
+
+             outputname=paste0("output",j*2-1)
+             htmlOutput(ns(outputname))
+
+         })
+
+         # Convert the list to a tagList - this is necessary for the list of items
+         # to display properly.
+         my_list=c(output_list,output_list2)
+         for(i in 1:length(output_list)){
+             my_list[[2*i-1]]=output_list2[[i]]
+             my_list[[2*i]]=output_list[[i]]
+         }
+
+         do.call(tagList, my_list)
+
+
      })
 
 
