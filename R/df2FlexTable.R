@@ -1,90 +1,117 @@
-#' Convert data.frame to FlexTable
+#' Convert numeric columns of data.frame to character
 #' @param df A data.frame
-#' @param vanilla A logical. If true, make a vanilla table
-#' @param bg A background color
-#' @param add.rownames A logical. Whether or not add rownames
-#' @param header.columns A logical. Whether or not add header columns
-#' @param mode A character string. Choices are "html" or "latex"
-#' @param bordercolor A border color
-#' @param oddcolor A color of odd rows
-#' @param evencolor A color of even rows
-#' @param parRight A logical. If true, right text alignment
-#' @param parLeft A logical. If true, left text alignment
-#' @param padding.left Paragraph left padding - 0 or positive integer value
-#' @param padding.right Paragraph right padding - 0 or positive integer value
-#' @param padding.top Paragraph top padding - 0 or positive integer value
-#' @param padding.bottom Paragraph bottom padding - 0 or positive integer value
-#' @param widths A numeric vector specifying columns widths in inches.
-#' @param digits An integer indicating the number of decimal places
-#' @param NA2space A logical. If true, convert NA value to space
-#' @param pcol An integer indicating p value. If specified, convert value less than 0.01 to "< 0.001" in given column.
-#' @importFrom ReporteRs vanilla.table FlexTable setZebraStyle setFlexTableWidths parLeft parRight parCenter
-#' @return A FlexTable object
+#' @param digits integer indicating the number of decimal places
 #' @export
 #' @examples
-#' library(ReporteRs)
-#' df2FlexTable(head(iris))
-#' df2FlexTable(head(iris),mode="pptx")
-df2FlexTable=function(df,vanilla=FALSE,bg="#5B7778",add.rownames=TRUE,header.columns=TRUE,mode="html",bordercolor="#EDBD3E",oddcolor = "#FFFFFF", evencolor = "#DDDDDD",
-                      parRight=FALSE,parLeft=TRUE,padding.left=5,padding.right=5,padding.top=2,padding.bottom=2,widths=NULL,digits=NULL,NA2space=FALSE,pcol=NULL){
-        if(!is.null(digits)){
-                for(i in 1:length(digits)){
-                        if(is.na(digits[i])) next
-                        df[[i]]=round(df[[i]],digits[i])
-                }
-        }
-        if(!is.null(pcol)){
-                for(i in 1:length(pcol)){
-                        df[[pcol]][df[[pcol]]<0.001]="< 0.001"
-                }
-        }
-        if(NA2space) df[is.na(df)]=""
-        if("mytable" %in% class(df)) {
-                MyTable=mytable2FTable(df)
-        } else{
-                if(mode=="html"){
-                        colnames(df)[colnames(df)=="\u03B2"]="&#946;"
-                        colnames(df)[colnames(df)=="chisq"]="&#967;<sup>2</sup>"
-                        colnames(df)[colnames(df)=="x2df"]="&#967;<sup>2</sup>/df"
-                        colnames(df)[colnames(df)=="p"]="<i>p</i>"
-                } else if(mode=="pptx"){
-                        colnames(df)[colnames(df)=="\u03B2"]="\u03B2"
-                        colnames(df)[colnames(df)=="chisq"]="\u03C72"
-                        colnames(df)[colnames(df)=="x2df"]="\u03C72/df"
-                        colnames(df)[colnames(df)=="p"]="p"
-                }
-                if(vanilla) {
-                        MyTable=vanilla.table(df,add.rownames = add.rownames)
-                } else {
-                        MyTable=FlexTable(df,add.rownames = add.rownames
-                                          , header.columns = header.columns
-                                          , body.cell.props = cellProperties( border.color = bordercolor,padding.left=padding.left,padding.top=padding.top,
-                                                                              padding.right=padding.right,padding.bottom=padding.bottom)
-                                          , header.cell.props = cellProperties( background.color = bg,padding.left=padding.left,padding.top=padding.top,
-                                                                                padding.right=padding.right,padding.bottom=padding.bottom)
-                                          , header.text.props = textProperties(color = "white",font.weight = "bold"))
-                        MyTable=setZebraStyle( MyTable, odd = oddcolor, even = evencolor )
-                }
-                if(!is.null(widths)) MyTable=setFlexTableWidths(MyTable,widths=widths)
-                if(header.columns) MyTable[,,to='header']=parCenter()
-                if(parRight) MyTable[,]=parRight()
-                else if(parLeft) MyTable[,]=parLeft()
-                else MyTable[,]=parCenter()
-                if(add.rownames) MyTable[,1]=parCenter()
-                MyTable
-        }
-        attr(MyTable,"df")=df
-        MyTable
+#' roundDf(iris,digits=c(1,2,3,4))
+#' roundDf(mtcars,digits=2)
+roundDf=function(df,digits=2){
+     if(length(digits)==1){
+          digits<-rep(digits,ncol(df))
+     }
+     else if(length(digits)!=ncol(df)) {
+          digits<-c(digits,rep(0,ncol(df)-length(digits)))
+     }
+     df[]<-lapply(1:ncol(df),function(i){
+          if(is.integer(df[[i]])) {
+               df[[i]]<-df[[i]]
+          } else if(is.numeric(df[[i]])) {
+               fmt=paste0("%0.",sprintf("%d",digits[i]),"f")
+               df[[i]]=sprintf(fmt,df[[i]])
+          } else{
+               df[[i]]<-df[[i]]
+          }
+
+     })
+     df
 }
 
-#' Convert html5 code to latex
+
+
+
+
+
+#' Convert data.frame to flextable
+#'
 #' @param df A data.frame
-html2latex=function(df){
-        temp=colnames(df)
-        temp=stringr::str_replace(temp,"<i>p</i>","\\\\textit{p}")
-        temp=stringr::str_replace(temp,"&#946;","$\\\\beta$")
-        temp=stringr::str_replace(temp,"Beta","$\\\\beta$")
-        temp=stringr::str_replace(temp,"&#967;<sup>2</sup>","$\\\\chi^{2}$")
-        colnames(df)=temp
-        df
+#' @param vanilla A Logical
+#' @param fontname Font name
+#' @param fontsize font size
+#' @param even_header background color of even_header
+#' @param odd_header background color of even_header
+#' @param even_body background color of even_body
+#' @param odd_body background color of even_body
+#' @param vlines Logical. Whether or not draw vertical lines
+#' @param colorheader Logical. Whether or not use color in header
+#' @param digits integer indicating the number of decimal places
+#' @param align_header alignment of header. Expected value is one of 'left', 'right', 'center', 'justify'.
+#' @param align_body alignment of body. Expected value is one of 'left', 'right', 'center', 'justify'.
+#' @param ... further argumants to be passed to flextable
+#' @importFrom flextable regulartable set_formatter_type set_header_df theme_zebra vline vline_left align autofit padding hline hline_top hline_bottom border_remove font fontsize color
+#' @importFrom officer fp_border
+#' @importFrom magrittr "%>%"
+#' @export
+#' @examples
+#' require(flextable)
+#' df2flextable(head(iris),vanilla=TRUE,colorheader=TRUE)
+#' df2flextable(head(iris),vanilla=TRUE,digits=c(1,2,3,4))
+#' df2flextable(head(iris),vanilla=FALSE)
+#' df2flextable(head(iris),vanilla=FALSE,vlines=FALSE,fontsize=14)
+#' df2flextable(head(mtcars),vanilla=FALSE)
+df2flextable=function(df,vanilla=FALSE,fontname=NULL,fontsize=12,
+                      even_header="transparent",odd_header="#5B7778",
+                      even_body="#EFEFEF",odd_body="transparent",
+                      vlines=TRUE,colorheader=FALSE,digits=2,
+                      align_header="center",align_body="right",...){
+
+     df<-roundDf(df,digits)
+     if(!colorheader){
+          headercolor=ifelse(vanilla,"black","white")
+     } else{
+          headercolor=ifelse(vanilla,"#007FA6","white")
+     }
+     big_border=fp_border(color=headercolor,width=2)
+     header_border=fp_border(color="black",width=1)
+     std_color="#EDBD3E"
+     if(vanilla) std_color="black"
+     std_border=fp_border(color=std_color,width=1)
+
+     fmt_double=paste0("%0.0",sprintf("%df",digits))
+
+     ft <- regulartable(df,...) %>% set_formatter_type(fmt_double=fmt_double)
+     odd_header=ifelse(vanilla,"transparent","#5B7778")
+     if(!vanilla)
+          ft<- ft %>% theme_zebra(even_body=even_body,odd_body=odd_body,
+                                  odd_header = odd_header)
+     ft <- ft %>% border_remove()
+     if(!is.null(fontname)) ft<-ft %>% font(fontname=fontname,part="all")
+     ft<-ft %>%
+          fontsize(size=fontsize+1,part="header") %>%
+          fontsize(size=fontsize,part="body") %>%
+          color(color=headercolor,part="header") %>%
+          color(color="black",part="body")
+
+     if(vanilla){
+          ft <- ft %>% hline_top(part="all",border=big_border) %>%
+               hline_bottom(part="all",border=big_border)
+
+     } else{
+     ft <- ft %>% hline_top(part="all",border=header_border) %>%
+          hline_bottom(part="all",border=std_border)
+     }
+     if(!vanilla){
+          ft <- ft %>% hline(part="body",border=std_border)
+     }
+     if((!vanilla)&(vlines)){
+          ft <-ft %>% vline(part="body",border=std_border) %>%
+               vline_left(part="body",border=std_border) %>%
+               vline(part="header",border=header_border) %>%
+               vline_left(part="header",border=header_border)
+     }
+     ft <- ft %>% align(align=align_body,part="body") %>%
+          align(align=align_header,part="header") %>%
+          padding(padding.left=5,padding.right=5,
+                          padding.top=2,padding.bottom=2,part="all") %>%
+          autofit()
+     ft
 }

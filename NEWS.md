@@ -1,3 +1,16 @@
+# webr version 0.1.5
+====================
+(25_Mar-2018)
+
+* webr package now independent from rJava, ReporteRs
+
+* webr pacakge depends on officer
+ 
+* functions df2FlexTable() and mytable2FTable() are deleted
+
+* new function df2flextable() and mytable2flextable() added
+
+
 # webr version 0.1.4
 =====================
 (13-Mar-2018)

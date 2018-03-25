@@ -43,7 +43,7 @@ str(sampleData2)
 Or you can make a table of this data
 
 ```{r}
-df2FlexTable(sampleData2)
+df2flextable(sampleData2)
 ```
 
 ### Make a Report As a Powerpoint Format.

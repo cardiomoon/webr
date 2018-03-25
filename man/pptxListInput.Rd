@@ -15,7 +15,6 @@ UI of pptxList shiny module
 \examples{
 library(shiny)
 library(ggplot2)
-library(ReporteRs)
 library(editData)
 library(moonBook)
 library(readr)
