@@ -198,7 +198,7 @@ Rcode2df=function(result,preprocessing){
           res=c(res,temp1)
 
      }
-     data.frame(result=res)
+     data.frame(result=res,stringsAsFactors = FALSE)
 
 }
 
@@ -213,7 +213,7 @@ pastelf=function(...){
 #' @return A FlexTable object
 df2RcodeTable=function(df,bordercolor="gray"){
      df
-     no<-code<-c()
+    no<-code<-c()
      for(i in 1:nrow(df)){
           temp=df[i,]
           result=unlist(strsplit(temp,"\n",fixed=TRUE))
@@ -243,7 +243,6 @@ df2RcodeTable=function(df,bordercolor="gray"){
 #' @export
 Rcode2flextable=function(result,preprocessing=""){
      df=Rcode2df(result,preprocessing=preprocessing)
-     df
      df2RcodeTable(df)
 
 }
@@ -323,7 +322,10 @@ data2office=function(data,title="Web-based Meta-Analysis",
           #cat("data$code[",i,"]=",data$code[i],"\n")
 
           if(data$type[i]=="Rcode") eval(parse(text=data$code[i]))
-          if(data$type[i]=="table"){
+          if(data$type[i]=="data"){
+              ft=df2flextable(eval(parse(text=data$code[i])))
+              mydoc=add_flextable(mydoc,ft,data$title[i])
+          } else if(data$type[i]=="table"){
                ft=eval(parse(text=data$code[i]))
                mydoc=add_flextable(mydoc,ft,data$title[i])
           } else if(data$type[i]=="mytable"){

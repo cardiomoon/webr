@@ -431,7 +431,7 @@ myplot2=function(data,format="PNG",width=7,height=7,units="in",res=300,start=0,p
      j=1
      if(count>0) for(i in 1:count){
           #eval(parse(text=data$code[i]))
-          if(data$type[i] %in% c("plot","ggplot","PNG")){
+          if(data$type[i] %in% c("plot","ggplot","PNG","png")){
                path <- paste("plot_", j+start, ".",format, sep="")
                filename <- c(filename, path)
                if(format=="SVG"){
@@ -615,6 +615,9 @@ data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL
               cat("```{r,results='asis'}\n",file=tempReport,append=TRUE)
               cat("result=",mypptlist$code[i],"\n",file=tempReport,append=TRUE)
               cat("print(ztable(result,longtable=TRUE),type='HTML')\n",file=tempReport,append=TRUE)
+          } else if(mypptlist$type[i]=="data"){
+              cat("```{r,results='asis'}\n",file=tempReport,append=TRUE)
+
           } else if(mypptlist$type[i]=="table") {
                cat("```{r,results='asis'}\n",file=tempReport,append=TRUE)
           } else if(mypptlist$type[i]=="Rcode") {
@@ -622,7 +625,9 @@ data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL
           } else {
                cat("```{r}\n",file=tempReport,append=TRUE)
           }
-          if(mypptlist$type[i]!="mytable") {
+          if(mypptlist$type[i]=="data"){
+              cat("df2flextable(",mypptlist$code[i],")\n",file=tempReport,append=TRUE)
+          } else if(mypptlist$type[i]!="mytable") {
              cat(mypptlist$code[i],'\n',file=tempReport,append=TRUE)
           }
           cat("```\n\n",file=tempReport,append=TRUE)
@@ -721,6 +726,9 @@ data2pdf=function(data,preprocessing="",filename="report.pdf",rawDataName=NULL,r
                cat("```{r,results='asis'}\n",file=tempReport,append=TRUE)
                cat("result=",mypptlist$code[i],"\n",file=tempReport,append=TRUE)
                cat("print(ztable(result,longtable=TRUE),type='latex')\n",file=tempReport,append=TRUE)
+          } else if(mypptlist$type[i]=="data"){
+              cat("```{r,results='asis'}\n",file=tempReport,append=TRUE)
+              cat("print(ztable(",mypptlist$code[i],",longtable=TRUE),type='latex')\n",file=tempReport,append=TRUE)
           } else if(mypptlist$type[i]=="Rcode") {
                cat("```{r,echo=TRUE}\n",file=tempReport,append=TRUE)
                cat(mypptlist$code[i],'\n',file=tempReport,append=TRUE)
