@@ -431,7 +431,7 @@ myplot2=function(data,format="PNG",width=7,height=7,units="in",res=300,start=0,p
      j=1
      if(count>0) for(i in 1:count){
           #eval(parse(text=data$code[i]))
-          if(data$type[i] %in% c("plot","ggplot")){
+          if(data$type[i] %in% c("plot","ggplot","PNG")){
                path <- paste("plot_", j+start, ".",format, sep="")
                filename <- c(filename, path)
                if(format=="SVG"){
