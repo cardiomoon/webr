@@ -4,14 +4,14 @@
 \alias{df2RcodeTable}
 \title{Make a FlexTable with a data.frame}
 \usage{
-df2RcodeTable(df, bordercolor = "gray", maxlen = 80)
+df2RcodeTable(df, bordercolor = "gray", format = "pptx")
 }
 \arguments{
 \item{df}{A data.frame}
 
 \item{bordercolor}{A border color name}
 
-\item{maxlen}{positive integer giving target line width in characters}
+\item{format}{desired format. choices are "pptx" or "docx"}
 }
 \value{
 A FlexTable object

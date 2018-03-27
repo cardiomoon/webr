@@ -4,7 +4,7 @@
 \alias{add_Rcode}
 \title{Make a R code slide into a document object}
 \usage{
-add_Rcode(mydoc, code, title = "", preprocessing = "")
+add_Rcode(mydoc, code, title = "", preprocessing = "", format = "pptx")
 }
 \arguments{
 \item{mydoc}{A document object}
@@ -14,6 +14,8 @@ add_Rcode(mydoc, code, title = "", preprocessing = "")
 \item{title}{An character string as a plot title}
 
 \item{preprocessing}{A character string of R code as a preprocessing}
+
+\item{format}{desired format. choices are "pptx" or "docx"}
 }
 \value{
 a document object

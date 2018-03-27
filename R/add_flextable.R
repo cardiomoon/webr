@@ -206,29 +206,51 @@ pastelf=function(...){
      paste(...,sep="\n")
 }
 
+#' Split strings with desired length with exdent
+#' @param string String
+#' @param size desired length
+#' @param exdent exdent
+#' @importFrom stringr str_extract_all str_flatten
+#' @return splitted character vector
+tensiSplit <- function(string,size=100,exdent=3) {
+    result=c()
+    if(nchar(string)<=size) {
+        result=string
+    } else{
+        temp=substr(string,1,size)
+        result=unlist(str_extract_all(substr(string,size+1,nchar(string)), paste0('.{1,',size-exdent,'}')))
+        result=paste0(str_flatten(rep(" ",exdent)),result)
+        result=c(temp,result)
+    }
+    result
+}
+
+
 #' Make a FlexTable with a data.frame
 #' @param df A data.frame
 #' @param bordercolor A border color name
-#' @param maxlen positive integer giving target line width in characters
+#' @param format desired format. choices are "pptx" or "docx"
 #' @importFrom flextable delete_part flextable height_all void
 #' @importFrom stringr str_split str_wrap
 #' @return A FlexTable object
-df2RcodeTable=function(df,bordercolor="gray",maxlen=80){
-     df
+df2RcodeTable=function(df,bordercolor="gray",format="pptx"){
+    # df
+    #bordercolor="gray";maxlen=80
+    maxlen=ifelse(format=="pptx",100,90)
     no<-code<-c()
      for(i in 1:nrow(df)){
           temp=df[i,]
           result=unlist(strsplit(temp,"\n",fixed=TRUE))
           if(length(result)>0){
                for(j in 1:length(result)){
-                    no=c(no,i)
-                    splitedResult=unlist(str_split(str_wrap(result[j], width = maxlen,exdent=2),"\n"))
+
+                    splitedResult=tensiSplit(result[j],size=maxlen)
                     code=c(code,splitedResult)
+                    no=c(no,rep(i,length(splitedResult)))
                }
           }
      }
      df2=data.frame(no,code,stringsAsFactors = FALSE)
-     df2
      flextable(df2) %>%
           align(align="left",part="all") %>% border_remove() %>%
           bg(i=~no%%2==1,bg="#EFEFEF") %>%
@@ -243,10 +265,11 @@ df2RcodeTable=function(df,bordercolor="gray",maxlen=80){
 #' Make a flextable object with character strings encoding R code
 #' @param result character strings encoding R code
 #' @param preprocessing character strings encoding R code as a preprocessing
+#' @param format desired format. choices are "pptx" or "docx"
 #' @export
-Rcode2flextable=function(result,preprocessing=""){
+Rcode2flextable=function(result,preprocessing="",format="pptx"){
      df=Rcode2df(result,preprocessing=preprocessing)
-     df2RcodeTable(df)
+     df2RcodeTable(df,format=format)
 
 }
 
@@ -257,6 +280,7 @@ Rcode2flextable=function(result,preprocessing=""){
 #' @param code  A character string encoding R codes
 #' @param title An character string as a plot title
 #' @param preprocessing A character string of R code as a preprocessing
+#' @param format desired format. choices are "pptx" or "docx"
 #' @return a document object
 #' @export
 #' @examples
@@ -265,9 +289,9 @@ Rcode2flextable=function(result,preprocessing=""){
 #' #library(officer)
 #' #code="fit=lm(mpg~hp+wt,data=mtcars)\nsummary(fit)"
 #' #read_pptx() %>% add_Rcode(code,title="Regression Analysis") %>% print(target="Rcode.pptx")
-add_Rcode=function(mydoc,code,title="",preprocessing=""){
+add_Rcode=function(mydoc,code,title="",preprocessing="",format="pptx"){
 
-     ft <- Rcode2flextable(code,preprocessing=preprocessing)
+     ft <- Rcode2flextable(code,preprocessing=preprocessing,format=format)
      mydoc <- mydoc %>% add_flextable(ft,title=title)
      mydoc
 }
@@ -343,7 +367,8 @@ data2office=function(data,title="Web-based Meta-Analysis",
 
           } else if(data$type[i]=="Rcode"){
 
-               mydoc=add_Rcode(mydoc,code=data$code[i],title=data$title[i],preprocessing=preprocessing)
+               mydoc=add_Rcode(mydoc,code=data$code[i],title=data$title[i],
+                               preprocessing=preprocessing,format=format)
 
           } else if(data$type[i] %in% c("PNG","png")){
 
