@@ -209,9 +209,11 @@ pastelf=function(...){
 #' Make a FlexTable with a data.frame
 #' @param df A data.frame
 #' @param bordercolor A border color name
+#' @param maxlen positive integer giving target line width in characters
 #' @importFrom flextable delete_part flextable height_all void
+#' @importFrom stringr str_split str_wrap
 #' @return A FlexTable object
-df2RcodeTable=function(df,bordercolor="gray"){
+df2RcodeTable=function(df,bordercolor="gray",maxlen=80){
      df
     no<-code<-c()
      for(i in 1:nrow(df)){
@@ -220,7 +222,8 @@ df2RcodeTable=function(df,bordercolor="gray"){
           if(length(result)>0){
                for(j in 1:length(result)){
                     no=c(no,i)
-                    code=c(code,result[j])
+                    splitedResult=unlist(str_split(str_wrap(result[j], width = maxlen,exdent=2),"\n"))
+                    code=c(code,splitedResult)
                }
           }
      }
