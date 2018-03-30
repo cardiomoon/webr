@@ -1,10 +1,16 @@
+# webr version 0.1.6
+====================
+(30-Mar-2018)
+
+* new function set_argument() added
+
 # webr version 0.1.5
 ====================
-(25_Mar-2018)
+(25-Mar-2018)
 
 * webr package now independent from rJava, ReporteRs
 
-* webr pacakge depends on officer
+* webr package depends on officer and flextable
  
 * functions df2FlexTable() and mytable2FTable() are deleted
 

@@ -37,6 +37,7 @@ roundDf=function(df,digits=2){
 #' @param vanilla A Logical
 #' @param fontname Font name
 #' @param fontsize font size
+#' @param add.rownames logical. Whether or not include rownames
 #' @param even_header background color of even_header
 #' @param odd_header background color of even_header
 #' @param even_body background color of even_body
@@ -46,6 +47,8 @@ roundDf=function(df,digits=2){
 #' @param digits integer indicating the number of decimal places
 #' @param align_header alignment of header. Expected value is one of 'left', 'right', 'center', 'justify'.
 #' @param align_body alignment of body. Expected value is one of 'left', 'right', 'center', 'justify'.
+#' @param NA2space A logical. If true, convert NA value to space
+#' @param pcol An integer indicating p value. If specified, convert value less than 0.01 to "< 0.001" in given column.
 #' @param ... further argumants to be passed to flextable
 #' @importFrom flextable regulartable set_formatter_type set_header_df theme_zebra vline vline_left align autofit padding hline hline_top hline_bottom border_remove font fontsize color
 #' @importFrom officer fp_border
@@ -53,18 +56,32 @@ roundDf=function(df,digits=2){
 #' @export
 #' @examples
 #' require(flextable)
+#' require(officer)
 #' df2flextable(head(iris),vanilla=TRUE,colorheader=TRUE)
 #' df2flextable(head(iris),vanilla=TRUE,digits=c(1,2,3,4))
 #' df2flextable(head(iris),vanilla=FALSE)
 #' df2flextable(head(iris),vanilla=FALSE,vlines=FALSE,fontsize=14)
-#' df2flextable(head(mtcars),vanilla=FALSE)
+#' df2flextable(head(mtcars))
 df2flextable=function(df,vanilla=FALSE,fontname=NULL,fontsize=12,
+                      add.rownames=FALSE,
                       even_header="transparent",odd_header="#5B7778",
                       even_body="#EFEFEF",odd_body="transparent",
                       vlines=TRUE,colorheader=FALSE,digits=2,
-                      align_header="center",align_body="right",...){
+                      align_header="center",align_body="right",
+                      NA2space=FALSE,pcol=NULL,...){
 
-     df<-roundDf(df,digits)
+
+    if(!is.null(pcol)){
+        for(i in 1:length(pcol)){
+            df[[pcol]][df[[pcol]]<0.001]="< 0.001"
+        }
+    }
+    if(NA2space) df[is.na(df)]=""
+    if(add.rownames){
+        df<-cbind(rowname=rownames(df),df)
+        if(length(digits)!=1) digits=c(0,digits)
+    }
+    df<-roundDf(df,digits)
      if(!colorheader){
           headercolor=ifelse(vanilla,"black","white")
      } else{

@@ -5,7 +5,7 @@
 \title{Make a HTML5 file with a data.frame}
 \usage{
 data2HTML(data, preprocessing = "", filename = "report.HTML",
-  rawDataName = NULL, rawDataFile = "rawData.RDS")
+  rawDataName = NULL, rawDataFile = "rawData.RDS", vanilla = FALSE)
 }
 \arguments{
 \item{data}{A data.frame}
@@ -17,6 +17,8 @@ data2HTML(data, preprocessing = "", filename = "report.HTML",
 \item{rawDataName}{The name of the rawData}
 
 \item{rawDataFile}{The name of the rawData file which the data are to be read from.}
+
+\item{vanilla}{logical. Whether or not make vanilla table}
 }
 \description{
 Make a HTML5 file with a data.frame

@@ -20,6 +20,8 @@ Convert mytable object to flextable
 }
 \examples{
 require(moonBook)
+require(flextable)
+require(officer)
 result=mytable(smoking+Dx~.,data=acs)
 mytable2flextable(result)
 mytable2flextable(result,vanilla=FALSE)

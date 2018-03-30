@@ -5,10 +5,11 @@
 \title{Convert data.frame to flextable}
 \usage{
 df2flextable(df, vanilla = FALSE, fontname = NULL, fontsize = 12,
-  even_header = "transparent", odd_header = "#5B7778",
-  even_body = "#EFEFEF", odd_body = "transparent", vlines = TRUE,
-  colorheader = FALSE, digits = 2, align_header = "center",
-  align_body = "right", ...)
+  add.rownames = FALSE, even_header = "transparent",
+  odd_header = "#5B7778", even_body = "#EFEFEF", odd_body = "transparent",
+  vlines = TRUE, colorheader = FALSE, digits = 2,
+  align_header = "center", align_body = "right", NA2space = FALSE,
+  pcol = NULL, ...)
 }
 \arguments{
 \item{df}{A data.frame}
@@ -18,6 +19,8 @@ df2flextable(df, vanilla = FALSE, fontname = NULL, fontsize = 12,
 \item{fontname}{Font name}
 
 \item{fontsize}{font size}
+
+\item{add.rownames}{logical. Whether or not include rownames}
 
 \item{even_header}{background color of even_header}
 
@@ -37,6 +40,10 @@ df2flextable(df, vanilla = FALSE, fontname = NULL, fontsize = 12,
 
 \item{align_body}{alignment of body. Expected value is one of 'left', 'right', 'center', 'justify'.}
 
+\item{NA2space}{A logical. If true, convert NA value to space}
+
+\item{pcol}{An integer indicating p value. If specified, convert value less than 0.01 to "< 0.001" in given column.}
+
 \item{...}{further argumants to be passed to flextable}
 }
 \description{
@@ -44,9 +51,10 @@ Convert data.frame to flextable
 }
 \examples{
 require(flextable)
+require(officer)
 df2flextable(head(iris),vanilla=TRUE,colorheader=TRUE)
 df2flextable(head(iris),vanilla=TRUE,digits=c(1,2,3,4))
 df2flextable(head(iris),vanilla=FALSE)
 df2flextable(head(iris),vanilla=FALSE,vlines=FALSE,fontsize=14)
-df2flextable(head(mtcars),vanilla=FALSE)
+df2flextable(head(mtcars))
 }

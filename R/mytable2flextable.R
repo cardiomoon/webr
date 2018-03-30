@@ -10,6 +10,8 @@
 #' @export
 #' @examples
 #' require(moonBook)
+#' require(flextable)
+#' require(officer)
 #' result=mytable(smoking+Dx~.,data=acs)
 #' mytable2flextable(result)
 #' mytable2flextable(result,vanilla=FALSE)
@@ -101,6 +103,9 @@ mytable2flextable=function(result,vanilla=TRUE,fontname=NULL,fontsize=12){
           df1[1,ncol(df1)]=df1[1,1]
           df1[nrow(df1),ncol(df1)]=df1[nrow(df1),1]
           test=test[-1,]
+          #str(test)
+          pcolumn=ncol(test)
+          test[[pcolumn]][test[[pcolumn]]=="0.000"]="< 0.001"
           big_border=fp_border(color="black",width=2)
           ft=flextable(test) %>%
                set_header_df(mapping=df1,key="col_keys") %>%

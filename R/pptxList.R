@@ -556,6 +556,7 @@ data2plotzip=function(data,filename="Plot.zip",format="PNG",width=8,height=6,uni
 #' @param filename A path of destination file
 #' @param rawDataName The name of the rawData
 #' @param rawDataFile The name of the rawData file which the data are to be read from.
+#' @param vanilla logical. Whether or not make vanilla table
 #' @importFrom rmarkdown render
 #' @importFrom moonBook mytable
 #' @importFrom ztable ztable print.ztable
@@ -565,7 +566,8 @@ data2plotzip=function(data,filename="Plot.zip",format="PNG",width=8,height=6,uni
 #' library(ztable)
 #' library(webr)
 #' data2HTML(sampleData2)
-data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL,rawDataFile="rawData.RDS"){
+data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL,rawDataFile="rawData.RDS",
+                   vanilla=FALSE){
 
 
      if(file.exists("report2.Rmd")) file.remove("report2.Rmd")
@@ -584,6 +586,7 @@ data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL
      cat("require(moonBook)\n",file=tempReport,append=TRUE)
      cat("require(ztable)\n",file=tempReport,append=TRUE)
      cat("require(webr)\n",file=tempReport,append=TRUE)
+     cat("require(ggplot2)\n",file=tempReport,append=TRUE)
      cat("```\n\n",file=tempReport,append=TRUE)
 
      if(!is.null(rawDataName)){
@@ -613,8 +616,8 @@ data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL
 
           if(mypptlist$type[i]=="mytable") {
               cat("```{r,results='asis'}\n",file=tempReport,append=TRUE)
-              cat("result=",mypptlist$code[i],"\n",file=tempReport,append=TRUE)
-              cat("print(ztable(result,longtable=TRUE),type='HTML')\n",file=tempReport,append=TRUE)
+              cat("mytable2flextable(",mypptlist$code[i],",vanilla=",vanilla,")\n",file=tempReport,append=TRUE)
+
           } else if(mypptlist$type[i]=="data"){
               cat("```{r,results='asis'}\n",file=tempReport,append=TRUE)
 
@@ -626,7 +629,10 @@ data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL
                cat("```{r}\n",file=tempReport,append=TRUE)
           }
           if(mypptlist$type[i]=="data"){
-              cat("df2flextable(",mypptlist$code[i],")\n",file=tempReport,append=TRUE)
+              cat("df2flextable(",mypptlist$code[i],",vanilla=",vanilla,")\n",file=tempReport,append=TRUE)
+          } else if(mypptlist$type[i]=="table"){
+                code=set_argument(mypptlist$code[i],argument="vanilla",value=vanilla)
+                cat(code,"\n",file=tempReport,append=TRUE)
           } else if(mypptlist$type[i]!="mytable") {
              cat(mypptlist$code[i],'\n',file=tempReport,append=TRUE)
           }
@@ -635,6 +641,7 @@ data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL
 
      out <- rmarkdown::render('report2.Rmd', rmarkdown::html_document())
      result=file.rename(out, filename)
+     file.remove("report2.Rmd")
      invisible(result)
 }
 
@@ -672,6 +679,7 @@ data2pdf=function(data,preprocessing="",filename="report.pdf",rawDataName=NULL,r
      cat("require(moonBook)\n",file=tempReport,append=TRUE)
      cat("require(ztable)\n",file=tempReport,append=TRUE)
      cat("require(webr)\n",file=tempReport,append=TRUE)
+     cat("require(ggplot2)\n",file=tempReport,append=TRUE)
      cat("options(ztable.type='latex')\n",file=tempReport,append=TRUE)
      cat("```\n\n",file=tempReport,append=TRUE)
 
@@ -741,6 +749,7 @@ data2pdf=function(data,preprocessing="",filename="report.pdf",rawDataName=NULL,r
 
      out <- rmarkdown::render('report2.Rmd', params=list(format="PDF"),rmarkdown::pdf_document())
      result=file.rename(out, filename)
+     file.remove("report2.Rmd")
      invisible(result)
 }
 

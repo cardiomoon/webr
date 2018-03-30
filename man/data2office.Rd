@@ -7,7 +7,7 @@
 data2office(data, title = "Web-based Meta-Analysis", preprocessing = "",
   filename = "Report", format = "pptx", width = 7, height = 5,
   units = "in", res = 300, rawDataName = NULL,
-  rawDataFile = "rawData.RDS")
+  rawDataFile = "rawData.RDS", vanilla = FALSE)
 }
 \arguments{
 \item{data}{A document object}
@@ -31,6 +31,8 @@ data2office(data, title = "Web-based Meta-Analysis", preprocessing = "",
 \item{rawDataName}{raw Data Name}
 
 \item{rawDataFile}{raw Data File}
+
+\item{vanilla}{logical. WHether or not make vanilla table}
 }
 \description{
 convert data to pptx file

@@ -1,11 +1,12 @@
 Package: webr
 Type: Package
 Title: Data and Functions For Web-based Analysis With R
-Version: 0.1.5
+Version: 0.1.6
 Imports:
    stringr,
    ggplot2,
    officer,
+   purrr,
    flextable,
    rvg,
    magrittr,

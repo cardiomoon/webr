@@ -325,12 +325,13 @@ add_title=function(mydoc,title="",subtitle=""){
 #' @param res The nominal resolution in ppi which will be recorded in the bitmap file, if a positive integer. Also used for units other than the default, and to convert points to pixels.
 #' @param rawDataName raw Data Name
 #' @param rawDataFile raw Data File
+#' @param vanilla logical. WHether or not make vanilla table
 #' @importFrom officer read_docx read_pptx
 #' @export
 data2office=function(data,title="Web-based Meta-Analysis",
                    preprocessing="",
                    filename="Report",format="pptx",width=7,height=5,units="in",
-                   res=300,rawDataName=NULL,rawDataFile="rawData.RDS"){
+                   res=300,rawDataName=NULL,rawDataFile="rawData.RDS",vanilla=FALSE){
 
      if(!is.null(rawDataName)){
           rawData=readRDS(rawDataFile)
@@ -350,14 +351,15 @@ data2office=function(data,title="Web-based Meta-Analysis",
 
           if(data$type[i]=="Rcode") eval(parse(text=data$code[i]))
           if(data$type[i]=="data"){
-              ft=df2flextable(eval(parse(text=data$code[i])))
+              ft=df2flextable(eval(parse(text=data$code[i])),vanilla=vanilla)
               mydoc=add_flextable(mydoc,ft,data$title[i])
           } else if(data$type[i]=="table"){
-               ft=eval(parse(text=data$code[i]))
+               tempcode=set_argument(data$code[i],argument="vanilla",value=vanilla)
+               ft=eval(parse(text=tempcode))
                mydoc=add_flextable(mydoc,ft,data$title[i])
           } else if(data$type[i]=="mytable"){
                res=eval(parse(text=data$code[i]))
-               ft=mytable2flextable(res)
+               ft=mytable2flextable(res,vanilla=vanilla)
                mydoc=add_flextable(mydoc,ft,data$title[i])
           } else if(data$type[i]=="ggplot"){
                p<-eval(parse(text=data$code[i]))
