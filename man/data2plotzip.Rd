@@ -38,5 +38,6 @@ Make zipped plot file with a data.frame
 library(moonBook)
 library(ztable)
 library(webr)
+library(ggplot2)
 data2plotzip(sampleData2)
 }

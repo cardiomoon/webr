@@ -1,3 +1,9 @@
+# webr version 0.1.7
+====================
+(31-Mar-2018)
+
+* new function add_title(), add_text(), add_2ggplots(), add_2plots added
+
 # webr version 0.1.6
 ====================
 (30-Mar-2018)

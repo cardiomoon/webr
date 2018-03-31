@@ -449,7 +449,7 @@ myplot2=function(data,format="PNG",width=7,height=7,units="in",res=300,start=0,p
                }
                eval(parse(text=temp))
                j=j+1
-          } else{
+          } else if(data$type[i]!="text"){
                eval(parse(text=data$code[i]))
           }
      }
@@ -540,13 +540,38 @@ plotPNG2=function(fun,file,width=7,height=7,units="in",res=300,ggplot=FALSE){
 #' library(moonBook)
 #' library(ztable)
 #' library(webr)
+#' library(ggplot2)
 #' data2plotzip(sampleData2)
 data2plotzip=function(data,filename="Plot.zip",format="PNG",width=8,height=6,units="in",res=300,start=0,preprocessing="",
                       rawDataName=NULL,rawDataFile="rawData.RDS"){
 
+     data=data2to1(data)
      fs=myplot2(data,format=format,width=width,height=height,units=units,res=res,start=start,preprocessing=preprocessing,
                 rawDataName=rawDataName,rawDataFile=rawDataFile)
      zip(zipfile=filename, files=fs)
+}
+
+data2to1=function(data){
+    data1<-data
+    data1<-data1[0,]
+
+    for(i in 1:nrow(data)){
+       if(data$type[i] %in% c("2ggplots","2plots")){
+           if(data$type[i] == "2ggplots"){
+                 type=c("ggplot","ggplot")
+           } else{
+               type=c("plot","plot")
+           }
+           title=c(paste0(data$title[i],"(1/2)"),paste0(data$title[i],"(2/2)"))
+           code=unlist(data$code[i],"\n")
+           temp=data.frame(type,title,code)
+           data1<-rbind(data1,temp)
+       } else{
+           data1<-rbind(data1,data[i,])
+       }
+
+    }
+    data1
 }
 
 
@@ -625,7 +650,9 @@ data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL
                cat("```{r,results='asis'}\n",file=tempReport,append=TRUE)
           } else if(mypptlist$type[i]=="Rcode") {
                cat("```{r,echo=TRUE}\n",file=tempReport,append=TRUE)
-          } else {
+          } else if(mypptlist$type[i] %in% c("2ggplots","2plots")){
+              cat("```{r,out.width='50%',fig.align='default',fig.show='hold'}\n",file=tempReport,append=TRUE)
+          } else if(mypptlist$type[i]!="text"){
                cat("```{r}\n",file=tempReport,append=TRUE)
           }
           if(mypptlist$type[i]=="data"){
@@ -636,7 +663,7 @@ data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL
           } else if(mypptlist$type[i]!="mytable") {
              cat(mypptlist$code[i],'\n',file=tempReport,append=TRUE)
           }
-          cat("```\n\n",file=tempReport,append=TRUE)
+          if(mypptlist$code[i]!="text") cat("```\n\n",file=tempReport,append=TRUE)
      }
 
      out <- rmarkdown::render('report2.Rmd', rmarkdown::html_document())
@@ -740,11 +767,17 @@ data2pdf=function(data,preprocessing="",filename="report.pdf",rawDataName=NULL,r
           } else if(mypptlist$type[i]=="Rcode") {
                cat("```{r,echo=TRUE}\n",file=tempReport,append=TRUE)
                cat(mypptlist$code[i],'\n',file=tempReport,append=TRUE)
+          } else if(mypptlist$type[i] %in% c("2ggplots","2plots")){
+              cat("```{r,out.width='50%',fig.align='default',fig.show='hold'}\n",file=tempReport,append=TRUE)
+              cat(mypptlist$code[i],'\n',file=tempReport,append=TRUE)
+          } else if(mypptlist$type[i]=="text"){
+              cat(mypptlist$code[i],'\n',file=tempReport,append=TRUE)
+
           } else {
                cat("```{r}\n",file=tempReport,append=TRUE)
                cat(mypptlist$code[i],'\n',file=tempReport,append=TRUE)
           }
-          cat("```\n\n",file=tempReport,append=TRUE)
+         if(mypptlist$type[i]!="text") cat("```\n\n",file=tempReport,append=TRUE)
      }
 
      out <- rmarkdown::render('report2.Rmd', params=list(format="PDF"),rmarkdown::pdf_document())

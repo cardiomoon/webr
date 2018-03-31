@@ -35,7 +35,7 @@ add_flextable=function(mydoc,ftable,title=""){
           mydoc<-mydoc %>% ph_with_flextable(type="body",value=ft)
 
      } else {
-          mydoc <- mydoc %>% body_add_par(value=title,style="heading 1")
+          mydoc <- mydoc %>% add_title(title)
           mydoc<-mydoc %>% body_add_par(value="",style="Normal")
           mydoc<-mydoc %>% body_add_flextable(ft)
      }
@@ -69,14 +69,7 @@ add_flextable=function(mydoc,ftable,title=""){
 #' read_pptx() %>% add_plot("plot(iris)")
 #' read_docx() %>% add_plot("plot(iris)")
 add_plot=function(mydoc,plotstring,title="",vector=TRUE){
-     # if(title!=""){
-     #      mydoc=addSlide(mydoc,"Title and Content")
-     #      mydoc=addTitle(mydoc,title)
-     # } else{
-     #      mydoc=addSlide(mydoc,"Content")
-     # }
-     # mydoc=addPlot(mydoc,function() {plotfunction},vector.graphic=vector)
-     # mydoc
+
      if(class(mydoc)=="rpptx"){
           temp=paste0("ph_with_vg(mydoc,code=",plotstring,",type = \"body\")")
           mydoc<- mydoc %>%
@@ -86,7 +79,7 @@ add_plot=function(mydoc,plotstring,title="",vector=TRUE){
      } else{
           temp=paste0("body_add_vg(mydoc,code=",plotstring,")")
           mydoc <- mydoc %>%
-               body_add_par(value=title,style="heading 1")
+               add_title(title)
           mydoc=eval(parse(text=temp))
      }
      mydoc
@@ -116,7 +109,7 @@ add_ggplot=function(mydoc,gg,title=""){
           ph_with_text(type="title",str=title)
      } else{
           mydoc <- mydoc %>%
-               body_add_par(value=title,style="heading 1") %>%
+               add_title(title) %>%
                body_add_vg(code=print(gg))
      }
      mydoc
@@ -160,7 +153,7 @@ add_img=function(mydoc,plotstring,title="",width=7,height=5,units="in",
                ph_with_text(type="title",str=title)
      } else{
           mydoc <- mydoc %>%
-               body_add_par(value=title,style="heading 1") %>%
+               add_title(title) %>%
                body_add_img(src=filename,
                               width=width,height=height)
      }
@@ -297,14 +290,14 @@ add_Rcode=function(mydoc,code,title="",preprocessing="",format="pptx"){
 }
 
 
-#' Addtitle slide
+#' Add title slide
 #' @param mydoc A document object
 #' @param title An character string as a title
 #' @param subtitle An character string as a subtitle
 #' @export
 #' @examples
-#' #read_pptx() %>% add_title(title="Web-based analysis with R" %>% print(target="title.pptx")
-add_title=function(mydoc,title="",subtitle=""){
+#' #read_pptx() %>% add_title_slide(title="Web-based analysis with R" %>% print(target="title.pptx")
+add_title_slide=function(mydoc,title="",subtitle=""){
      mydoc <- mydoc %>%
           add_slide(layout="Title Slide",master="Office Theme") %>%
           ph_with_text(type="ctrTitle",str=title) %>%
@@ -341,7 +334,7 @@ data2office=function(data,title="Web-based Meta-Analysis",
      if(preprocessing!="") eval(parse(text=preprocessing))
      if(format=="pptx"){
           mydoc <- read_pptx() %>%
-                   add_title(title=title,subtitle="prepared by web-R.org")
+                   add_title_slide(title=title,subtitle="prepared by web-R.org")
      } else {
           mydoc <- read_docx()
      }
@@ -364,6 +357,13 @@ data2office=function(data,title="Web-based Meta-Analysis",
           } else if(data$type[i]=="ggplot"){
                p<-eval(parse(text=data$code[i]))
                mydoc=add_ggplot(mydoc,p,title=data$title[i])
+          }else if(data$type[i]=="2ggplots"){
+
+              codes=unlist(strsplit(data$code[i],"\n"))
+              # codes=unlist(strsplit(sampleData2$code[8],"\n"))
+              gg1=eval(parse(text=codes[1]))
+              gg2=eval(parse(text=codes[2]))
+              mydoc=add_2ggplots(mydoc,title=data$title[i],plot1=gg1,plot2=gg2)
           } else if(data$type[i]=="plot"){
                mydoc<-add_plot(mydoc,data$code[i],title=data$title[i])
 
@@ -371,6 +371,10 @@ data2office=function(data,title="Web-based Meta-Analysis",
 
                mydoc=add_Rcode(mydoc,code=data$code[i],title=data$title[i],
                                preprocessing=preprocessing,format=format)
+
+          } else if(data$type[i]=="text"){
+
+              mydoc=add_text(mydoc,title=data$title[i],text=data$code[i])
 
           } else if(data$type[i] %in% c("PNG","png")){
 
@@ -466,3 +470,11 @@ html2latex=function(df){
 # mydoc=add_plot(mydoc,data$code[i],title=data$title[i])
 # }
 # mydoc %>% print(target="plot.pptx")
+#
+#
+# require(editData)
+# result=editData(sampleData2)
+# result
+# sampleData2=result
+# devtools::use_data(sampleData2,overwrite=TRUE)
+# sampleData2
