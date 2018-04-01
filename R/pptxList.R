@@ -128,7 +128,8 @@ pptxList<-function(input,output,session,data=reactive(""),preprocessing=reactive
                     )
                ),
 
-
+               if(count>0) checkboxInput(ns("showCode"),"show Code"),
+               if(count>0) hr(),
                if(count>0) downloadButton(ns("savePPTxList"),"download as csv"),
                if(count>0) downloadButton(ns("downloadPPTxHTML"),"download as HTML"),
                if(count>0) downloadButton(ns("downloadPPTxPDF"),"download as PDF"),
@@ -298,7 +299,7 @@ pptxList<-function(input,output,session,data=reactive(""),preprocessing=reactive
                owd <- setwd(tempdir())
                on.exit(setwd(owd))
 
-               data2HTML(pptdf2(),preprocessing=input$preprocessing,filename=file)
+               data2HTML(pptdf2(),preprocessing=input$preprocessing,filename=file,echo=input$showCode)
           }
      )
 
@@ -314,7 +315,7 @@ pptxList<-function(input,output,session,data=reactive(""),preprocessing=reactive
                owd <- setwd(tempdir())
                on.exit(setwd(owd))
 
-               data2pdf(pptdf2(),preprocessing=input$preprocessing,filename=file)
+               data2pdf(pptdf2(),preprocessing=input$preprocessing,filename=file,echo=input$showCode)
           }
      )
 
@@ -329,9 +330,9 @@ pptxList<-function(input,output,session,data=reactive(""),preprocessing=reactive
 
                data=pptdf2()
 
-               data2pptx(data,title="Web-based Meta-Analysis",
+               data2pptx(data,
                          preprocessing=input$preprocessing,
-                         filename=file,width=input$width,height=input$height,units=input$units,res=input$res)
+                         filename=file,width=input$width,height=input$height,units=input$units,res=input$res,echo=input$showCode)
 
           },
           contentType="application/vnd-ms-powerpoint"
@@ -348,10 +349,10 @@ pptxList<-function(input,output,session,data=reactive(""),preprocessing=reactive
 
                data=pptdf2()
 
-               data2docx(data,title="Web-based Meta-Analysis",
+               data2docx(data,
                          preprocessing=input$preprocessing,
                          filename=file,width=input$plotWidth,height=input$plotHeight,
-                         units=input$plotUnit,res=input$plotRes)
+                         units=input$plotUnit,res=input$plotRes,echo=input$showCode)
 
 
           },
@@ -449,7 +450,7 @@ myplot2=function(data,format="PNG",width=7,height=7,units="in",res=300,start=0,p
                }
                eval(parse(text=temp))
                j=j+1
-          } else if(data$type[i]!="text"){
+          } else if(!(data$type[i] %in% c("text","title","author"))){
                eval(parse(text=data$code[i]))
           }
      }
@@ -563,7 +564,7 @@ data2to1=function(data){
                type=c("plot","plot")
            }
            title=c(paste0(data$title[i],"(1/2)"),paste0(data$title[i],"(2/2)"))
-           code=unlist(data$code[i],"\n")
+           code=unlist(strsplit(data$code[i],"\n"))
            temp=data.frame(type,title,code)
            data1<-rbind(data1,temp)
        } else{
@@ -582,6 +583,7 @@ data2to1=function(data){
 #' @param rawDataName The name of the rawData
 #' @param rawDataFile The name of the rawData file which the data are to be read from.
 #' @param vanilla logical. Whether or not make vanilla table
+#' @param echo Logical. Whether or not show R code of plot and table
 #' @importFrom rmarkdown render
 #' @importFrom moonBook mytable
 #' @importFrom ztable ztable print.ztable
@@ -592,22 +594,37 @@ data2to1=function(data){
 #' library(webr)
 #' data2HTML(sampleData2)
 data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL,rawDataFile="rawData.RDS",
-                   vanilla=FALSE){
+                   vanilla=FALSE,echo=FALSE){
 
 
      if(file.exists("report2.Rmd")) file.remove("report2.Rmd")
 
      tempReport <-  "report2.Rmd"
 
+     data$type=tolower(data$type)
+     if("title" %in% data$type) {
+         mytitle=data[data$type=="title",]$code[1]
+         data=data[data$type!="title",]
+     } else{
+         mytitle="Web-based Analysis with R"
+     }
+     if("author" %in% data$type) {
+         myauthor=data[data$type=="author",]$code[1]
+         data=data[data$type!="author",]
+     } else{
+         myauthor="prepared by web-r.org"
+     }
+     cat("---\ntitle: '",mytitle,"'\n",file=tempReport,append=TRUE)
+     cat("author: '",myauthor,"'\n",file=tempReport,append=TRUE)
+     cat("date: '`r Sys.time()`'\n---\n",file=tempReport,append=TRUE)
 
-     cat("---\ntitle: 'Web-based Analysis with R'\n---\n",file=tempReport,append=TRUE)
      cat("```{r setup, include=FALSE}\n",file=tempReport,append=TRUE)
-     cat("knitr::opts_chunk$set(echo = FALSE,message=FALSE,warning=FALSE,comment=NA,
+     cat("knitr::opts_chunk$set(echo =",echo,",message=FALSE,warning=FALSE,comment=NA,
          fig.width=9,fig.asp=0.618,fig.align='center',out.width='70%')\n",
          file=tempReport,append=TRUE)
      cat("```\n",file=tempReport,append=TRUE)
 
-     cat("```{r,echo=FALSE,message=FALSE}\n",file=tempReport,append=TRUE)
+     cat("```{r,echo=",echo,",message=FALSE}\n",file=tempReport,append=TRUE)
      cat("require(moonBook)\n",file=tempReport,append=TRUE)
      cat("require(ztable)\n",file=tempReport,append=TRUE)
      cat("require(webr)\n",file=tempReport,append=TRUE)
@@ -648,13 +665,14 @@ data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL
 
           } else if(mypptlist$type[i]=="table") {
                cat("```{r,results='asis'}\n",file=tempReport,append=TRUE)
-          } else if(mypptlist$type[i]=="Rcode") {
+          } else if(mypptlist$type[i]=="rcode") {
                cat("```{r,echo=TRUE}\n",file=tempReport,append=TRUE)
           } else if(mypptlist$type[i] %in% c("2ggplots","2plots")){
               cat("```{r,out.width='50%',fig.align='default',fig.show='hold'}\n",file=tempReport,append=TRUE)
           } else if(mypptlist$type[i]!="text"){
                cat("```{r}\n",file=tempReport,append=TRUE)
           }
+
           if(mypptlist$type[i]=="data"){
               cat("df2flextable(",mypptlist$code[i],",vanilla=",vanilla,")\n",file=tempReport,append=TRUE)
           } else if(mypptlist$type[i]=="table"){
@@ -663,7 +681,11 @@ data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL
           } else if(mypptlist$type[i]!="mytable") {
              cat(mypptlist$code[i],'\n',file=tempReport,append=TRUE)
           }
-          if(mypptlist$code[i]!="text") cat("```\n\n",file=tempReport,append=TRUE)
+          if(mypptlist$type[i]!="text") {
+              cat("```\n\n",file=tempReport,append=TRUE)
+          } else{
+              cat("\n\n",file=tempReport,append=TRUE)
+          }
      }
 
      out <- rmarkdown::render('report2.Rmd', rmarkdown::html_document())
@@ -678,31 +700,51 @@ data2HTML=function(data,preprocessing="",filename="report.HTML",rawDataName=NULL
 #' @param filename A path of destination file
 #' @param rawDataName The name of the rawData
 #' @param rawDataFile The name of the rawData file which the data are to be read from.
+#' @param kotex Logical. Whether or not use kotex package of latex
+#' @param echo Logical. Whether or not show R code of plot and table
 #' @importFrom rmarkdown render
 #' @export
 #' @examples
 #' library(moonBook)
 #' library(ztable)
 #' data2pdf(sampleData2)
-data2pdf=function(data,preprocessing="",filename="report.pdf",rawDataName=NULL,rawDataFile="rawData.RDS"){
+data2pdf=function(data,preprocessing="",filename="report.pdf",rawDataName=NULL,rawDataFile="rawData.RDS",kotex=FALSE,echo=FALSE){
 
      if(file.exists("report2.Rmd")) file.remove("report2.Rmd")
      tempReport <-  "report2.Rmd"
 
-     cat("---\ntitle: 'Web-based Analysis with R'\n",file=tempReport,append=TRUE)
-     cat("header-includes:\n- \\usepackage{kotex}\n- \\usepackage{multirow}\n",file=tempReport,append=TRUE)
+     data$type=tolower(data$type)
+     if("title" %in% data$type) {
+         mytitle=data[data$type=="title",]$code[1]
+         data=data[data$type!="title",]
+     } else{
+         mytitle="Web-based Analysis with R"
+     }
+     if("author" %in% data$type) {
+         myauthor=data[data$type=="author",]$code[1]
+         data=data[data$type!="author",]
+     } else{
+         myauthor="prepared by web-r.org"
+     }
+     cat("---\ntitle: '",mytitle,"'\n",file=tempReport,append=TRUE)
+     cat("author: '",myauthor,"'\n",file=tempReport,append=TRUE)
+     cat("date: '`r Sys.time()`'\n",file=tempReport,append=TRUE)
+
+     cat("header-includes:\n",file=tempReport,append=TRUE)
+     if(kotex==TRUE) cat("- \\usepackage{kotex}\n",file=tempReport,append=TRUE)
+     cat("- \\usepackage{multirow}\n",file=tempReport,append=TRUE)
      cat("- \\usepackage{colortbl}\n- \\usepackage{pdflscape}\n- \\usepackage[table]{xcolor}\n",file=tempReport,append=TRUE)
      cat("- \\usepackage{tabularx,booktabs}\n- \\usepackage{boxedminipage}\n- \\usepackage{graphicx}\n",
          file=tempReport,append=TRUE)
      cat("- \\usepackage{rotating}\n- \\usepackage{longtable}\n",file=tempReport,append=TRUE)
      cat("---\n",file=tempReport,append=TRUE)
      cat("```{r setup, include=FALSE}\n",file=tempReport,append=TRUE)
-     cat("knitr::opts_chunk$set(echo = FALSE,message=FALSE,warning=FALSE,comment=NA,
+     cat("knitr::opts_chunk$set(echo =",echo,",message=FALSE,warning=FALSE,comment=NA,
          fig.width=9,fig.asp=0.618,fig.align='center',out.width='70%')\n",
          file=tempReport,append=TRUE)
      cat("```\n",file=tempReport,append=TRUE)
 
-     cat("```{r,echo=FALSE,message=FALSE }\n",file=tempReport,append=TRUE)
+     cat("```{r,echo=",echo,",message=FALSE}\n",file=tempReport,append=TRUE)
      cat("require(moonBook)\n",file=tempReport,append=TRUE)
      cat("require(ztable)\n",file=tempReport,append=TRUE)
      cat("require(webr)\n",file=tempReport,append=TRUE)
@@ -764,7 +806,7 @@ data2pdf=function(data,preprocessing="",filename="report.pdf",rawDataName=NULL,r
           } else if(mypptlist$type[i]=="data"){
               cat("```{r,results='asis'}\n",file=tempReport,append=TRUE)
               cat("print(ztable(",mypptlist$code[i],",longtable=TRUE),type='latex')\n",file=tempReport,append=TRUE)
-          } else if(mypptlist$type[i]=="Rcode") {
+          } else if(mypptlist$type[i]=="rcode") {
                cat("```{r,echo=TRUE}\n",file=tempReport,append=TRUE)
                cat(mypptlist$code[i],'\n',file=tempReport,append=TRUE)
           } else if(mypptlist$type[i] %in% c("2ggplots","2plots")){
@@ -777,7 +819,11 @@ data2pdf=function(data,preprocessing="",filename="report.pdf",rawDataName=NULL,r
                cat("```{r}\n",file=tempReport,append=TRUE)
                cat(mypptlist$code[i],'\n',file=tempReport,append=TRUE)
           }
-         if(mypptlist$type[i]!="text") cat("```\n\n",file=tempReport,append=TRUE)
+         if(mypptlist$type[i]!="text") {
+             cat("```\n\n",file=tempReport,append=TRUE)
+         } else{
+             cat("\n\n",file=tempReport,append=TRUE)
+         }
      }
 
      out <- rmarkdown::render('report2.Rmd', params=list(format="PDF"),rmarkdown::pdf_document())

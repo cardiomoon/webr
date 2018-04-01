@@ -4,15 +4,13 @@
 \alias{data2office}
 \title{convert data to pptx file}
 \usage{
-data2office(data, title = "Web-based Meta-Analysis", preprocessing = "",
-  filename = "Report", format = "pptx", width = 7, height = 5,
-  units = "in", res = 300, rawDataName = NULL,
-  rawDataFile = "rawData.RDS", vanilla = FALSE)
+data2office(data, preprocessing = "", filename = "Report",
+  format = "pptx", width = 7, height = 5, units = "in", res = 300,
+  rawDataName = NULL, rawDataFile = "rawData.RDS", vanilla = FALSE,
+  echo = FALSE)
 }
 \arguments{
 \item{data}{A document object}
-
-\item{title}{An character string as a title}
 
 \item{preprocessing}{A string}
 
@@ -33,6 +31,8 @@ data2office(data, title = "Web-based Meta-Analysis", preprocessing = "",
 \item{rawDataFile}{raw Data File}
 
 \item{vanilla}{logical. WHether or not make vanilla table}
+
+\item{echo}{logical Whether or not show R code}
 }
 \description{
 convert data to pptx file

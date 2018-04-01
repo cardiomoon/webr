@@ -62,7 +62,7 @@ roundDf=function(df,digits=2){
 #' df2flextable(head(iris),vanilla=FALSE)
 #' df2flextable(head(iris),vanilla=FALSE,vlines=FALSE,fontsize=14)
 #' df2flextable(head(mtcars))
-df2flextable=function(df,vanilla=FALSE,fontname=NULL,fontsize=12,
+df2flextable=function(df,vanilla=FALSE,fontname=NULL,fontsize=10,
                       add.rownames=FALSE,
                       even_header="transparent",odd_header="#5B7778",
                       even_body="#EFEFEF",odd_body="transparent",

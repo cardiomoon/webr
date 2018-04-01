@@ -5,7 +5,7 @@
 \title{Add two plots into a document object}
 \usage{
 add_2plots(mydoc, plotstring1, plotstring2, title = "", width = 3,
-  height = 2.5)
+  height = 2.5, echo = FALSE)
 }
 \arguments{
 \item{mydoc}{A document object}
@@ -19,6 +19,8 @@ add_2plots(mydoc, plotstring1, plotstring2, title = "", width = 3,
 \item{width}{plot width in inches}
 
 \item{height}{plot height in inches}
+
+\item{echo}{logical Whether or not show R code}
 }
 \value{
 a document object
@@ -31,5 +33,6 @@ require(magrittr)
 require(officer)
 plotstring1="plot(1:10)"
 plotstring2="hist(rnorm(100))"
-read_docx() \%>\% add_2plots(plotstring1,plotstring2,title="Two plots")
+read_pptx() \%>\% add_2plots(plotstring1,plotstring2,title="Two plots") \%>\%
+add_2plots(plotstring1,plotstring2,title="Two plots",echo=TRUE) \%>\% print(target="demo.pptx")
 }

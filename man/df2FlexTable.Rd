@@ -4,7 +4,7 @@
 \alias{df2flextable}
 \title{Convert data.frame to flextable}
 \usage{
-df2flextable(df, vanilla = FALSE, fontname = NULL, fontsize = 12,
+df2flextable(df, vanilla = FALSE, fontname = NULL, fontsize = 10,
   add.rownames = FALSE, even_header = "transparent",
   odd_header = "#5B7778", even_body = "#EFEFEF", odd_body = "transparent",
   vlines = TRUE, colorheader = FALSE, digits = 2,

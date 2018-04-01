@@ -5,7 +5,7 @@
 \title{Add two ggplots into a document object}
 \usage{
 add_2ggplots(mydoc, title = "Two plots", plot1, plot2, width = 3,
-  height = 2.5)
+  height = 2.5, echo = FALSE)
 }
 \arguments{
 \item{mydoc}{A document object}
@@ -19,6 +19,8 @@ add_2ggplots(mydoc, title = "Two plots", plot1, plot2, width = 3,
 \item{width}{plot width in inches}
 
 \item{height}{plot height in inches}
+
+\item{echo}{logical Whether or not show R code}
 }
 \value{
 a document object
@@ -30,7 +32,8 @@ Add two ggplots into a document object
 require(ggplot2)
 require(magrittr)
 require(officer)
-gg1 <- ggplot(data = iris, aes(Sepal.Length, Petal.Length)) + geom_point()
-gg2 <- ggplot(data = iris, aes(Sepal.Length, Petal.Length, color = Species)) + geom_point()
-read_docx() \%>\% add_2ggplots(title="Two plots",plot1=gg1,plot2=gg2)
+require(rvg)
+plot1 <- "ggplot(data = iris, aes(Sepal.Length, Petal.Length)) + geom_point()"
+plot2 <- "ggplot(data = iris, aes(Sepal.Length, Petal.Length, color = Species)) + geom_point()"
+read_pptx() \%>\% add_2ggplots(title="Two plots",plot1=plot1,plot2=plot2,echo=TRUE)
 }

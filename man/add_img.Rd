@@ -5,7 +5,7 @@
 \title{Add plot into a document object}
 \usage{
 add_img(mydoc, plotstring, title = "", width = 7, height = 5,
-  units = "in", res = 300, format = "emf", ...)
+  units = "in", res = 300, format = "emf", echo = FALSE, ...)
 }
 \arguments{
 \item{mydoc}{A document object}
@@ -24,6 +24,8 @@ add_img(mydoc, plotstring, title = "", width = 7, height = 5,
 
 \item{format}{plot format}
 
+\item{echo}{logical Whether or not show R code}
+
 \item{...}{additional arguments passed to png()}
 }
 \value{
@@ -36,6 +38,6 @@ Add plot into a document object
 require(officer)
 require(webr)
 require(magrittr)
+require(flextable)
 read_pptx() \%>\% add_img("plot(mtcars)",format="png",res=300)
-read_docx() \%>\% add_img("plot(mtcars)",format="png",res=300)
 }

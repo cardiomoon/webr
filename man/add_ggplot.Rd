@@ -4,14 +4,16 @@
 \alias{add_ggplot}
 \title{Add ggplot into a document object}
 \usage{
-add_ggplot(mydoc, gg, title = "")
+add_ggplot(mydoc, title = "", code = "", echo = FALSE)
 }
 \arguments{
 \item{mydoc}{A document object}
 
-\item{gg}{An R code encoding a ggplot}
-
 \item{title}{An character string as a plot title}
+
+\item{code}{R code for table}
+
+\item{echo}{logical Whether or not show R code}
 }
 \value{
 a document object
@@ -24,7 +26,6 @@ require(webr)
 require(ggplot2)
 require(officer)
 require(magrittr)
-gg <- ggplot(mtcars, aes(x = mpg , y = wt, colour = factor(am))) + geom_point()
-read_pptx() \%>\% add_ggplot(gg)
-read_docx() \%>\% add_ggplot(gg)
+code <- "ggplot(mtcars, aes(x = mpg , y = wt)) + geom_point()"
+read_pptx() \%>\% add_ggplot(code=code,echo=TRUE)
 }

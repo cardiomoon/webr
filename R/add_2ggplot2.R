@@ -47,33 +47,54 @@ add_text=function(mydoc,title="",text,style="Normal"){
 #' @param plot2 An R code encoding the second ggplot
 #' @param width plot width in inches
 #' @param height plot height in inches
+#' @param echo logical Whether or not show R code
 #' @return a document object
-#' @importFrom officer body_end_section
+#' @importFrom officer body_end_section break_column_before
 #' @export
 #' @examples
 #' require(ggplot2)
 #' require(magrittr)
 #' require(officer)
-#' gg1 <- ggplot(data = iris, aes(Sepal.Length, Petal.Length)) + geom_point()
-#' gg2 <- ggplot(data = iris, aes(Sepal.Length, Petal.Length, color = Species)) + geom_point()
-#' read_docx() %>% add_2ggplots(title="Two plots",plot1=gg1,plot2=gg2)
-add_2ggplots=function(mydoc,title="Two plots",plot1,plot2,width=3,height=2.5){
-    gg1<-plot1
-    gg2<-plot2
+#' require(rvg)
+#' plot1 <- "ggplot(data = iris, aes(Sepal.Length, Petal.Length)) + geom_point()"
+#' plot2 <- "ggplot(data = iris, aes(Sepal.Length, Petal.Length, color = Species)) + geom_point()"
+#' read_pptx() %>% add_2ggplots(title="Two plots",plot1=plot1,plot2=plot2,echo=TRUE)
+add_2ggplots=function(mydoc,title="Two plots",plot1,plot2,width=3,height=2.5,
+                      echo=FALSE){
+    gg1<-eval(parse(text=plot1))
+    gg2<-eval(parse(text=plot2))
 
     if(class(mydoc)=="rpptx"){
 
         mydoc<- mydoc %>%
             add_slide(layout = "Two Content", master = "Office Theme") %>%
-            ph_with_text(type="title",str=title) %>%
-            ph_with_vg(code = print(gg1), type = "body") %>%
-            ph_with_vg(code = print(gg2), type = "body",index=2)
+            ph_with_text(type="title",str=title)
+        pos=1.5
+        if(echo){
+            code=paste0(plot1,"\n",plot2)
+            codeft=Rcode2flextable(code,format="pptx")
+            codeft
+
+            mydoc<-mydoc %>% ph_with_flextable_at(value=codeft,left=0.5,top=1.5)
+            pos=2
+
+        }
+            mydoc<- mydoc %>%
+                ph_with_vg_at(code = print(gg1), left=0.5,top=pos,width=4.5,height=5 ) %>%
+                ph_with_vg_at(code = print(gg2), left=5,top=pos,width=4.5,height=5 )
 
 
     } else{
         mydoc<-mydoc %>%
-            add_title(title) %>%
-            body_end_section() %>%
+            add_title(title)
+        if(echo){
+            code=paste0(plot1,"\n",plot2)
+            codeft=Rcode2flextable(code,format="docx")
+            mydoc<-mydoc %>% body_add_flextable(codeft)
+          }
+        mydoc <- mydoc %>%
+            body_end_section(continuous = TRUE)
+        mydoc <-mydoc %>%
             body_add_vg(code=print(gg1),width=width,height=height) %>%
             body_add_vg(code=print(gg2),width=width,height=height) %>%
             body_end_section(continuous = TRUE,
@@ -89,6 +110,7 @@ add_2ggplots=function(mydoc,title="Two plots",plot1,plot2,width=3,height=2.5){
 #' @param plotstring2 An R code string encoding the second plot
 #' @param width plot width in inches
 #' @param height plot height in inches
+#' @param echo logical Whether or not show R code
 #' @return a document object
 #' @export
 #' @examples
@@ -96,25 +118,45 @@ add_2ggplots=function(mydoc,title="Two plots",plot1,plot2,width=3,height=2.5){
 #' require(officer)
 #' plotstring1="plot(1:10)"
 #' plotstring2="hist(rnorm(100))"
-#' read_docx() %>% add_2plots(plotstring1,plotstring2,title="Two plots")
-add_2plots=function(mydoc,plotstring1,plotstring2,title="",width=3,height=2.5){
+#' read_pptx() %>% add_2plots(plotstring1,plotstring2,title="Two plots") %>%
+#' add_2plots(plotstring1,plotstring2,title="Two plots",echo=TRUE) %>% print(target="demo.pptx")
+add_2plots=function(mydoc,plotstring1,plotstring2,title="",width=3,height=2.5,echo=FALSE){
 
     if(class(mydoc)=="rpptx"){
-        temp1=paste0("ph_with_vg(mydoc,code=",plotstring1,",type = \"body\")")
-        temp2=paste0("ph_with_vg(mydoc,code=",plotstring2,",type = \"body\",index=2)")
+
         mydoc<- mydoc %>%
             add_slide(layout = "Two Content", master = "Office Theme") %>%
             ph_with_text(type="title",str=title)
+
+        pos=1.5
+        if(echo){
+            code=paste0(plotstring1,"\n",plotstring2)
+            codeft=Rcode2flextable(code,format="pptx")
+
+            mydoc<-mydoc %>% ph_with_flextable_at(value=codeft,left=0.5,top=1.5)
+            pos=2
+        }
+        temp1=paste0("ph_with_vg_at(mydoc,code=",plotstring1,",left=0.5,top=pos,width=4.5,height=5 )")
+        temp2=paste0("ph_with_vg_at(mydoc,code=",plotstring2,",left=5,top=pos,width=4.5,height=5)")
         mydoc=eval(parse(text=temp1))
         mydoc=eval(parse(text=temp2))
+
     } else{
         temp1=paste0("body_add_vg(mydoc,code=",plotstring1,
                      ",width=",width,",height=",height,")")
         temp2=paste0("body_add_vg(mydoc,code=",plotstring2,
                      ",width=",width,",height=",height,")")
+
+        mydoc<-mydoc %>%
+            add_title(title)
+        if(echo){
+            code=paste0(plotstring1,"\n",plotstring2)
+            codeft=Rcode2flextable(code,format="docx")
+            mydoc<-mydoc %>% body_add_flextable(codeft)
+        }
         mydoc <- mydoc %>%
-            add_title(title) %>%
-            body_end_section()
+            body_end_section(continuous = TRUE)
+
         mydoc=eval(parse(text=temp1))
         mydoc=eval(parse(text=temp2))
         mydoc=body_end_section(mydoc,continuous = TRUE,

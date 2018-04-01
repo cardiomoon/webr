@@ -5,7 +5,8 @@
 \title{Make a pdf file with a data.frame}
 \usage{
 data2pdf(data, preprocessing = "", filename = "report.pdf",
-  rawDataName = NULL, rawDataFile = "rawData.RDS")
+  rawDataName = NULL, rawDataFile = "rawData.RDS", kotex = FALSE,
+  echo = FALSE)
 }
 \arguments{
 \item{data}{A data.frame}
@@ -17,6 +18,10 @@ data2pdf(data, preprocessing = "", filename = "report.pdf",
 \item{rawDataName}{The name of the rawData}
 
 \item{rawDataFile}{The name of the rawData file which the data are to be read from.}
+
+\item{kotex}{Logical. Whether or not use kotex package of latex}
+
+\item{echo}{Logical. Whether or not show R code of plot and table}
 }
 \description{
 Make a pdf file with a data.frame

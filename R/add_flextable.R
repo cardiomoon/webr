@@ -2,8 +2,10 @@
 #' @param mydoc A document object
 #' @param ftable A flextable or mytable object
 #' @param title An character string as a plot title
+#' @param code R code for table
+#' @param echo logical Whether or not show R code
 #' @importFrom officer add_slide ph_with_text  body_add_par
-#' @importFrom flextable body_add_flextable ph_with_flextable
+#' @importFrom flextable body_add_flextable ph_with_flextable ph_with_flextable_at
 #' @return a document object
 #' @export
 #' @examples
@@ -16,14 +18,16 @@
 #' ft=df2flextable(head(iris))
 #' title2="df2flextable Example"
 #' doc=read_docx()
-#' doc %>% add_flextable(ftable,title) %>%
-#'         add_flextable(ft,title2) %>%
+#' doc %>% add_flextable(ftable,title,code="mytable(Dx~.,data=acs)",echo=TRUE) %>%
+#'         add_flextable(ft,title2,code="df2flextable(head(iris))",echo=TRUE) %>%
 #'         print(target="mytable.docx")
 #' read_pptx() %>%
-#'        add_flextable(ftable,title) %>%
-#'        add_flextable(ft,title2) %>%
+#'        add_flextable(ftable,title,code="mytable(Dx~.,data=acs)",echo=TRUE) %>%
+#'        add_flextable(ftable,title,code="mytable(Dx~.,data=acs)") %>%
+#'        add_flextable(ft,title2,code="df2flextable(head(iris))",echo=TRUE) %>%
+#'        add_flextable(ft,title2,code="df2flextable(head(iris))") %>%
 #'        print(target="mytable.pptx")
-add_flextable=function(mydoc,ftable,title=""){
+add_flextable=function(mydoc,ftable,title="",code="",echo=FALSE){
      if("mytable" %in% class(ftable)){
           ft<-mytable2flextable(ftable)
      } else {
@@ -32,11 +36,22 @@ add_flextable=function(mydoc,ftable,title=""){
      if(class(mydoc)=="rpptx"){
           mydoc <- mydoc %>% add_slide("Title and Content",master="Office Theme")
           mydoc <- mydoc %>% ph_with_text(type="title",str=title)
-          mydoc<-mydoc %>% ph_with_flextable(type="body",value=ft)
+          if(echo) {
+              codeft=Rcode2flextable(code,eval=FALSE,format="pptx")
+              mydoc<-mydoc %>% ph_with_flextable_at(value=codeft,left=1,top=2)
+              mydoc<-mydoc %>% ph_with_flextable_at(value=ft,left=1,top=2.5)
+          } else{
+              mydoc<-mydoc %>% ph_with_flextable_at(value=ft,left=1,top=2)
+          }
 
      } else {
           mydoc <- mydoc %>% add_title(title)
           mydoc<-mydoc %>% body_add_par(value="",style="Normal")
+          if(echo) {
+              codeft=Rcode2flextable(code,eval=FALSE,format="docx")
+              mydoc<-mydoc %>% body_add_flextable(codeft)
+              mydoc<-mydoc %>% body_add_par(value="",style="Normal")
+          }
           mydoc<-mydoc %>% body_add_flextable(ft)
      }
      mydoc
@@ -58,28 +73,42 @@ add_flextable=function(mydoc,ftable,title=""){
 #' @param plotstring String of an R code encoding a plot
 #' @param title An character string as a plot title
 #' @param vector A logical. If TRUE, vector graphics are produced instead, PNG images if FALSE.
+#' @param echo logical Whether or not show R code
 #' @return a document object
 #' @importFrom officer ph_with_text
+#' @importFrom rvg ph_with_vg_at
 #' @export
 #' @examples
 #' require(webr)
 #' require(officer)
 #' require(rvg)
 #' require(magrittr)
-#' read_pptx() %>% add_plot("plot(iris)")
-#' read_docx() %>% add_plot("plot(iris)")
-add_plot=function(mydoc,plotstring,title="",vector=TRUE){
+#' read_pptx() %>% add_plot("plot(iris)") %>% add_plot("plot(iris)",echo=TRUE)
+add_plot=function(mydoc,plotstring,title="",vector=TRUE,echo=FALSE){
 
      if(class(mydoc)=="rpptx"){
-          temp=paste0("ph_with_vg(mydoc,code=",plotstring,",type = \"body\")")
+
           mydoc<- mydoc %>%
                add_slide(layout = "Title and Content", master = "Office Theme") %>%
                ph_with_text(type="title",str=title)
-          mydoc=eval(parse(text=temp))
+          if(echo){
+              codeft=Rcode2flextable(plotstring,eval=FALSE,format="pptx")
+              mydoc<-mydoc %>% ph_with_flextable_at(value=codeft,left=1,top=2)
+              temp=paste0("ph_with_vg_at(mydoc,code=",plotstring,",left=1,top=2.3,width=8,height=5)")
+              mydoc=eval(parse(text=temp))
+          } else{
+              temp=paste0("ph_with_vg_at(mydoc,code=",plotstring,",left=1,top=2,width=8,height=5)")
+              mydoc=eval(parse(text=temp))
+          }
      } else{
           temp=paste0("body_add_vg(mydoc,code=",plotstring,")")
           mydoc <- mydoc %>%
                add_title(title)
+          if(echo) {
+              mydoc<-mydoc %>% body_add_par(value="",style="Normal")
+              codeft=Rcode2flextable(plotstring,eval=FALSE,format="docx")
+              mydoc<-mydoc %>% body_add_flextable(codeft)
+          }
           mydoc=eval(parse(text=temp))
      }
      mydoc
@@ -88,8 +117,9 @@ add_plot=function(mydoc,plotstring,title="",vector=TRUE){
 
 #' Add ggplot into a document object
 #' @param mydoc A document object
-#' @param gg An R code encoding a ggplot
 #' @param title An character string as a plot title
+#' @param code R code for table
+#' @param echo logical Whether or not show R code
 #' @return a document object
 #' @importFrom rvg ph_with_vg body_add_vg
 #' @export
@@ -98,19 +128,34 @@ add_plot=function(mydoc,plotstring,title="",vector=TRUE){
 #' require(ggplot2)
 #' require(officer)
 #' require(magrittr)
-#' gg <- ggplot(mtcars, aes(x = mpg , y = wt, colour = factor(am))) + geom_point()
-#' read_pptx() %>% add_ggplot(gg)
-#' read_docx() %>% add_ggplot(gg)
-add_ggplot=function(mydoc,gg,title=""){
+#' code <- "ggplot(mtcars, aes(x = mpg , y = wt)) + geom_point()"
+#' read_pptx() %>% add_ggplot(code=code,echo=TRUE)
+add_ggplot=function(mydoc,title="",code="",echo=FALSE){
      if(class(mydoc)=="rpptx"){
      mydoc<- mydoc %>%
           add_slide(layout = "Title and Content", master = "Office Theme") %>%
-          ph_with_vg(code = print(gg), type = "body") %>%
           ph_with_text(type="title",str=title)
+
+     if(echo){
+         codeft=Rcode2flextable(code,eval=FALSE,format="pptx")
+         mydoc<-mydoc %>% ph_with_flextable_at(value=codeft,left=1,top=2)
+         temp=paste0("ph_with_vg_at(mydoc,code=print(",code,"),left=1,top=2.3,width=8,height=5)")
+         mydoc=eval(parse(text=temp))
+     } else{
+         temp=paste0("ph_with_vg_at(mydoc,code=print(",code,"),left=1,top=2,width=8,height=5)")
+         mydoc=eval(parse(text=temp))
+     }
+
      } else{
           mydoc <- mydoc %>%
-               add_title(title) %>%
-               body_add_vg(code=print(gg))
+               add_title(title)
+          temp=paste0("body_add_vg(mydoc,code=print(",code,"))")
+          if(echo) {
+              mydoc<-mydoc %>% body_add_par(value="",style="Normal")
+              codeft=Rcode2flextable(code,eval=FALSE,format="docx")
+              mydoc<-mydoc %>% body_add_flextable(codeft)
+          }
+          mydoc=eval(parse(text=temp))
      }
      mydoc
 }
@@ -124,19 +169,20 @@ add_ggplot=function(mydoc,gg,title=""){
 #' @param units The units in which height and width are given. Can be px (pixels, the default), in (inches), cm or mm.
 #' @param res The nominal resolution in ppi which will be recorded in the bitmap file, if a positive integer. Also used for units other than the default, and to convert points to pixels.
 #' @param format plot format
+#' @param echo logical Whether or not show R code
 #' @param ... additional arguments passed to png()
 #' @return a document object
 #' @importFrom devEMF emf
-#' @importFrom officer ph_with_img body_add_img
+#' @importFrom officer ph_with_img body_add_img ph_with_img_at
 #' @export
 #' @examples
 #' require(officer)
 #' require(webr)
 #' require(magrittr)
+#' require(flextable)
 #' read_pptx() %>% add_img("plot(mtcars)",format="png",res=300)
-#' read_docx() %>% add_img("plot(mtcars)",format="png",res=300)
 add_img=function(mydoc,plotstring,title="",width=7,height=5,units="in",
-                 res=300,format="emf",...){
+                 res=300,format="emf",echo=FALSE,...) {
      # produce an emf file containing the ggplot
      filename <- tempfile(fileext = paste0(".",format))
      if(format=="emf"){
@@ -149,12 +195,23 @@ add_img=function(mydoc,plotstring,title="",width=7,height=5,units="in",
      if(class(mydoc)=="rpptx"){
           mydoc<- mydoc %>%
                add_slide(layout = "Title and Content", master = "Office Theme") %>%
-               ph_with_img(src=filename, type = "body",width=width,height=height) %>%
                ph_with_text(type="title",str=title)
+          if(echo){
+          codeft=Rcode2flextable(plotstring,eval=FALSE,format="pptx")
+          mydoc<-mydoc %>% ph_with_flextable_at(value=codeft,left=1,top=2)
+          temp=paste0("ph_with_img_at(mydoc,src=filename,left=1,top=2.3,width=8,height=5)")
+          mydoc=eval(parse(text=temp))
      } else{
-          mydoc <- mydoc %>%
-               add_title(title) %>%
-               body_add_img(src=filename,
+         temp=paste0("ph_with_img_at(mydoc,src=filename,left=1,top=2,width=8,height=5)")
+         mydoc=eval(parse(text=temp))
+     }
+     } else{
+          mydoc <- mydoc %>% add_title(title)
+          if(echo){
+              codeft=Rcode2flextable(plotstring,eval=FALSE,format="docx")
+              mydoc<-mydoc %>% body_add_flextable(codeft)
+          }
+          mydoc <- body_add_img(mydoc,src=filename,
                               width=width,height=height)
      }
      mydoc
@@ -171,8 +228,9 @@ add_img=function(mydoc,plotstring,title="",width=7,height=5,units="in",
 #' Make a data.frame with character strings encoding R code
 #' @param result character strings encoding R code
 #' @param preprocessing character strings encoding R code as a preprocessing
+#' @param eval logical. Whether or not evaluate the code
 #' @importFrom utils capture.output
-Rcode2df=function(result,preprocessing){
+Rcode2df=function(result,preprocessing,eval=TRUE){
      if(preprocessing!="") eval(parse(text=preprocessing))
      res=c()
      codes=unlist(strsplit(result,"\n",fixed=TRUE))
@@ -182,6 +240,7 @@ Rcode2df=function(result,preprocessing){
                if(grep("cat",codes[i])==1) next
           }
           res=c(res,codes[i])
+          if(eval){
           temp=capture.output(eval(parse(text=codes[i])))
           if(length(temp)==0) temp1=""
           else  {
@@ -189,6 +248,7 @@ Rcode2df=function(result,preprocessing){
                temp1=paste0(temp1,"\n ")
           }
           res=c(res,temp1)
+          }
 
      }
      data.frame(result=res,stringsAsFactors = FALSE)
@@ -205,7 +265,7 @@ pastelf=function(...){
 #' @param exdent exdent
 #' @importFrom stringr str_extract_all str_flatten
 #' @return splitted character vector
-tensiSplit <- function(string,size=100,exdent=3) {
+tensiSplit <- function(string,size=82,exdent=3) {
     result=c()
     if(nchar(string)<=size) {
         result=string
@@ -215,7 +275,7 @@ tensiSplit <- function(string,size=100,exdent=3) {
         result=paste0(str_flatten(rep(" ",exdent)),result)
         result=c(temp,result)
     }
-    result
+    str_pad(result,size,"right")
 }
 
 
@@ -229,7 +289,8 @@ tensiSplit <- function(string,size=100,exdent=3) {
 df2RcodeTable=function(df,bordercolor="gray",format="pptx"){
     # df
     #bordercolor="gray";maxlen=80
-    maxlen=ifelse(format=="pptx",100,90)
+    maxlen=82
+    font_size=ifelse(format=="pptx",12,10)
     no<-code<-c()
      for(i in 1:nrow(df)){
           temp=df[i,]
@@ -250,6 +311,7 @@ df2RcodeTable=function(df,bordercolor="gray",format="pptx"){
           padding(padding=0) %>%
           #padding(i=~no%%2==0,padding.left=10) %>%
           font(fontname="Monaco",part="all") %>%
+          fontsize(size=font_size) %>%
           delete_part(part="header") %>%
           void(j=1) %>%
           autofit() %>% height_all(height=0.2,part="all")
@@ -259,9 +321,10 @@ df2RcodeTable=function(df,bordercolor="gray",format="pptx"){
 #' @param result character strings encoding R code
 #' @param preprocessing character strings encoding R code as a preprocessing
 #' @param format desired format. choices are "pptx" or "docx"
+#' @param eval logical. Whether or not evaluate the code
 #' @export
-Rcode2flextable=function(result,preprocessing="",format="pptx"){
-     df=Rcode2df(result,preprocessing=preprocessing)
+Rcode2flextable=function(result,preprocessing="",format="pptx",eval=TRUE){
+     df=Rcode2df(result,preprocessing=preprocessing,eval=eval)
      df2RcodeTable(df,format=format)
 
 }
@@ -308,7 +371,6 @@ add_title_slide=function(mydoc,title="",subtitle=""){
 
 #' convert data to pptx file
 #' @param data A document object
-#' @param title An character string as a title
 #' @param preprocessing A string
 #' @param filename File name
 #' @param format desired format. choices are "pptx" or "docx"
@@ -319,22 +381,37 @@ add_title_slide=function(mydoc,title="",subtitle=""){
 #' @param rawDataName raw Data Name
 #' @param rawDataFile raw Data File
 #' @param vanilla logical. WHether or not make vanilla table
+#' @param echo logical Whether or not show R code
 #' @importFrom officer read_docx read_pptx
 #' @export
-data2office=function(data,title="Web-based Meta-Analysis",
+data2office=function(data,
                    preprocessing="",
                    filename="Report",format="pptx",width=7,height=5,units="in",
-                   res=300,rawDataName=NULL,rawDataFile="rawData.RDS",vanilla=FALSE){
+                   res=300,rawDataName=NULL,rawDataFile="rawData.RDS",vanilla=FALSE,echo=FALSE){
 
      if(!is.null(rawDataName)){
           rawData=readRDS(rawDataFile)
           assign(rawDataName,rawData)
      }
+    if(preprocessing!="") eval(parse(text=preprocessing))
 
-     if(preprocessing!="") eval(parse(text=preprocessing))
+    data$type=tolower(data$type)
+    if("title" %in% data$type) {
+        mytitle=data[data$type=="title",]$code[1]
+        data=data[data$type!="title",]
+    } else{
+        mytitle="Web-based Analysis with R"
+    }
+    if("author" %in% data$type) {
+        myauthor=data[data$type=="author",]$code[1]
+        data=data[data$type!="author",]
+    } else{
+        myauthor="prepared by web-r.org"
+    }
+
      if(format=="pptx"){
           mydoc <- read_pptx() %>%
-                   add_title_slide(title=title,subtitle="prepared by web-R.org")
+                   add_title_slide(title=mytitle,subtitle=myauthor)
      } else {
           mydoc <- read_docx()
      }
@@ -345,29 +422,34 @@ data2office=function(data,title="Web-based Meta-Analysis",
           if(data$type[i]=="Rcode") eval(parse(text=data$code[i]))
           if(data$type[i]=="data"){
               ft=df2flextable(eval(parse(text=data$code[i])),vanilla=vanilla)
-              mydoc=add_flextable(mydoc,ft,data$title[i])
+              mydoc=add_flextable(mydoc,ft,data$title[i],data$code[i],echo=echo)
           } else if(data$type[i]=="table"){
                tempcode=set_argument(data$code[i],argument="vanilla",value=vanilla)
                ft=eval(parse(text=tempcode))
-               mydoc=add_flextable(mydoc,ft,data$title[i])
+               mydoc=add_flextable(mydoc,ft,data$title[i],data$code[i],echo=echo)
           } else if(data$type[i]=="mytable"){
                res=eval(parse(text=data$code[i]))
                ft=mytable2flextable(res,vanilla=vanilla)
-               mydoc=add_flextable(mydoc,ft,data$title[i])
+               mydoc=add_flextable(mydoc,ft,data$title[i],data$code[i],echo=echo)
           } else if(data$type[i]=="ggplot"){
-               p<-eval(parse(text=data$code[i]))
-               mydoc=add_ggplot(mydoc,p,title=data$title[i])
+               mydoc=add_ggplot(mydoc,title=data$title[i],code=data$code[i],echo=echo)
           }else if(data$type[i]=="2ggplots"){
 
               codes=unlist(strsplit(data$code[i],"\n"))
               # codes=unlist(strsplit(sampleData2$code[8],"\n"))
-              gg1=eval(parse(text=codes[1]))
-              gg2=eval(parse(text=codes[2]))
-              mydoc=add_2ggplots(mydoc,title=data$title[i],plot1=gg1,plot2=gg2)
+              gg1=codes[1]
+              gg2=codes[2]
+              mydoc=add_2ggplots(mydoc,title=data$title[i],plot1=gg1,plot2=gg2,
+                                 echo=echo)
           } else if(data$type[i]=="plot"){
-               mydoc<-add_plot(mydoc,data$code[i],title=data$title[i])
+               mydoc<-add_plot(mydoc,data$code[i],title=data$title[i],echo=echo)
 
-          } else if(data$type[i]=="Rcode"){
+          } else if(data$type[i]=="2plots"){
+
+              codes=unlist(strsplit(data$code[i],"\n"))
+              mydoc=add_2plots(mydoc,plotstring1=codes[1],plotstring2=codes[2],title=data$title[i],echo=echo)
+
+          } else if(data$type[i]=="rcode"){
 
                mydoc=add_Rcode(mydoc,code=data$code[i],title=data$title[i],
                                preprocessing=preprocessing,format=format)
@@ -378,11 +460,11 @@ data2office=function(data,title="Web-based Meta-Analysis",
 
           } else if(data$type[i] %in% c("PNG","png")){
 
-               mydoc<-add_img(mydoc,data$code[i],title=data$title[i],format="png")
+               mydoc<-add_img(mydoc,data$code[i],title=data$title[i],format="png",echo=echo)
 
           } else if(data$type[i] %in% c("emf","EMF")){
 
-               mydoc<-add_img(mydoc,data$code[i],title=data$title[i])
+               mydoc<-add_img(mydoc,data$code[i],title=data$title[i],echo=echo)
 
           }
 
