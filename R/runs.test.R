@@ -1,6 +1,6 @@
 #' Runs test for randomness
 #' @param y A vector
-#' @param plot.it A logical. whether or not daw a plot
+#' @param plot.it A logical. whether or not draw a plot
 #' @param alternative a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less".
 #' @return A list with class "htest" containing the following components: statistic,p-value,method and data.name
 #' @importFrom stats median na.omit pnorm

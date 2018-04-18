@@ -10,7 +10,7 @@ runs.test(y, plot.it = FALSE, alternative = c("two.sided",
 \arguments{
 \item{y}{A vector}
 
-\item{plot.it}{A logical. whether or not daw a plot}
+\item{plot.it}{A logical. whether or not draw a plot}
 
 \item{alternative}{a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less".}
 }
