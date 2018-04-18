@@ -1,26 +1,15 @@
 Package: webr
 Type: Package
-Title: Data and Functions For Web-based Analysis With R
-Version: 0.1.7
+Title: Data and Functions for Web-based Analysis With R
+Version: 0.1.0
 Imports:
-   stringr,
-   ggplot2,
-   officer,
-   purrr,
-   flextable,
-   rvg,
-   magrittr,
-   devEMF,
    moonBook,
-   ztable,
-   rmarkdown,
-   shiny,
-   editData,
-   readr
+   ggplot2,
+   stringr
 Authors@R: person("Keon-Woong", "Moon", email = "cardiomoon@gmail.com",
     role = c("aut", "cre"))
 Description: Several analysis-related functions for the book entitled 
-    "Web-based Anlaysis with R" by Keon-Woong Moon.
+    "Web-based Analysis with R for Writing Medical Papers" by Keon-Woong Moon.
 Depends: R(>= 2.10)    
 License: GPL-3
 Encoding: UTF-8
