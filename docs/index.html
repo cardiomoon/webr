@@ -31,7 +31,7 @@
 <li>
   <a href="index.html">
     <span class="fa fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li>
@@ -40,7 +40,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -57,7 +57,7 @@
 <li>
   <a href="https://github.com/cardiomoon/webr">
     <span class="fa fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -68,12 +68,11 @@
 </div>
 <!--/.navbar -->
 
-      
+
       </header><div class="row">
   <div class="contents col-md-9">
-    
+
 <hr>
-<p>title: “Plot for distribution of statistic and p-value” author: “Keon-Woong Moon” date: “2017-11-16” output: rmarkdown::html_vignette vignette: &gt; %\VignetteIndexEntry{plot.htest} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8} —</p>
 <p>To understand the concept of p value is very important. To teach the the distribution of common statistic( $\chi^2$ for chisq.test() , t for Student’s t-test , F for F-test) and concept of the p-value, plot.htest() function can be used.</p>
 <div id="homepage-of-this-package" class="section level2">
 <h2 class="hasAnchor">
@@ -98,7 +97,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <p>You can show the distribution of chi-squre statistic and p-value.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">require</span>(moonBook)
  <span class="kw">require</span>(webr)
- 
+
  <span class="co"># chi-squared test</span>
  x=<span class="kw">chisq.test</span>(<span class="kw">table</span>(acs<span class="op">$</span>sex,acs<span class="op">$</span>DM))
  x</code></pre></div>
@@ -124,7 +123,7 @@ alternative hypothesis: true mean is not equal to 63
 95 percent confidence interval:
  62.52736 64.09574
 sample estimates:
-mean of x 
+mean of x
  63.31155 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">t.test</span>(acs<span class="op">$</span>age,<span class="dt">mu=</span><span class="dv">63</span>))</code></pre></div>
 <p><img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="90%" style="display: block; margin: auto;"></p>
@@ -147,7 +146,7 @@ alternative hypothesis: true ratio of variances is not equal to 1
 95 percent confidence interval:
  1.012416 1.505776
 sample estimates:
-ratio of variances 
+ratio of variances
           1.238288 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(x)</code></pre></div>
 <p><img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="90%" style="display: block; margin: auto;"></p>
@@ -167,7 +166,7 @@ alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
  -1.112568  2.068014
 sample estimates:
- mean in group No mean in group Yes 
+ mean in group No mean in group Yes
          63.48101          63.00329 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(x)</code></pre></div>
 <p><img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="90%" style="display: block; margin: auto;"></p>
@@ -187,7 +186,7 @@ alternative hypothesis: true ratio of variances is not equal to 1
 95 percent confidence interval:
  0.9794315 1.5008098
 sample estimates:
-ratio of variances 
+ratio of variances
           1.207759 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">var.test</span>(BMI<span class="op">~</span>sex,<span class="dt">data=</span>acs))</code></pre></div>
 <p><img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="90%" style="display: block; margin: auto;"> Based on the result of F test, you can perform t-test using pooled variance.</p>
@@ -202,7 +201,7 @@ alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
  -0.6348532  0.3737344
 sample estimates:
-mean in group Female   mean in group Male 
+mean in group Female   mean in group Male
             24.19492             24.32548 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(x)</code></pre></div>
 <p><img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="90%" style="display: block; margin: auto;"></p>
