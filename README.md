@@ -1,7 +1,7 @@
 ---
 title: "Plot for distribution of statistic and p-value"
 author: "Keon-Woong Moon"
-date: "2017-11-16"
+date: "2018-04-18"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{plot.htest}
