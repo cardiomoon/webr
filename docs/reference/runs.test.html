@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • webr</title>
+<title>Runs test for randomness — runs.test • webr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -37,7 +37,7 @@
   </head>
 
   <body>
-    <div class="container template-vignette-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -92,20 +92,66 @@
       
       </header>
 
-      <div class="page-header">
-  <h1>Articles <small>version&nbsp;0.1.0</small></h1>
-</div>
-
-<div class="row">
-  <div class="col-md-9">
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <ul>
-        <li><a href="plot-htest.html">Plot for distribution of common statistics and p-value</a></li>
-      </ul>
+      <div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>Runs test for randomness</h1>
     </div>
+
+    
+    <p>Runs test for randomness</p>
+    
+
+    <pre class="usage"><span class='fu'>runs.test</span>(<span class='no'>y</span>, <span class='kw'>plot.it</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"two.sided"</span>,
+  <span class='st'>"positive.correlated"</span>, <span class='st'>"negative.correlated"</span>))</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>y</th>
+      <td><p>A vector</p></td>
+    </tr>
+    <tr>
+      <th>plot.it</th>
+      <td><p>A logical. whether or not daw a plot</p></td>
+    </tr>
+    <tr>
+      <th>alternative</th>
+      <td><p>a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less".</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A list with class "htest" containing the following components: statistic,p-value,method and data.name</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>y</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>2</span>)
+<span class='fu'>runs.test</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; 
+#&gt; 	Runs Test - Two sided
+#&gt; 
+#&gt; data:  y
+#&gt; Standardized Runs Statistic = 0.76376, p-value = 0.445
+#&gt; </div><div class='input'><span class='no'>y</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"A"</span>,<span class='st'>"B"</span>,<span class='st'>"B"</span>,<span class='st'>"A"</span>,<span class='st'>"A"</span>,<span class='st'>"B"</span>,<span class='st'>"A"</span>,<span class='st'>"B"</span>)
+<span class='fu'>runs.test</span>(<span class='no'>y</span>,<span class='kw'>alternative</span><span class='kw'>=</span><span class='st'>"p"</span>)</div><div class='output co'>#&gt; 
+#&gt; 	Runs Test - Positive Correlated
+#&gt; 
+#&gt; data:  c(1, 2, 2, 1, 1, 2, 1, 2)
+#&gt; Standardized Runs Statistic = 0.76376, p-value = 0.7775
+#&gt; </div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
   </div>
 </div>
 

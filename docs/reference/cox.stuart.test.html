@@ -6,7 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Make subtitle — makeSub • webr</title>
+<title>Cox-Stuart test for trend analysis
+The Cox-Stuart test is defined as a little powerful test (power equal to 0.78), but very robust for the trend analysis.
+It is therefore applicable to a wide variety of situations, to get an idea of the evolution of values obtained.
+The proposed method is based on the binomial distribution.
+This function was written by Tommaso Martino&lt;todoslogos@gmail.com&gt; (See 'References') — cox.stuart.test • webr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,31 +99,61 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Make subtitle</h1>
+    <h1>Cox-Stuart test for trend analysis
+The Cox-Stuart test is defined as a little powerful test (power equal to 0.78), but very robust for the trend analysis.
+It is therefore applicable to a wide variety of situations, to get an idea of the evolution of values obtained.
+The proposed method is based on the binomial distribution.
+This function was written by Tommaso Martino&lt;todoslogos@gmail.com&gt; (See 'References')</h1>
     </div>
 
     
-    <p>Make subtitle</p>
+    <p>Cox-Stuart test for trend analysis
+The Cox-Stuart test is defined as a little powerful test (power equal to 0.78), but very robust for the trend analysis.
+It is therefore applicable to a wide variety of situations, to get an idea of the evolution of values obtained.
+The proposed method is based on the binomial distribution.
+This function was written by Tommaso Martino&lt;todoslogos@gmail.com&gt; (See 'References')</p>
     
 
-    <pre class="usage"><span class='fu'>makeSub</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>cox.stuart.test</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>An object of class "htest"</p></td>
+      <td><p>A numeric vector</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A list with class "htest"</p>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Original code: <a href='http://statistic-on-air.blogspot.kr/2009/08/trend-analysis-with-cox-stuart-test-in.html'>http://statistic-on-air.blogspot.kr/2009/08/trend-analysis-with-cox-stuart-test-in.html</a></p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>customers</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>5</span>, <span class='fl'>9</span>, <span class='fl'>12</span>, <span class='fl'>18</span>, <span class='fl'>17</span>, <span class='fl'>16</span>, <span class='fl'>19</span>, <span class='fl'>20</span>, <span class='fl'>4</span>, <span class='fl'>3</span>, <span class='fl'>18</span>, <span class='fl'>16</span>, <span class='fl'>17</span>, <span class='fl'>15</span>, <span class='fl'>14</span>)
+<span class='fu'>cox.stuart.test</span>(<span class='no'>customers</span>)</div><div class='output co'>#&gt; 
+#&gt; 	Cox-Stuart test for trend analysis
+#&gt; 
+#&gt; data:  
+#&gt; Decreasing trend, p-value = 0.10938
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#references">References</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
