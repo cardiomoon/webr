@@ -8,6 +8,8 @@ Imports:
    stringr
 Authors@R: person("Keon-Woong", "Moon", email = "cardiomoon@gmail.com",
     role = c("aut", "cre"))
+URL: https://github.com/cardiomoon/webr
+BugReports: https://github.com/cardiomoon/webr/issues
 Description: Several analysis-related functions for the book entitled 
     "Web-based Analysis with R for Writing Medical Papers" by Keon-Woong Moon.
 Depends: R(>= 2.10)    
