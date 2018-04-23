@@ -1,17 +1,21 @@
 Package: webr
 Type: Package
-Title: Data and Functions for Web-based Analysis With R
+Title: Data and Functions for Web-Based Analysis
 Version: 0.1.0
 Imports:
    moonBook,
    ggplot2,
    stringr
-Authors@R: person("Keon-Woong", "Moon", email = "cardiomoon@gmail.com",
-    role = c("aut", "cre"))
+Authors@R: c(person("Keon-Woong", "Moon", role = c("aut", "cre"),
+                     email = "cardiomoon@gmail.com"),
+           person("Tommaso","Martino",role=c("ctb"),
+           email="todoslogos@gmail.com"))
 URL: https://github.com/cardiomoon/webr
 BugReports: https://github.com/cardiomoon/webr/issues
 Description: Several analysis-related functions for the book entitled 
-    "Web-based Analysis with R for Writing Medical Papers" by Keon-Woong Moon.
+    "Web-based Analysis without R in Your Computer"(written in Korean,ISBN 978-89-5566-185-9) 
+    by Keon-Woong Moon. The main function 'plot.htest' shows distribution of statistic for the 
+    object 'htest'.
 Depends: R(>= 2.10)    
 License: GPL-3
 Encoding: UTF-8
