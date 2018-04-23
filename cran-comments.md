@@ -4,7 +4,7 @@ This is the resubmission of the package 'webr'
 2. I wrote the title in title case.
 3. I added Tommaso Martino in the Authors filed.
 4. I added the ISBN in my description field.
-5. I added a explanation of main function 'plot.htest' in Description
+5. I added a explanation of main function 'plot.htest' in Description field.
 
 ## Test environments
 * local OS X install, R 3.4.4
