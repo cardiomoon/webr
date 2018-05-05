@@ -30,4 +30,31 @@ Data and Functions for Web-Based Analysis
 4. I added the ISBN in my description field.
 5. I added a explanation of main function 'plot.htest' in Description field.
 
+## Automatic check results of last submission
+
+2018-4-23
+
+Windows check:
+** checking whether the package can be loaded ... ERROR
+Loading this package had a fatal error status code 1
+Loading log:
+Error: package or namespace load failed for 'webr' in library.dynam(lib, package, package.lib):
+ DLL 'tibble' not found: maybe not installed for this architecture?
+
+No strong reverse dependencies to be checked.
+ 
+## Submission Comments  
+
+2018-4-23
+
+I have never used ‘tibble’ in my package ‘webr’.
+I think the rejection is a false positive.
+
+## Reviewer Comments
+
+2018-5-5 by Uwe Ligges
+
+Thanks for your note, can you please resubmit the package, looks like this was a hicc up in our submission system.
+
+
 Thanks
