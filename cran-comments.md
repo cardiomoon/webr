@@ -56,5 +56,20 @@ I think the rejection is a false positive.
 
 Thanks for your note, can you please resubmit the package, looks like this was a hicc up in our submission system.
 
+## Reviewer comment
 
-Thanks
+2018-5-7 by Swetlana Herbrandt
+
+Thanks, please add a blank after "Korean,":
+Korean, ISBN
+
+Please do not enclose function names in quotation marks:
+plot.htest()
+
+Please fix and resubmit.
+
+## Submission Comments  
+
+I added a blank after "Korean,": Korean, ISBN
+
+I deleted quotation marks: plot.htest()
