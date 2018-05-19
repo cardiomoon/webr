@@ -1,11 +1,15 @@
 Package: webr
 Type: Package
 Title: Data and Functions for Web-Based Analysis
-Version: 0.1.0
+Version: 0.1.1
 Imports:
    moonBook,
    ggplot2,
-   stringr
+   stringr,
+   sjlabelled,
+   flextable,
+   magrittr,
+   rrtable
 Authors@R: c(person("Keon-Woong", "Moon", role = c("aut", "cre"),
                      email = "cardiomoon@gmail.com"),
            person("Tommaso","Martino",role=c("ctb"),
