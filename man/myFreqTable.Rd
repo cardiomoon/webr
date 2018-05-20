@@ -26,5 +26,5 @@ Make flextable summarizing frequency
 \examples{
 require(moonBook)
 myFreqTable(acs$Dx)
-myFreqTable(acs$smoking,lang="kor",vanilla=TRUE)
+myFreqTable(acs$smoking,lang="kor",vanilla=TRUE,fontsize=12)
 }

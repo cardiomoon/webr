@@ -9,7 +9,14 @@ Imports:
    sjlabelled,
    flextable,
    magrittr,
-   rrtable
+   rrtable,
+   dplyr,
+   tibble,
+   purrr,
+   rlang,
+   tidyr,
+   tidyselect,
+   psych
 Authors@R: c(person("Keon-Woong", "Moon", role = c("aut", "cre"),
                      email = "cardiomoon@gmail.com"),
            person("Tommaso","Martino",role=c("ctb"),

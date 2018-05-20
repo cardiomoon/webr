@@ -109,7 +109,7 @@ freqTable=function(x,digits=1,lang="en"){
 #' @examples
 #' require(moonBook)
 #' myFreqTable(acs$Dx)
-#' myFreqTable(acs$smoking,lang="kor",vanilla=TRUE)
+#' myFreqTable(acs$smoking,lang="kor",vanilla=TRUE,fontsize=12)
 myFreqTable=function(x,digits=1,lang="en",vanilla=FALSE,...){
 
     res=freqTable(x,digits=digits,lang=lang)
