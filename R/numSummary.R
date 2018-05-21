@@ -17,6 +17,7 @@
 #' acs %>% group_by(sex) %>% select(age,EF) %>% numSummary
 #' acs %>% group_by(sex,Dx) %>% select(age,EF) %>% numSummary
 #' acs %>% group_by(sex,Dx) %>% select(age) %>% numSummary
+#' acs %>% group_by(sex,Dx) %>% numSummary(age,EF,lang="kor")
 numSummary <- function(x,...,digits=2,lang="en") {
      if("grouped_df" %in% class(x)) {
 
@@ -139,7 +140,7 @@ numSummary_group_impl <- function(df, vars,digits=digits,lang=lang ) {
 #' acs %>% group_by(sex) %>% select(age) %>% numSummaryTable
 #' acs %>% group_by(sex) %>% select(age,EF) %>% numSummaryTable
 #' acs %>% group_by(sex,Dx) %>% select(age,EF) %>% numSummaryTable
-#' acs %>% group_by(sex,Dx) %>% select(age) %>% numSummaryTable
+#' acs %>% group_by(sex,Dx) %>% numSummaryTable(age,EF,lang="kor")
 numSummaryTable <- function(x,...){
 
     result=numSummary(x,...)

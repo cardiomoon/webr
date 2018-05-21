@@ -44,4 +44,5 @@ acs \%>\% group_by(sex) \%>\% select(age) \%>\% numSummary
 acs \%>\% group_by(sex) \%>\% select(age,EF) \%>\% numSummary
 acs \%>\% group_by(sex,Dx) \%>\% select(age,EF) \%>\% numSummary
 acs \%>\% group_by(sex,Dx) \%>\% select(age) \%>\% numSummary
+acs \%>\% group_by(sex,Dx) \%>\% numSummary(age,EF,lang="kor")
 }

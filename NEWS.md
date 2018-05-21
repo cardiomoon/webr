@@ -4,6 +4,8 @@
 
 * new functions freqTable() and myFreqTable() added
 
+* new functions numSummary() and numSummaryTable() added
+
 * dictionary file dicTable added
 
 * new function langchoice1() added

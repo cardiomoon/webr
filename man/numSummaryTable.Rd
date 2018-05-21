@@ -25,5 +25,5 @@ numSummaryTable(acs$age)
 acs \%>\% group_by(sex) \%>\% select(age) \%>\% numSummaryTable
 acs \%>\% group_by(sex) \%>\% select(age,EF) \%>\% numSummaryTable
 acs \%>\% group_by(sex,Dx) \%>\% select(age,EF) \%>\% numSummaryTable
-acs \%>\% group_by(sex,Dx) \%>\% select(age) \%>\% numSummaryTable
+acs \%>\% group_by(sex,Dx) \%>\% numSummaryTable(age,EF,lang="kor")
 }
