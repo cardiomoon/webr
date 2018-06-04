@@ -7,9 +7,9 @@
 #' @importFrom stats addmargins
 #' @examples
 #' require(moonBook)
-#' freqTable(acs$Dx)
-#' freqTable(acs$smoking,lang="kor")
-freqTable=function(x,digits=1,lang="en"){
+#' freqSummary(acs$Dx)
+#' freqSummary(acs$smoking,lang="kor")
+freqSummary=function(x,digits=1,lang="en"){
         if(sum(is.na(x))==0){
                 # (x=to_label(x))
                 (res=table(x))
@@ -108,11 +108,11 @@ freqTable=function(x,digits=1,lang="en"){
 #' @importFrom magrittr '%>%'
 #' @examples
 #' require(moonBook)
-#' myFreqTable(acs$Dx)
-#' myFreqTable(acs$smoking,lang="kor",vanilla=TRUE,fontsize=12)
-myFreqTable=function(x,digits=1,lang="en",vanilla=FALSE,...){
+#' FreqTable(acs$Dx)
+#' FreqTable(acs$smoking,lang="kor",vanilla=TRUE,fontsize=12)
+FreqTable=function(x,digits=1,lang="en",vanilla=FALSE,...){
 
-    res=freqTable(x,digits=digits,lang=lang)
+    res=freqSummary(x,digits=digits,lang=lang)
     tempname=colnames(res)
     res=data.frame(res,stringsAsFactors=FALSE)
     colnames(res)=tempname

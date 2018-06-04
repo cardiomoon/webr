@@ -128,6 +128,8 @@ numSummary_group_impl <- function(df, vars,digits=digits,lang=lang ) {
 #' Make a table showing numerical summary
 #' @param x A grouped_df or a data.frame or a vector
 #' @param ... further argument to be passed
+#' @param lang Language. choices are one of c("en","kor")
+#' @param vanilla Logical. Whether make vanilla table or not
 #' @export
 #' @examples
 #' require(moonBook)
@@ -139,10 +141,10 @@ numSummary_group_impl <- function(df, vars,digits=digits,lang=lang ) {
 #' numSummaryTable(acs$age)
 #' acs %>% group_by(sex) %>% select(age) %>% numSummaryTable
 #' acs %>% group_by(sex) %>% select(age,EF) %>% numSummaryTable
-#' acs %>% group_by(sex,Dx) %>% select(age,EF) %>% numSummaryTable
+#' acs %>% group_by(sex,Dx) %>% select(age,EF) %>% numSummaryTable(vanilla=FALSE)
 #' acs %>% group_by(sex,Dx) %>% numSummaryTable(age,EF,lang="kor")
-numSummaryTable <- function(x,...){
+numSummaryTable <- function(x,...,lang="en",vanilla=FALSE){
 
-    result=numSummary(x,...)
-    df2flextable(result,add.rownames=TRUE)
+    result=numSummary(x,lang=lang,...)
+    df2flextable(result,add.rownames=TRUE,vanilla=vanilla)
 }

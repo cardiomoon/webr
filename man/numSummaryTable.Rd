@@ -4,12 +4,16 @@
 \alias{numSummaryTable}
 \title{Make a table showing numerical summary}
 \usage{
-numSummaryTable(x, ...)
+numSummaryTable(x, ..., lang = "en", vanilla = FALSE)
 }
 \arguments{
 \item{x}{A grouped_df or a data.frame or a vector}
 
 \item{...}{further argument to be passed}
+
+\item{lang}{Language. choices are one of c("en","kor")}
+
+\item{vanilla}{Logical. Whether make vanilla table or not}
 }
 \description{
 Make a table showing numerical summary
@@ -24,6 +28,6 @@ numSummaryTable(acs)
 numSummaryTable(acs$age)
 acs \%>\% group_by(sex) \%>\% select(age) \%>\% numSummaryTable
 acs \%>\% group_by(sex) \%>\% select(age,EF) \%>\% numSummaryTable
-acs \%>\% group_by(sex,Dx) \%>\% select(age,EF) \%>\% numSummaryTable
+acs \%>\% group_by(sex,Dx) \%>\% select(age,EF) \%>\% numSummaryTable(vanilla=FALSE)
 acs \%>\% group_by(sex,Dx) \%>\% numSummaryTable(age,EF,lang="kor")
 }
