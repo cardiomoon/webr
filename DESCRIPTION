@@ -1,7 +1,7 @@
 Package: webr
 Type: Package
 Title: Data and Functions for Web-Based Analysis
-Version: 0.1.1
+Version: 0.1.2
 Imports:
    moonBook,
    ggplot2,
@@ -16,7 +16,11 @@ Imports:
    rlang,
    tidyr,
    tidyselect,
-   psych
+   psych,
+   grid,
+   ztable,
+   ggforce,
+   scales
 Authors@R: c(person("Keon-Woong", "Moon", role = c("aut", "cre"),
                      email = "cardiomoon@gmail.com"),
            person("Tommaso","Martino",role=c("ctb"),

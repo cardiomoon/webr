@@ -18,6 +18,6 @@ Make table summarizing frequency
 }
 \examples{
 require(moonBook)
-freqTSummary(acs$Dx)
+freqSummary(acs$Dx)
 freqSummary(acs$smoking,lang="kor")
 }

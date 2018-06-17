@@ -1,3 +1,11 @@
+# webr version 0.1.2
+====================
+(17-June-2018)
+
+* new function transparent(), gg_color_hue(), makeSubcolor() added
+
+* new function PieDonut() added
+
 # webr version 0.1.1
 =====================
 (19-May-2018)
