@@ -84,6 +84,7 @@ makeSubColor=function(main,no=3){
 #'browser=c("MSIE","Firefox","Chrome","Safari","Opera")
 #'share=c(50,21.9,10.8,6.5,1.8)
 #'df=data.frame(browser,share)
+#'PieDonut(df,aes(browser,count=share),r0=0.7,start=3*pi/2)
 #'PieDonut(df,aes(browser,count=share),r0=0.7,explode=5,start=3*pi/2)
 #'PieDonut(mtcars,aes(gear,carb),start=3*pi/2,title="Distribution of carb by gear")
 #'PieDonut(mtcars,aes(carb,gear),r0=0)
@@ -107,7 +108,7 @@ PieDonut=function(data,mapping,
                   showRatioDonut=TRUE,showRatioPie=TRUE,
                   ratioByGroup=TRUE,
                   showRatioThreshold=0.02,
-                  labelposition=1,
+                  labelposition=2,
                   r0=0.3,r1=1.0,r2=1.2,
                   explode=NULL,
                   selected=NULL,
@@ -134,6 +135,7 @@ PieDonut=function(data,mapping,
         # data=df;mapping=aes(x=gear,y=carb,count=n)
         #  data=browsers;mapping=aes(pies=browser,donuts=version,count=share)
         #  data
+
         # start=pi/2
         # addPieLabel=TRUE;addDonutLabel=TRUE
         # showRatioDonut=TRUE;showRatioPie=TRUE
@@ -151,7 +153,13 @@ PieDonut=function(data,mapping,
         # use.label=TRUE;use.labels=TRUE
         # maxx=NULL
         # explode=1;explodeDonut=TRUE;labelposition=0
-        # selected=NULL;showtitle=TRUE;titlesize=5
+        # selected=NULL;title=NULL;titlesize=5
+        # data=acs;mapping=aes(Dx)
+        # browser=c("MSIE","Firefox","Chrome","Safari","Opera")
+        # share=c(50,21.9,10.8,6.5,1.8)
+        # df=data.frame(browser,share)
+        # data=df;mapping=aes(browser,count=share);r0=0.7;explode=5;start=3*pi/2
+        # data=mtcars;mapping=aes(gear,carb)
 
 
         (cols=colnames(data))
@@ -208,6 +216,17 @@ PieDonut=function(data,mapping,
                 df
 
                 mainCol=gg_color_hue(nrow(df))
+
+
+                df$radius=r1
+                df$radius[df$focus!=0]=df$radius[df$focus!=0]+df$focus[df$focus!=0]
+                df$hjust=ifelse((df$mid %% (2*pi))>pi,1,0)
+                df$vjust=ifelse(((df$mid %% (2*pi)) <(pi/2))|(df$mid %% (2*pi) >(pi*3/2)),0,1)
+                df$segx=df$radius*sin(df$mid)
+                df$segy=df$radius*cos(df$mid)
+                df$segxend=(df$radius+0.05)*sin(df$mid)
+                df$segyend=(df$radius+0.05)*cos(df$mid)
+                df
 
                 if(!is.null(donuts)){
                 subColor=makeSubColor(mainCol,no=length(unique(data[[donuts]])))
@@ -311,15 +330,18 @@ PieDonut=function(data,mapping,
                 df3
                 # str(df3)
                 labelposition
-                if(labelposition==1){
+                if(labelposition>0){
                         df3$radius=r2
                         if(explodeDonut) df3$radius[df3$focus!=0]=df3$radius[df3$focus!=0]+df3$focus[df3$focus!=0]
-                        df3$labelx= (df3$radius+0.05)*sin(df3$mid)+df3$x
-                        df3$labely= (df3$radius+0.05)*cos(df3$mid)+df3$y
+
                         df3$segx=df3$radius*sin(df3$mid)+df3$x
                         df3$segy=df3$radius*cos(df3$mid)+df3$y
                         df3$segxend=(df3$radius+0.05)*sin(df3$mid)+df3$x
                         df3$segyend=(df3$radius+0.05)*cos(df3$mid)+df3$y
+
+                        if(labelposition==2) df3$radius=(r1+r2)/2
+                        df3$labelx= (df3$radius)*sin(df3$mid)+df3$x
+                        df3$labely= (df3$radius)*cos(df3$mid)+df3$y
                 } else{
                         df3$radius=(r1+r2)/2
                         if(explodeDonut) df3$radius[df3$focus!=0]=df3$radius[df3$focus!=0]+df3$focus[df3$focus!=0]
@@ -352,8 +374,22 @@ PieDonut=function(data,mapping,
                                          fill = pies),alpha=pieAlpha,color=color,
                                      data = df)+transparent()+
                         scale_fill_manual(values=mainCol)+
-                        xlim(r3*c(-1,1))+ylim(r3*c(-1,1))+guides(fill=FALSE)+
-                        geom_text(aes_string(x="labelx",y="labely",label="label"),size=pieLabelSize,data=df)
+                        xlim(r3*c(-1,1))+ylim(r3*c(-1,1))+guides(fill=FALSE)
+                if((labelposition==1)&(is.null(donuts))){
+                        p1<-p1+ geom_segment(aes_string(x="segx",y="segy",
+                                                        xend="segxend",yend="segyend"),data=df)+
+                                geom_text(aes_string(x="segxend",y="segyend",label="label",hjust="hjust",vjust="vjust"),size=pieLabelSize,data=df)
+
+                } else if((labelposition==2)&(is.null(donuts))){
+                        p1<-p1+ geom_segment(aes_string(x="segx",y="segy",
+                                                        xend="segxend",yend="segyend"),data=df[df$ratio<0.1,])+
+                                geom_text(aes_string(x="segxend",y="segyend",label="label",hjust="hjust",vjust="vjust"),size=pieLabelSize,data=df[df$ratio<0.1,])+
+                                geom_text(aes_string(x="labelx",y="labely",label="label"),size=pieLabelSize,data=df[df$ratio>=0.1,])
+
+
+                } else{
+                        p1 <-p1+geom_text(aes_string(x="labelx",y="labely",label="label"),size=pieLabelSize,data=df)
+                }
 
                 if(showPieName) p1<-p1+annotate("text",x=0,y=0,label=pies,size=titlesize)
 
@@ -381,11 +417,19 @@ PieDonut=function(data,mapping,
                 if(labelposition==1){
                 p3<-p3+ geom_segment(aes_string(x="segx",y="segy",
                                          xend="segxend",yend="segyend"),data=df3)+
-                        geom_text(aes_string(x="labelx",y="labely",
+                        geom_text(aes_string(x="segxend",y="segyend",
                                       label="label",hjust="hjust",vjust="vjust"),size=donutLabelSize,data=df3)
-                } else{
+                } else if(labelposition==0){
                         p3<-p3+geom_text(aes_string(x="labelx",y="labely",
                                              label="label"),size=donutLabelSize,data=df3)
+                } else{
+                        p3<-p3+ geom_segment(aes_string(x="segx",y="segy",
+                                                        xend="segxend",yend="segyend"),data=df3[df3$ratio1<0.1,])+
+                                geom_text(aes_string(x="segxend",y="segyend",
+                                                     label="label",hjust="hjust",vjust="vjust"),size=donutLabelSize,data=df3[df3$ratio1<0.1,])+
+                                geom_text(aes_string(x="labelx",y="labely",
+                                                            label="label"),size=donutLabelSize,data=df3[df3$ratio1>=0.1,])
+
                 }
 
                 if(!is.null(title)) p3<-p3+annotate("text",x=0,y=r3,label=title,size=titlesize)
