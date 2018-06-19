@@ -108,9 +108,9 @@ freqSummary=function(x,digits=1,lang="en"){
 #' @importFrom magrittr '%>%'
 #' @examples
 #' require(moonBook)
-#' FreqTable(acs$Dx)
-#' FreqTable(acs$smoking,lang="kor",vanilla=TRUE,fontsize=12)
-FreqTable=function(x,digits=1,lang="en",vanilla=FALSE,...){
+#' freqTable(acs$Dx)
+#' freqTable(acs$smoking,lang="kor",vanilla=TRUE,fontsize=12)
+freqTable=function(x,digits=1,lang="en",vanilla=FALSE,...){
 
     res=freqSummary(x,digits=digits,lang=lang)
     tempname=colnames(res)

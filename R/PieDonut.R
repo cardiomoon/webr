@@ -49,6 +49,7 @@ makeSubColor=function(main,no=3){
 #'@param ratioByGroup A logical value. If TRUE, ratios ara calculated per group
 #'@param showRatioThreshold An integer. Threshold to show label as a ratio of total. default value is 0.02.
 #'@param labelposition A number indicating the label position
+#'@param labelpositionThreshold label position threshold. Default value is 0.1.
 #'@param r0 Integer. start point of pie
 #'@param r1 Integer. end point of pie
 #'@param r2 Integer. end point of donut
@@ -84,7 +85,7 @@ makeSubColor=function(main,no=3){
 #'browser=c("MSIE","Firefox","Chrome","Safari","Opera")
 #'share=c(50,21.9,10.8,6.5,1.8)
 #'df=data.frame(browser,share)
-#'PieDonut(df,aes(browser,count=share),r0=0.7,start=3*pi/2)
+#'PieDonut(df,aes(browser,count=share),r0=0.7,start=3*pi/2,labelpositionThreshold=0.1)
 #'PieDonut(df,aes(browser,count=share),r0=0.7,explode=5,start=3*pi/2)
 #'PieDonut(mtcars,aes(gear,carb),start=3*pi/2,title="Distribution of carb by gear")
 #'PieDonut(mtcars,aes(carb,gear),r0=0)
@@ -109,6 +110,7 @@ PieDonut=function(data,mapping,
                   ratioByGroup=TRUE,
                   showRatioThreshold=0.02,
                   labelposition=2,
+                  labelpositionThreshold=0.1,
                   r0=0.3,r1=1.0,r2=1.2,
                   explode=NULL,
                   selected=NULL,
@@ -382,9 +384,9 @@ PieDonut=function(data,mapping,
 
                 } else if((labelposition==2)&(is.null(donuts))){
                         p1<-p1+ geom_segment(aes_string(x="segx",y="segy",
-                                                        xend="segxend",yend="segyend"),data=df[df$ratio<0.1,])+
-                                geom_text(aes_string(x="segxend",y="segyend",label="label",hjust="hjust",vjust="vjust"),size=pieLabelSize,data=df[df$ratio<0.1,])+
-                                geom_text(aes_string(x="labelx",y="labely",label="label"),size=pieLabelSize,data=df[df$ratio>=0.1,])
+                                                        xend="segxend",yend="segyend"),data=df[df$ratio<labelpositionThreshold,])+
+                                geom_text(aes_string(x="segxend",y="segyend",label="label",hjust="hjust",vjust="vjust"),size=pieLabelSize,data=df[df$ratio<labelpositionThreshold,])+
+                                geom_text(aes_string(x="labelx",y="labely",label="label"),size=pieLabelSize,data=df[df$ratio>=labelpositionThreshold,])
 
 
                 } else{
@@ -424,11 +426,11 @@ PieDonut=function(data,mapping,
                                              label="label"),size=donutLabelSize,data=df3)
                 } else{
                         p3<-p3+ geom_segment(aes_string(x="segx",y="segy",
-                                                        xend="segxend",yend="segyend"),data=df3[df3$ratio1<0.1,])+
+                                                        xend="segxend",yend="segyend"),data=df3[df3$ratio1<labelpositionThreshold,])+
                                 geom_text(aes_string(x="segxend",y="segyend",
-                                                     label="label",hjust="hjust",vjust="vjust"),size=donutLabelSize,data=df3[df3$ratio1<0.1,])+
+                                                     label="label",hjust="hjust",vjust="vjust"),size=donutLabelSize,data=df3[df3$ratio1<labelpositionThreshold,])+
                                 geom_text(aes_string(x="labelx",y="labely",
-                                                            label="label"),size=donutLabelSize,data=df3[df3$ratio1>=0.1,])
+                                                            label="label"),size=donutLabelSize,data=df3[df3$ratio1>=labelpositionThreshold,])
 
                 }
 

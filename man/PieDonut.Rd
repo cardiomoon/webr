@@ -6,13 +6,13 @@
 \usage{
 PieDonut(data, mapping, start = 0, addPieLabel = TRUE,
   addDonutLabel = TRUE, showRatioDonut = TRUE, showRatioPie = TRUE,
-  ratioByGroup = TRUE, showRatioThreshold = 0.02, labelposition = 1,
-  r0 = 0.3, r1 = 1, r2 = 1.2, explode = NULL, selected = NULL,
-  explodePos = 0.1, color = "white", pieAlpha = 0.8, donutAlpha = 1,
-  maxx = NULL, showPieName = TRUE, showDonutName = FALSE, title = NULL,
-  pieLabelSize = 4, donutLabelSize = 3, titlesize = 5,
-  explodePie = TRUE, explodeDonut = FALSE, use.label = TRUE,
-  use.labels = TRUE)
+  ratioByGroup = TRUE, showRatioThreshold = 0.02, labelposition = 2,
+  labelpositionThreshold = 0.1, r0 = 0.3, r1 = 1, r2 = 1.2,
+  explode = NULL, selected = NULL, explodePos = 0.1, color = "white",
+  pieAlpha = 0.8, donutAlpha = 1, maxx = NULL, showPieName = TRUE,
+  showDonutName = FALSE, title = NULL, pieLabelSize = 4,
+  donutLabelSize = 3, titlesize = 5, explodePie = TRUE,
+  explodeDonut = FALSE, use.label = TRUE, use.labels = TRUE)
 }
 \arguments{
 \item{data}{A data.frame}
@@ -34,6 +34,8 @@ PieDonut(data, mapping, start = 0, addPieLabel = TRUE,
 \item{showRatioThreshold}{An integer. Threshold to show label as a ratio of total. default value is 0.02.}
 
 \item{labelposition}{A number indicating the label position}
+
+\item{labelpositionThreshold}{label position threshold. Default value is 0.1.}
 
 \item{r0}{Integer. start point of pie}
 
@@ -84,6 +86,7 @@ require(ggplot2)
 browser=c("MSIE","Firefox","Chrome","Safari","Opera")
 share=c(50,21.9,10.8,6.5,1.8)
 df=data.frame(browser,share)
+PieDonut(df,aes(browser,count=share),r0=0.7,start=3*pi/2,labelpositionThreshold=0.1)
 PieDonut(df,aes(browser,count=share),r0=0.7,explode=5,start=3*pi/2)
 PieDonut(mtcars,aes(gear,carb),start=3*pi/2,title="Distribution of carb by gear")
 PieDonut(mtcars,aes(carb,gear),r0=0)
