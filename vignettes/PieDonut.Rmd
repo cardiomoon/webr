@@ -1,0 +1,139 @@
+---
+title: "Pie Chart Revisited"
+author: "Keon-Woong Moon"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE,comment = NA,warning=FALSE,fig.width=6,fig.height = 6, fig.align='center',out.width="70%")
+```
+
+A pie chart (or a circle chart) is a circular statistical graphic which is divided into slices to illustrate numerical proportion. In a pie chart, the arc length of each slice (and consequently its central angle and area), is proportional to the quantity it represents. While it is named for its resemblance to a pie which has been sliced, there are variations on the way it can be presented. A doughnut chart (also spelled donut) is a variant of the pie chart, with a blank center allowing for additional information about the data as a whole to be included. I recently developed a function named "PieDonut" to combine pie and donut chart.
+
+## Installation of packages
+
+You have to install the latest versions of "webr" and "moonBook" packages from github. The CRAN version does not have PieDonut() function. 
+
+```{r,eval=FALSE}
+if(!require(devtools)) install.packages("devtools")
+devtools::install_github("cardiomoon/moonBook")
+devtools::install_github("cardiomoon/webr")
+```
+
+## Load packages
+
+```{r,message=FALSE}
+require(ggplot2)
+require(moonBook)
+require(webr)
+```
+
+
+## Bacis Use
+
+The acs data included in package moonBook is demographic and laboratory data of 857 patients with acute coronary syndrome(ACS). If you want to show the distribution of smoking status according to diagnosis, make the PieDonut Plot with the following code. 
+
+```{r}
+PieDonut(acs,aes(pies=Dx,donuts=smoking))
+```
+
+## Label position
+
+By default, the labelposition argument is 2 - labels for doughnuts are located outside if the percentage of total is less than 10 % (labelpositionThreshold=0.1 by default).
+
+```{r}
+PieDonut(acs,aes(Dx,smoking),ratioByGroup=FALSE)
+```
+
+If you want to place the labels for donuts inside, set the labelposition argument 0. To place all labels outside, set the labelposition argument 1.
+
+```{r,fig.show='hold',out.width='45%',fig.align='default'}
+PieDonut(acs,aes(Dx,smoking),selected=1,labelposition=0,title="labelposition=0")
+PieDonut(acs,aes(Dx,smoking),selected=1,labelposition=1,title="labelposition=1")
+```
+
+
+## Explode Pie 
+
+```{r}
+PieDonut(acs,aes(Dx,smoking),explode=1)
+```
+
+##  Explode Pie and Donuts
+```{r}
+PieDonut(acs,aes(Dx,smoking),explode=1,explodeDonut=TRUE)
+```
+
+## Explode Pie and Donuts independently
+
+```{r}
+PieDonut(acs,aes(Dx,smoking),explode=1,selected=c(3,6,9),explodeDonut=TRUE)
+```
+
+## Customize start angle
+
+```{r}
+PieDonut(acs,aes(Dx,smoking),start=3*pi/2,explode=1,selected=c(3,6,9),explodeDonut=TRUE)
+```
+
+## Add title
+```{r}
+PieDonut(acs,aes(Dx,smoking),start=3*pi/2,explode=1,selected=c(3,6,9),explodeDonut=TRUE,title="Distribution of Smoking Status by Diagnosis")
+```
+
+
+## Adjust the radius
+
+You can adjust the radius of pie and donut plot with r0, r1 and r2 arguments. If you want to show exact pie(withoue a center hole), set the r0 argument '0' and showPieName FALSE.
+
+```{r}
+PieDonut(acs,aes(Dx,smoking),r0=0,showPieName=FALSE)
+```
+
+You can adjust the radius of pie(r1, default value 1) and radius doughnut(r2, default value 1.2). You can make smaller pies and larger doughnuts with the following codes.
+
+```{r}
+PieDonut(acs,aes(Dx,smoking),r0=0.2,r1=0.8,r2=1.4,explode=1,start=pi/2,explodeDonut=TRUE)
+```
+
+## Show Ratio by group
+
+By Default, the ratio of donuts are percentage by group. If you want to show percentage of total, set the ratioByGroup argument FALSE.
+```{r}
+PieDonut(acs,aes(Dx,smoking),ratioByGroup=FALSE)
+```
+
+
+## Doughnut plot
+
+If you want to show donut plot(without pie), please use the followng code. 
+```{r,fig.show='hold',out.width='45%',fig.align='default'}
+browser=c("MSIE","Firefox","Chrome","Safari","Opera")
+share=c(50,21.9,10.8,6.5,1.8)
+df=data.frame(browser,share)
+PieDonut(df,aes(browser,count=share),r0=0.7,start=3*pi/2,labelpositionThreshold=0.1)
+PieDonut(df,aes(browser,count=share),r0=0.7,explode=c(1,4),start=3*pi/2)
+```
+
+## Summarized Data
+
+If you have summarized data, please map the count variable to count.
+```{r,message=FALSE}
+require(dplyr)
+df=mtcars %>% group_by(gear,carb) %>% summarize(n=n())
+df
+```
+
+```{r}
+PieDonut(df,aes(gear,carb,count=n),explode=3,r1=0.9,explodeDonut=TRUE,title="Distribution of carburetors by gears",star=3*pi/2,labelposition=0)
+```
+
+This plot is identical with the following plot.
+```{r}
+PieDonut(mtcars,aes(gear,carb),explode=3,r1=0.9,explodeDonut=TRUE,title="Distribution of carburetors by gears",star=3*pi/2,labelposition=0)
+```

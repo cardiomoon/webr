@@ -232,3 +232,6 @@ plot(x)
 
 <img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="90%" style="display: block; margin: auto;" />
  
+## Vignette for PieDonut() function
+
+http://rpubs.com/cardiomoon/398623

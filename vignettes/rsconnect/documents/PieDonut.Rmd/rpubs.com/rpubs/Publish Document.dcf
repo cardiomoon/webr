@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/398623/fef22b95e28745208ca96bcfe05ccdb2
+bundleId: https://api.rpubs.com/api/v1/document/398623/fef22b95e28745208ca96bcfe05ccdb2
+url: http://rpubs.com/cardiomoon/398623
+when: 1529470250.12239
