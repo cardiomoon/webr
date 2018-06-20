@@ -234,4 +234,6 @@ plot(x)
  
 ## Vignette for PieDonut() function
 
+<img src="https://raw.githubusercontent.com/cardiomoon/webr/master/figure/piedonut.png" title="piedonut plot" alt="plot of chunk unnamed-chunk-9" width="90%" style="display: block; margin: auto;" />
+
 http://rpubs.com/cardiomoon/398623
