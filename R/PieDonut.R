@@ -87,9 +87,9 @@ makeSubColor=function(main,no=3){
 #'df=data.frame(browser,share)
 #'PieDonut(df,aes(browser,count=share),r0=0.7,start=3*pi/2,labelpositionThreshold=0.1)
 #'PieDonut(df,aes(browser,count=share),r0=0.7,explode=5,start=3*pi/2)
-#'PieDonut(mtcars,aes(gear,carb),start=3*pi/2,title="Distribution of carb by gear")
+#'PieDonut(mtcars,aes(gear,carb),start=3*pi/2,explode=3,explodeDonut=TRUE,maxx=1.7)
 #'PieDonut(mtcars,aes(carb,gear),r0=0)
-#'PieDonut(acs,aes(smoking,Dx))
+#'PieDonut(acs,aes(smoking,Dx),title="Distribution of smoking status by diagnosis")
 #'PieDonut(acs,aes(Dx,smoking),ratioByGroup=FALSE,r0=0)
 #'PieDonut(acs,aes(Dx,smoking),selected=c(1,3,5,7),explodeDonut=TRUE)
 #'PieDonut(acs,aes(Dx,smoking),explode=1,selected=c(2,4,6,8),labelposition=0,explodeDonut=TRUE)
@@ -136,8 +136,6 @@ PieDonut=function(data,mapping,
         # df=mtcars %>% group_by(gear,carb) %>% summarize(n=n())
         # data=df;mapping=aes(x=gear,y=carb,count=n)
         #  data=browsers;mapping=aes(pies=browser,donuts=version,count=share)
-        #  data
-
         # start=pi/2
         # addPieLabel=TRUE;addDonutLabel=TRUE
         # showRatioDonut=TRUE;showRatioPie=TRUE
@@ -162,6 +160,8 @@ PieDonut=function(data,mapping,
         # df=data.frame(browser,share)
         # data=df;mapping=aes(browser,count=share);r0=0.7;explode=5;start=3*pi/2
         # data=mtcars;mapping=aes(gear,carb)
+        # showPieName=TRUE;showDonutName=FALSE
+        # data=mtcars;mapping=aes(gear,carb);explode=3;explodeDonut=TRUE
 
 
         (cols=colnames(data))
@@ -290,13 +290,14 @@ PieDonut=function(data,mapping,
                 df3$end1=df3$end1+start
                 df3$mid=(df3$start1+df3$end1)/2
                 df3$focus=0
+
                 if(!is.null(selected)){
                         df3$focus[selected]=explodePos
                 } else if(!is.null(explode)) {
                         selected=c()
                         for(i in 1:length(explode)){
-                              start=1+nrow(df)*(explode[i]-1)
-                              selected=c(selected,start:(start+nrow(df)-1))
+                              start=1+nrow(a)*(explode[i]-1)
+                              selected=c(selected,start:(start+nrow(a)-1))
                         }
                         selected
                         df3$focus[selected]=explodePos
@@ -323,7 +324,9 @@ PieDonut=function(data,mapping,
                         if(max(nchar(levels(df3$label)))<=2) df3$label=paste0(df3$label,"(",df3$ratio,")")
                         else df3$label=paste0(df3$label,"\n(",df3$ratio,")")
                 }
-                df3$label[df3$ratio1<showRatioThreshold]=""
+                df3$label[df3$ratio1==0]=""
+
+                if(labelposition==0) df3$label[df3$ratio1<showRatioThreshold]=""
 
 
                 df3$hjust=ifelse((df3$mid %% (2*pi))>pi,1,0)
@@ -350,10 +353,16 @@ PieDonut=function(data,mapping,
                         df3$labelx=df3$radius*sin(df3$mid)+df3$x
                         df3$labely=df3$radius*cos(df3$mid)+df3$y
                 }
+                df3$segx[df3$ratio1==0]=0
+                df3$segxend[df3$ratio1==0]=0
+                df3$segy[df3$ratio1==0]=0
+                df3$segyend[df3$ratio1==0]=0
+                if(labelposition==0){
                 df3$segx[df3$ratio1<showRatioThreshold]=0
                 df3$segxend[df3$ratio1<showRatioThreshold]=0
                 df3$segy[df3$ratio1<showRatioThreshold]=0
                 df3$segyend[df3$ratio1<showRatioThreshold]=0
+                }
                 df3
 
                 del=which(df3$Freq==0)
@@ -394,6 +403,7 @@ PieDonut=function(data,mapping,
                 }
 
                 if(showPieName) p1<-p1+annotate("text",x=0,y=0,label=pies,size=titlesize)
+                p1
 
                 if(!is.null(donuts)){
 
@@ -416,6 +426,7 @@ PieDonut=function(data,mapping,
                         scale_fill_manual(values=subColor)+
                         xlim(r3*c(-1,1))+ylim(r3*c(-1,1))+guides(fill=FALSE)
 
+                p3
                 if(labelposition==1){
                 p3<-p3+ geom_segment(aes_string(x="segx",y="segy",
                                          xend="segxend",yend="segyend"),data=df3)+
