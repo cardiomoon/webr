@@ -34,7 +34,7 @@ require(webr)
 ```
 
 
-## Bacis Use
+## Basic Use
 
 The acs data included in package moonBook is demographic and laboratory data of 857 patients with acute coronary syndrome(ACS). If you want to show the distribution of smoking status according to diagnosis, make the PieDonut Plot with the following code. 
 
