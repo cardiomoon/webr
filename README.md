@@ -13,7 +13,7 @@ To understand the concept of p value is very important. To teach the the distrib
 
 ## Homepage of this package
 
-https://cardiomoon.github.io/webr/
+https://cardiomoon.github.io/webr/index.html
 
 
 ## Package Installation
