@@ -7,7 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Cox-Stuart test for trend analysis
-</title>
+The Cox-Stuart test is defined as a little powerful test (power equal to 0.78), but very robust for the trend analysis.
+It is therefore applicable to a wide variety of situations, to get an idea of the evolution of values obtained.
+The proposed method is based on the binomial distribution.
+This function was written by Tommaso Martino&lt;todoslogos@gmail.com&gt; (See 'References') — cox.stuart.test • webr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -19,11 +22,31 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
+<meta property="og:title" content="Cox-Stuart test for trend analysis
+The Cox-Stuart test is defined as a little powerful test (power equal to 0.78), but very robust for the trend analysis.
+It is therefore applicable to a wide variety of situations, to get an idea of the evolution of values obtained.
+The proposed method is based on the binomial distribution.
+This function was written by Tommaso Martino&lt;todoslogos@gmail.com&gt; (See 'References') — cox.stuart.test" />
+
+<meta property="og:description" content="Cox-Stuart test for trend analysis
+The Cox-Stuart test is defined as a little powerful test (power equal to 0.78), but very robust for the trend analysis.
+It is therefore applicable to a wide variety of situations, to get an idea of the evolution of values obtained.
+The proposed method is based on the binomial distribution.
+This function was written by Tommaso Martino&amp;lt;todoslogos@gmail.com&amp;gt; (See 'References')" />
+<meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -48,14 +71,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">webr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">webr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
-
+     
   </a>
 </li>
 <li>
@@ -64,53 +91,67 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
-
+     
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/PieDonut.html">Pie Chart Revisited</a>
+    </li>
+    <li>
       <a href="../articles/plot-htest.html">Plot for distribution of common statistics and p-value</a>
+    </li>
+    <li>
+      <a href="../articles/rsconnect/documents/PieDonut.html">UNKNOWN TITLE</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-
+      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/cardiomoon/webr">
     <span class="fa fa-github fa-lg"></span>
-
+     
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-
+      
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Cox-Stuart test for trend analysis
-      </h1>
+The Cox-Stuart test is defined as a little powerful test (power equal to 0.78), but very robust for the trend analysis.
+It is therefore applicable to a wide variety of situations, to get an idea of the evolution of values obtained.
+The proposed method is based on the binomial distribution.
+This function was written by Tommaso Martino&lt;todoslogos@gmail.com&gt; (See 'References')</h1>
+    <small class="dont-index">Source: <a href='https://github.com/cardiomoon/webr/blob/master/R/cox.stuart.test.R'><code>R/cox.stuart.test.R</code></a></small>
+    <div class="hidden name"><code>cox.stuart.test.Rd</code></div>
     </div>
 
-
+    <div class="ref-description">
+    
     <p>Cox-Stuart test for trend analysis
 The Cox-Stuart test is defined as a little powerful test (power equal to 0.78), but very robust for the trend analysis.
 It is therefore applicable to a wide variety of situations, to get an idea of the evolution of values obtained.
 The proposed method is based on the binomial distribution.
 This function was written by Tommaso Martino&lt;todoslogos@gmail.com&gt; (See 'References')</p>
-
+    
+    </div>
 
     <pre class="usage"><span class='fu'>cox.stuart.test</span>(<span class='no'>x</span>)</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -118,22 +159,22 @@ This function was written by Tommaso Martino&lt;todoslogos@gmail.com&gt; (See 'R
       <td><p>A numeric vector</p></td>
     </tr>
     </table>
-
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list with class "htest"</p>
-
+    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Original code: <a href='http://statistic-on-air.blogspot.kr/2009/08/trend-analysis-with-cox-stuart-test-in.html'>http://statistic-on-air.blogspot.kr/2009/08/trend-analysis-with-cox-stuart-test-in.html</a></p>
-
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>customers</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>5</span>, <span class='fl'>9</span>, <span class='fl'>12</span>, <span class='fl'>18</span>, <span class='fl'>17</span>, <span class='fl'>16</span>, <span class='fl'>19</span>, <span class='fl'>20</span>, <span class='fl'>4</span>, <span class='fl'>3</span>, <span class='fl'>18</span>, <span class='fl'>16</span>, <span class='fl'>17</span>, <span class='fl'>15</span>, <span class='fl'>14</span>)
-<span class='fu'>cox.stuart.test</span>(<span class='no'>customers</span>)</div><div class='output co'>#&gt;
+<span class='fu'>cox.stuart.test</span>(<span class='no'>customers</span>)</div><div class='output co'>#&gt; 
 #&gt; 	Cox-Stuart test for trend analysis
-#&gt;
-#&gt; data:
+#&gt; 
+#&gt; data:  
 #&gt; Decreasing trend, p-value = 0.10938
 #&gt; </div></pre>
   </div>
@@ -141,11 +182,11 @@ This function was written by Tommaso Martino&lt;todoslogos@gmail.com&gt; (See 'R
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-
+      
       <li><a href="#value">Value</a></li>
 
       <li><a href="#references">References</a></li>
-
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -158,11 +199,14 @@ This function was written by Tommaso Martino&lt;todoslogos@gmail.com&gt; (See 'R
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

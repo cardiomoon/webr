@@ -18,13 +18,25 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Plotting distribution of statistic for object "htest" — plot.htest" />
+
+<meta property="og:description" content="Plotting distribution of statistic for object &quot;htest&quot;" />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +59,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">webr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">webr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -68,12 +84,18 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/PieDonut.html">Pie Chart Revisited</a>
+    </li>
+    <li>
       <a href="../articles/plot-htest.html">Plot for distribution of common statistics and p-value</a>
+    </li>
+    <li>
+      <a href="../articles/rsconnect/documents/PieDonut.html">UNKNOWN TITLE</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -85,6 +107,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -92,20 +115,24 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plotting distribution of statistic for object "htest"</h1>
+    <small class="dont-index">Source: <a href='https://github.com/cardiomoon/webr/blob/master/R/plot.htest.R'><code>R/plot.htest.R</code></a></small>
+    <div class="hidden name"><code>plot.htest.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Plotting distribution of statistic for object "htest"</p>
     
+    </div>
 
     <pre class="usage"><span class='co'># S3 method for htest</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -125,25 +152,26 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>require</span>(<span class='no'>moonBook</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: moonBook</span></div><div class='input'><span class='fu'>require</span>(<span class='no'>webr</span>)
+<span class='fu'>require</span>(<span class='no'>moonBook</span>)
+<span class='fu'>require</span>(<span class='no'>webr</span>)
 <span class='co'>## chi-square test</span>
-<span class='no'>x</span><span class='kw'>=</span><span class='fu'>chisq.test</span>(<span class='fu'>table</span>(<span class='no'>mtcars</span>$<span class='no'>am</span>,<span class='no'>mtcars</span>$<span class='no'>cyl</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='input'><span class='fu'>plot</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot.htest-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='no'>x</span><span class='kw'>=</span><span class='fu'>chisq.test</span>(<span class='fu'>table</span>(<span class='no'>mtcars</span>$<span class='no'>am</span>,<span class='no'>mtcars</span>$<span class='no'>cyl</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='input'><span class='fu'>plot</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot.htest-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>#Welch Two Sample t-test</span>
 <span class='no'>x</span><span class='kw'>=</span><span class='fu'>t.test</span>(<span class='no'>mpg</span>~<span class='no'>am</span>,<span class='kw'>data</span><span class='kw'>=</span><span class='no'>mtcars</span>)
-<span class='fu'>plot</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot.htest-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot.htest-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>x</span><span class='kw'>=</span><span class='fu'>t.test</span>(<span class='no'>BMI</span>~<span class='no'>sex</span>,<span class='kw'>data</span><span class='kw'>=</span><span class='no'>acs</span>)
-<span class='fu'>plot</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot.htest-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot.htest-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># F test to compare two variances</span>
 <span class='no'>x</span><span class='kw'>=</span><span class='fu'>var.test</span>(<span class='no'>age</span>~<span class='no'>sex</span>,<span class='kw'>data</span><span class='kw'>=</span><span class='no'>acs</span>,<span class='kw'>alternative</span><span class='kw'>=</span><span class='st'>"less"</span>)
-<span class='fu'>plot</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot.htest-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot.htest-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Paired t-test</span>
 <span class='no'>x</span><span class='kw'>=</span><span class='fu'>t.test</span>(<span class='no'>iris</span>$<span class='no'>Sepal.Length</span>,<span class='no'>iris</span>$<span class='no'>Sepal.Width</span>,<span class='kw'>paired</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'>plot</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot.htest-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot.htest-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># One sample t-test</span>
-<span class='fu'>plot</span>(<span class='fu'>t.test</span>(<span class='no'>acs</span>$<span class='no'>age</span>,<span class='kw'>mu</span><span class='kw'>=</span><span class='fl'>63</span>))</div><div class='img'><img src='plot.htest-6.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='fu'>t.test</span>(<span class='no'>acs</span>$<span class='no'>age</span>,<span class='kw'>mu</span><span class='kw'>=</span><span class='fl'>63</span>))</div><div class='img'><img src='plot.htest-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Two sample t-test</span>
 <span class='no'>x</span><span class='kw'>=</span><span class='fu'>t.test</span>(<span class='no'>age</span>~<span class='no'>sex</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>acs</span>,<span class='kw'>conf.level</span><span class='kw'>=</span><span class='fl'>0.99</span>,<span class='kw'>alternative</span><span class='kw'>=</span><span class='st'>"greater"</span>,<span class='kw'>var.equal</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'>plot</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot.htest-7.png' alt='' width='700' height='432.632880098887' /></div></pre>
+<span class='fu'>plot</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot.htest-7.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -164,11 +192,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
