@@ -4,7 +4,7 @@
 \alias{numSummaryTable}
 \title{Make a table showing numerical summary}
 \usage{
-numSummaryTable(x, ..., lang = "en", vanilla = FALSE)
+numSummaryTable(x, ..., lang = "en", vanilla = FALSE, add.rownames = NULL)
 }
 \arguments{
 \item{x}{A grouped_df or a data.frame or a vector}
@@ -14,20 +14,19 @@ numSummaryTable(x, ..., lang = "en", vanilla = FALSE)
 \item{lang}{Language. choices are one of c("en","kor")}
 
 \item{vanilla}{Logical. Whether make vanilla table or not}
+
+\item{add.rownames}{Logical. Whether or not add rownames}
 }
 \description{
 Make a table showing numerical summary
 }
 \examples{
 require(moonBook)
-require(magrittr)
 require(dplyr)
-require(rrtable)
-require(webr)
 numSummaryTable(acs)
 numSummaryTable(acs$age)
 acs \%>\% group_by(sex) \%>\% select(age) \%>\% numSummaryTable
 acs \%>\% group_by(sex) \%>\% select(age,EF) \%>\% numSummaryTable
 acs \%>\% group_by(sex,Dx) \%>\% select(age,EF) \%>\% numSummaryTable(vanilla=FALSE)
-acs \%>\% group_by(sex,Dx) \%>\% numSummaryTable(age,EF,lang="kor")
+acs \%>\% group_by(sex,Dx) \%>\% numSummaryTable(age,EF,lang="kor",add.rownames=FALSE)
 }

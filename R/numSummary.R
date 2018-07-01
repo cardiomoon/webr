@@ -130,21 +130,25 @@ numSummary_group_impl <- function(df, vars,digits=digits,lang=lang ) {
 #' @param ... further argument to be passed
 #' @param lang Language. choices are one of c("en","kor")
 #' @param vanilla Logical. Whether make vanilla table or not
+#' @param add.rownames Logical. Whether or not add rownames
 #' @export
 #' @examples
 #' require(moonBook)
-#' require(magrittr)
 #' require(dplyr)
-#' require(rrtable)
-#' require(webr)
 #' numSummaryTable(acs)
 #' numSummaryTable(acs$age)
 #' acs %>% group_by(sex) %>% select(age) %>% numSummaryTable
 #' acs %>% group_by(sex) %>% select(age,EF) %>% numSummaryTable
 #' acs %>% group_by(sex,Dx) %>% select(age,EF) %>% numSummaryTable(vanilla=FALSE)
-#' acs %>% group_by(sex,Dx) %>% numSummaryTable(age,EF,lang="kor")
-numSummaryTable <- function(x,...,lang="en",vanilla=FALSE){
+#' acs %>% group_by(sex,Dx) %>% numSummaryTable(age,EF,lang="kor",add.rownames=FALSE)
+numSummaryTable <- function(x,...,lang="en",vanilla=FALSE,add.rownames=NULL){
 
     result=numSummary(x,lang=lang,...)
-    df2flextable(result,add.rownames=TRUE,vanilla=vanilla)
+    if(is.null(add.rownames)){
+        add.rownames=FALSE
+        if("data.frame" %in% class(x)) add.rownames=TRUE
+        if("tibble" %in% class(x)) add.rownames=TRUE
+        if("grouped_df" %in% class(x)) add.rownames=FALSE
+    }
+    df2flextable(result,add.rownames=add.rownames,vanilla=vanilla)
 }

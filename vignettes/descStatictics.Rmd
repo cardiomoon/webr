@@ -1,0 +1,136 @@
+---
+title: "Functions for descriptive statistics"
+author: "Keon-Woong Moon"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{descStatistics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE,comment = NA,message=FALSE,warning=FALSE,fig.width=6,fig.height = 6, fig.align='center',out.width="70%")
+```
+
+A pie chart (or a circle chart) is a circular statistical graphic which is divided into slices to illustrate numerical proportion. In a pie chart, the arc length of each slice (and consequently its central angle and area), is proportional to the quantity it represents. While it is named for its resemblance to a pie which has been sliced, there are variations on the way it can be presented. A doughnut chart (also spelled donut) is a variant of the pie chart, with a blank center allowing for additional information about the data as a whole to be included. I recently developed a function named "PieDonut" to combine pie and donut chart.
+
+## Installation of packages
+
+You have to install the latest versions of "webr" and "moonBook" packages from github. The CRAN version does not have PieDonut() function. 
+
+```{r,eval=FALSE}
+if(!require(devtools)) install.packages("devtools")
+devtools::install_github("cardiomoon/webr")
+devtools::install_github("cardiomoon/moonBook")   # For examples
+devtools::install_github("cardiomoon/rrtable")    # For reproducible research
+```
+
+## Load packages
+
+```{r,message=FALSE}
+require(webr)
+require(moonBook) # For data acs
+```
+
+## Summarizing Frequencies
+
+You can summmarize the frequencies easily with freqSummary() function. Also you can make a table summarizng frequencies with freqTable() function. 
+
+```{r}
+freqSummary(acs$Dx)
+freqTable(acs$Dx)
+```
+
+### For Korean
+
+The freqSummary() and freqTable() functions have an argument `lang`. If you want to summarize in Korean, set the `lang` argument `kor`.  
+
+```{r}
+freqSummary(acs$smoking,lang="kor")
+freqTable(acs$smoking,lang="kor")
+```
+
+### Ready for reproducible research
+
+The freqTable() function returns an object of class "flextable". With this object, you can make html, pdf, docx, pptx file easily.    
+
+```{r}
+result=freqTable(acs$Dx)
+class(result)
+```
+
+### Frequency table for a continuous variable
+
+You can make the frequency table for a continuous variable. In this time, you can get a long table.
+
+```{r}
+freqTable(mtcars$mpg)
+```
+
+## Numerical summary
+
+### Numerical summary of a vector
+
+You can make a numerical summary table with numSummary() function. If you use the numSummary() function to a continuous vector, you can get the following summary. This function uses psych::describe function
+
+```{r,message=FALSE}
+require(dplyr)
+numSummary(acs$age)
+numSummaryTable(acs$age)
+```
+
+### For Korean
+
+If you want to summarize in Korean, set the `lang` argument `kor`.  
+
+```{r}
+numSummaryTable(acs$age,lang="kor")
+```
+
+### Numerical summary of a data.frame or a tibble 
+
+You can make a numerical summary of a data.frame. The numSummary function uses is.numeric function to select numeric columns and make a numeric summary.
+
+```{r}
+numSummary(acs)
+numSummaryTable(acs)
+```
+
+### Use of dplyr::group_by() and dplyr::select() function to summarize
+
+You can use dplyr::select() function to select variables to summarize.
+
+```{r}
+acs %>% select(age,EF) %>% numSummary
+acs %>% select(age,EF) %>% numSummaryTable
+```
+
+You can use dplyr::group_by() and dplyr::select() function to select variables to summarize by group.
+
+```{r}
+acs %>% group_by(sex) %>% select(age,EF) %>% numSummary
+acs %>% group_by(sex) %>% select(age,EF) %>% numSummaryTable
+```
+
+You can summarize by multiple groups.
+
+```{r}
+acs %>% group_by(sex,Dx) %>% select(age,EF) %>% numSummary
+acs %>% group_by(sex,Dx) %>% select(age,EF) %>% numSummaryTable
+```
+
+## For reproducible research
+
+You can use package `rrtable` for reproducible research. 
+
+```{r}
+require(rrtable)
+type=c("table","table")
+title=c("Frequency Table","Numerical Summary")
+code=c("freqTable(acs$Dx)","acs %>% group_by(sex) %>% select(EF,age) %>% numSummaryTable")
+data=data.frame(type,title,code,stringsAsFactors = FALSE)
+data2pptx(data)
+data2docx(data)
+
+```
