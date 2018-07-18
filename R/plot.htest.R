@@ -84,10 +84,10 @@ plot.htest=function(x,...){
           x0 <- seq(qF(p=0.0001,degf[1],degf[2]),qF(p=0.9999,degf[1],degf[2]),length=100)
 
           y0=dF(x0,degf[1],degf[2])
-          x1=seq(qF(p=0.0001,degf[1],degf[2]),qF(p=newalpha,degf[1],degf[2]),length=50)
-          y1=dF(x1,degf[1],degf[2])
-          x2=seq(qF(p=1-newalpha,degf[1],degf[2]),qF(p=0.9999,degf[1],degf[2]),length=50)
+          x2=seq(qF(p=0.0001,degf[1],degf[2]),qF(p=newalpha,degf[1],degf[2]),length=50)
           y2=dF(x2,degf[1],degf[2])
+          x1=seq(qF(p=1-newalpha,degf[1],degf[2]),qF(p=0.9999,degf[1],degf[2]),length=50)
+          y1=dF(x1,degf[1],degf[2])
      } else{
           x0 <- seq(-4,4,length=100)
           if(x[[1]]>4) {
@@ -138,18 +138,19 @@ plot.htest=function(x,...){
 
      if(statName %in% c("f","wilcox")) {
           ypoint=dF(x$statistic,degf[1],degf[2])
-          xpoint=qF(p=1-alpha,degf[1],degf[2])
-          xpoint2=qF(p=1-alpha/2,degf[1],degf[2])
+          xpoint=qF(p=1-newalpha,degf[1],degf[2])
+          xpoint2=qF(p=newalpha,degf[1],degf[2])
      } else {
           ypoint=dF(x$statistic,df=degf)
           ypoint
-          xpoint=qF(p=1-alpha,df=degf)
-          xpoint2=qF(p=1-alpha/2,df=degf)
+          xpoint=qF(p=1-newalpha,df=degf)
+          xpoint2=qF(p=newalpha,df=degf)
      }
      p2<-p2+geom_point(x=x[[1]],y=ypoint,color="blue")
-     p2<-p2+ annotate(geom="label",x=Inf,y=Inf,label=label,vjust=1.1,hjust=1.1)+
+     p2<-p2+ annotate(geom="label",x=Inf,y=Inf,label=label,vjust=1.1,hjust=1.1)
          # geom_text(x=xpoint2,y=0.38,label=label)+
-          annotate(geom="text",x=xpoint,y=0,
+         #
+     p2 <-p2+ annotate(geom="text",x=ifelse(alternative=="less",xpoint2,xpoint),y=0,
                    label=paste0("p < ",alpha),vjust=1.5,color="red")
      p2<-p2+labs(title=x$method,x=paste0(statName," statistic"),y="Probability Density")+theme(plot.title=element_text(hjust=0.5))
      sub=makeSub(x)
