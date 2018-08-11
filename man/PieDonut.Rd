@@ -8,11 +8,12 @@ PieDonut(data, mapping, start = 0, addPieLabel = TRUE,
   addDonutLabel = TRUE, showRatioDonut = TRUE, showRatioPie = TRUE,
   ratioByGroup = TRUE, showRatioThreshold = 0.02, labelposition = 2,
   labelpositionThreshold = 0.1, r0 = 0.3, r1 = 1, r2 = 1.2,
-  explode = NULL, selected = NULL, explodePos = 0.1, color = "white",
-  pieAlpha = 0.8, donutAlpha = 1, maxx = NULL, showPieName = TRUE,
-  showDonutName = FALSE, title = NULL, pieLabelSize = 4,
-  donutLabelSize = 3, titlesize = 5, explodePie = TRUE,
-  explodeDonut = FALSE, use.label = TRUE, use.labels = TRUE)
+  explode = NULL, selected = NULL, explodePos = 0.1,
+  color = "white", pieAlpha = 0.8, donutAlpha = 1, maxx = NULL,
+  showPieName = TRUE, showDonutName = FALSE, title = NULL,
+  pieLabelSize = 4, donutLabelSize = 3, titlesize = 5,
+  explodePie = TRUE, explodeDonut = FALSE, use.label = TRUE,
+  use.labels = TRUE)
 }
 \arguments{
 \item{data}{A data.frame}

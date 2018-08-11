@@ -4,7 +4,8 @@
 \alias{numSummaryTable}
 \title{Make a table showing numerical summary}
 \usage{
-numSummaryTable(x, ..., lang = "en", vanilla = FALSE, add.rownames = NULL)
+numSummaryTable(x, ..., lang = "en", vanilla = FALSE,
+  add.rownames = NULL)
 }
 \arguments{
 \item{x}{A grouped_df or a data.frame or a vector}

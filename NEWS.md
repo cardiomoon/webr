@@ -1,3 +1,9 @@
+# webr version 0.1.3
+====================
+(11_Aug-2018)
+
+* new functions for chisqure test added : x2summary(), x2Table()
+
 # webr version 0.1.2
 ====================
 (17-June-2018)

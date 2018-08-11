@@ -13,11 +13,11 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE,comment = NA,message=FALSE,warning=FALSE,fig.width=6,fig.height = 6, fig.align='center',out.width="70%")
 ```
 
-A pie chart (or a circle chart) is a circular statistical graphic which is divided into slices to illustrate numerical proportion. In a pie chart, the arc length of each slice (and consequently its central angle and area), is proportional to the quantity it represents. While it is named for its resemblance to a pie which has been sliced, there are variations on the way it can be presented. A doughnut chart (also spelled donut) is a variant of the pie chart, with a blank center allowing for additional information about the data as a whole to be included. I recently developed a function named "PieDonut" to combine pie and donut chart.
+You can make tables summarizing descriptive statistics easily with webr package.  
 
 ## Installation of packages
 
-You have to install the latest versions of "webr" and "moonBook" packages from github. The CRAN version does not have PieDonut() function. 
+You have to install the latest versions of "webr" and "moonBook" packages from github. 
 
 ```{r,eval=FALSE}
 if(!require(devtools)) install.packages("devtools")
@@ -67,6 +67,28 @@ You can make the frequency table for a continuous variable. In this time, you ca
 ```{r}
 freqTable(mtcars$mpg)
 ```
+
+## Frequency table for two categorical variables
+
+You can make a table summarizing the independency of two categorical variables.
+
+```{r}
+x2Table(acs,Dx,sex)
+```
+
+
+You can make a table with columnwise percentages.
+
+```{r}
+x2Table(acs,Dx,sex,margin=2)
+```
+
+You can hide pecentages.
+
+```{r}
+x2Table(acs,Dx,sex,show.percent=FALSE)
+```
+
 
 ## Numerical summary
 
