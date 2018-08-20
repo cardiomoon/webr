@@ -1,10 +1,3 @@
-# webr version 0.1.4
-====================
-
-* new function chooserInput() added
-
-* new shiny module chooser and chooser2 added with example shiny app in inst folder 
-
 # webr version 0.1.3
 ====================
 (11-Aug-2018)
