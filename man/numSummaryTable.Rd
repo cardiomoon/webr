@@ -24,8 +24,8 @@ Make a table showing numerical summary
 \examples{
 require(moonBook)
 require(dplyr)
-numSummaryTable(acs)
-numSummaryTable(acs$age)
+numSummaryTable(acs,lang="kor")
+numSummaryTable(acs$age,lang="kor")
 acs \%>\% group_by(sex) \%>\% select(age) \%>\% numSummaryTable
 acs \%>\% group_by(sex) \%>\% select(age,EF) \%>\% numSummaryTable
 acs \%>\% group_by(sex,Dx) \%>\% select(age,EF) \%>\% numSummaryTable(vanilla=FALSE)

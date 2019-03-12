@@ -13,7 +13,7 @@ PieDonut(data, mapping, start = 0, addPieLabel = TRUE,
   showPieName = TRUE, showDonutName = FALSE, title = NULL,
   pieLabelSize = 4, donutLabelSize = 3, titlesize = 5,
   explodePie = TRUE, explodeDonut = FALSE, use.label = TRUE,
-  use.labels = TRUE)
+  use.labels = TRUE, family = "")
 }
 \arguments{
 \item{data}{A data.frame}
@@ -77,6 +77,8 @@ PieDonut(data, mapping, start = 0, addPieLabel = TRUE,
 \item{use.label}{Logical. Whether or not use column label in case of labelled data}
 
 \item{use.labels}{Logical. Whether or not use value labels in case of labelled data}
+
+\item{family}{font family}
 }
 \description{
 Draw a PieDonut plot

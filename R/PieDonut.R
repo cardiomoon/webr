@@ -70,6 +70,7 @@ makeSubColor=function(main,no=3){
 #'@param explodeDonut Logical. Whether or not explode donuts
 #'@param use.label Logical. Whether or not use column label in case of labelled data
 #'@param use.labels Logical. Whether or not use value labels in case of labelled data
+#'@param family font family
 #'@importFrom ggplot2 aes geom_segment coord_fixed scale_fill_manual xlim ylim annotate geom_text guides
 #'@importFrom grid grid.newpage viewport
 #'@importFrom ggforce geom_arc_bar theme_no_axes
@@ -126,7 +127,8 @@ PieDonut=function(data,mapping,
                   donutLabelSize=3,
                   titlesize=5,
                   explodePie=TRUE,explodeDonut=FALSE,
-                  use.label=TRUE,use.labels=TRUE){
+                  use.label=TRUE,use.labels=TRUE,
+                  family=""){
 
 
 
@@ -354,21 +356,21 @@ PieDonut=function(data,mapping,
         if((labelposition==1)&(is.null(donuts))){
                 p1<-p1+ geom_segment(aes_string(x="segx",y="segy",
                                                 xend="segxend",yend="segyend"),data=df)+
-                        geom_text(aes_string(x="segxend",y="segyend",label="label",hjust="hjust",vjust="vjust"),size=pieLabelSize,data=df)
+                        geom_text(aes_string(x="segxend",y="segyend",label="label",hjust="hjust",vjust="vjust"),size=pieLabelSize,data=df,family=family)
 
         } else if((labelposition==2)&(is.null(donuts))){
                 p1<-p1+ geom_segment(aes_string(x="segx",y="segy",
                                                 xend="segxend",yend="segyend"),data=df[df$ratio<labelpositionThreshold,])+
-                        geom_text(aes_string(x="segxend",y="segyend",label="label",hjust="hjust",vjust="vjust"),size=pieLabelSize,data=df[df$ratio<labelpositionThreshold,])+
-                        geom_text(aes_string(x="labelx",y="labely",label="label"),size=pieLabelSize,data=df[df$ratio>=labelpositionThreshold,])
+                        geom_text(aes_string(x="segxend",y="segyend",label="label",hjust="hjust",vjust="vjust"),size=pieLabelSize,data=df[df$ratio<labelpositionThreshold,],family=family)+
+                        geom_text(aes_string(x="labelx",y="labely",label="label"),size=pieLabelSize,data=df[df$ratio>=labelpositionThreshold,],family=family)
 
 
         } else{
-                p1 <-p1+geom_text(aes_string(x="labelx",y="labely",label="label"),size=pieLabelSize,data=df)
+                p1 <-p1+geom_text(aes_string(x="labelx",y="labely",label="label"),size=pieLabelSize,data=df,family=family)
         }
 
-        if(showPieName) p1<-p1+annotate("text",x=0,y=0,label=pies,size=titlesize)
-        p1
+        if(showPieName) p1<-p1+annotate("text",x=0,y=0,label=pies,size=titlesize,family=family)
+        p1<-p1+theme(text=element_text(family=family))
 
         if(!is.null(donuts)){
 
@@ -396,22 +398,23 @@ PieDonut=function(data,mapping,
                         p3<-p3+ geom_segment(aes_string(x="segx",y="segy",
                                                         xend="segxend",yend="segyend"),data=df3)+
                                 geom_text(aes_string(x="segxend",y="segyend",
-                                                     label="label",hjust="hjust",vjust="vjust"),size=donutLabelSize,data=df3)
+                                                     label="label",hjust="hjust",vjust="vjust"),size=donutLabelSize,data=df3,family=family)
                 } else if(labelposition==0){
                         p3<-p3+geom_text(aes_string(x="labelx",y="labely",
-                                                    label="label"),size=donutLabelSize,data=df3)
+                                                    label="label"),size=donutLabelSize,data=df3,family=family)
                 } else{
                         p3<-p3+ geom_segment(aes_string(x="segx",y="segy",
                                                         xend="segxend",yend="segyend"),data=df3[df3$ratio1<labelpositionThreshold,])+
                                 geom_text(aes_string(x="segxend",y="segyend",
-                                                     label="label",hjust="hjust",vjust="vjust"),size=donutLabelSize,data=df3[df3$ratio1<labelpositionThreshold,])+
+                                                     label="label",hjust="hjust",vjust="vjust"),size=donutLabelSize,data=df3[df3$ratio1<labelpositionThreshold,],family=family)+
                                 geom_text(aes_string(x="labelx",y="labely",
-                                                     label="label"),size=donutLabelSize,data=df3[df3$ratio1>=labelpositionThreshold,])
+                                                     label="label"),size=donutLabelSize,data=df3[df3$ratio1>=labelpositionThreshold,],family=family)
 
                 }
 
-                if(!is.null(title)) p3<-p3+annotate("text",x=0,y=r3,label=title,size=titlesize)
-                else if(showDonutName) p3<-p3+annotate("text",x=(-1)*r3,y=r3,label=donuts,hjust=0,size=titlesize)
+                if(!is.null(title)) p3<-p3+annotate("text",x=0,y=r3,label=title,size=titlesize,family=family)
+                else if(showDonutName) p3<-p3+annotate("text",x=(-1)*r3,y=r3,label=donuts,hjust=0,size=titlesize,family=family)
+                p3<-p3+theme(text=element_text(family=family))
 
                 grid.newpage()
                 print(p1,vp=viewport(height=1,width=1))

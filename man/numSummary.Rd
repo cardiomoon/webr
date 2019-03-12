@@ -40,6 +40,8 @@ require(webr)
 require(tibble)
 numSummary(acs)
 numSummary(acs$age)
+numSummary(acs,age,EF)
+acs \%>\% group_by(sex) \%>\% numSummary(age,BMI)
 acs \%>\% group_by(sex) \%>\% select(age) \%>\% numSummary
 acs \%>\% group_by(sex) \%>\% select(age,EF) \%>\% numSummary
 acs \%>\% group_by(sex,Dx) \%>\% select(age,EF) \%>\% numSummary
