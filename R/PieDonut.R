@@ -105,14 +105,16 @@ makeSubColor=function(main,no=3){
 #'df=mtcars %>% group_by(gear,carb) %>% summarize(n=n())
 #'PieDonut(df,aes(pies=gear,donuts=carb,count=n),ratioByGroup=FALSE)
 PieDonut=function(data,mapping,
-                  start=0,
+                  start=getOption("PieDonut.start",0),
                   addPieLabel=TRUE,addDonutLabel=TRUE,
                   showRatioDonut=TRUE,showRatioPie=TRUE,
                   ratioByGroup=TRUE,
-                  showRatioThreshold=0.02,
-                  labelposition=2,
+                  showRatioThreshold=getOption("PieDonut.showRatioThreshold",0.02),
+                  labelposition=getOption("PieDonut.labelposition",2),
                   labelpositionThreshold=0.1,
-                  r0=0.3,r1=1.0,r2=1.2,
+                  r0=getOption("PieDonut.r0",0.3),
+                  r1=getOption("PieDonut.r0",1.0),
+                  r2=getOption("PieDonut.r0",1.2),
                   explode=NULL,
                   selected=NULL,
                   explodePos=0.1,
@@ -128,7 +130,7 @@ PieDonut=function(data,mapping,
                   titlesize=5,
                   explodePie=TRUE,explodeDonut=FALSE,
                   use.label=TRUE,use.labels=TRUE,
-                  family=""){
+                  family=getOption("PieDonut.family","")){
 
 
 
@@ -174,7 +176,10 @@ PieDonut=function(data,mapping,
         df$label=df[[pies]]
         df$ratio=df$Freq/sum(df$Freq)
         if(showRatioPie) {
-                df$label=paste0(df$label,"\n(",scales::percent(df$ratio),")")
+
+                df$label=ifelse(df$ratio>=showRatioThreshold,
+                        paste0(df$label,"\n(",scales::percent(df$ratio),")"),
+                        as.character(df$label))
 
 
         }
@@ -293,7 +298,8 @@ PieDonut=function(data,mapping,
                 }
                 df3$label[df3$ratio1==0]=""
 
-                if(labelposition==0) df3$label[df3$ratio1<showRatioThreshold]=""
+                # if(labelposition==0)
+                df3$label[df3$ratio1<showRatioThreshold]=""
 
 
                 df3$hjust=ifelse((df3$mid %% (2*pi))>pi,1,0)
