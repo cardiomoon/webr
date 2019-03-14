@@ -110,7 +110,7 @@ freqSummary=function(x,digits=1,lang="en"){
 #' require(moonBook)
 #' freqTable(acs$Dx)
 #' freqTable(acs$smoking,lang="kor",vanilla=TRUE,fontsize=12)
-freqTable=function(x,digits=1,lang="en",vanilla=FALSE,...){
+freqTable=function(x,digits=1,lang=getOption("freqTable.lang","en"),vanilla=FALSE,...){
 
     res=freqSummary(x,digits=digits,lang=lang)
     tempname=colnames(res)

@@ -94,7 +94,7 @@ numSummary2 <- function(x,...,digits=2,lang="en") {
 #' acs %>% group_by(sex) %>% select(age,EF) %>% numSummaryTable
 #' acs %>% group_by(sex,Dx) %>% select(age,EF) %>% numSummaryTable(vanilla=FALSE)
 #' acs %>% group_by(sex,Dx) %>% numSummaryTable(age,EF,lang="kor",add.rownames=FALSE)
-numSummaryTable <- function(x,...,lang="en",vanilla=FALSE,add.rownames=NULL){
+numSummaryTable <- function(x,...,lang=getOption("numSummaryTable.lang","en"),vanilla=FALSE,add.rownames=NULL){
 
     result=numSummary(x,lang=lang,...)
     if(is.null(add.rownames)){
