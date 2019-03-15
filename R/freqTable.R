@@ -13,7 +13,7 @@ freqSummary=function(x,digits=1,lang="en"){
         if(sum(is.na(x))==0){
                 # (x=to_label(x))
                 (res=table(x))
-                 (labels=get_labels(x))
+                 (labels=get_labels(x,attr.only=TRUE))
 
                 if(!is.null(labels)) {
 
@@ -50,7 +50,7 @@ freqSummary=function(x,digits=1,lang="en"){
                 res
                 # if(!is.null(names(attr(x,"labels")))) rownames(res)=names(attr(x,"labels"))
                 # if(!is.null(names(attr(x,"value.labels")))) rownames(res)=names(attr(x,"value.labels"))
-                (labels=get_labels(x))
+                (labels=get_labels(x,attr.only=TRUE))
                 if(!is.null(labels)) {
 
                         rownames(res)
@@ -89,7 +89,7 @@ freqSummary=function(x,digits=1,lang="en"){
         }
 
         colnames(result2)=langchoice1(2:5,lang=lang)
-        rownames(result2)[nrow(result)]=langchoice1(6,lang=lang)
+        rownames(result2)[nrow(result2)]=langchoice1(6,lang=lang)
         result2
 
 }
