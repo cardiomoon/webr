@@ -236,16 +236,17 @@ x2Table=function(data,x,y,margin=1,show.percent=TRUE,show.label=TRUE,
     if(show.stat){
     x=table(a,b)
     statresult=x2result(x)
-    color=ifelse(vanilla,"white","#5B7778")
+
        MyTable<- MyTable %>%
            flextable::add_footer(rowname=statresult) %>%
            flextable::merge_at(j=1:(ncol(x2)+1),part="footer") %>%
            flextable::italic(j=1:(ncol(x2)+1),part="footer") %>%
            flextable::align(align='right',part='footer') %>%
-           flextable::color(color=color,i=1,j=1,part='header') %>%
            flextable::autofit()
 
     }
+    color=ifelse(vanilla,"white","#5B7778")
+    MyTable<- MyTable %>% flextable::color(color=color,i=1,j=1,part='header')
     MyTable$header$dataset[1]<-y
     MyTable
 
