@@ -8,7 +8,7 @@
 #' @examples
 #' require(moonBook)
 #' freqSummary(acs$Dx)
-#' freqSummary(acs$smoking,lang="kor")
+#' #freqSummary(acs$smoking,lang="kor")
 freqSummary=function(x,digits=1,lang="en"){
         if(sum(is.na(x))==0){
                 # (x=to_label(x))
@@ -109,7 +109,7 @@ freqSummary=function(x,digits=1,lang="en"){
 #' @examples
 #' require(moonBook)
 #' freqTable(acs$Dx,vanilla=FALSE)
-#' freqTable(acs$smoking,lang="kor",vanilla=TRUE,fontsize=12)
+#' #freqTable(acs$smoking,lang="kor",vanilla=TRUE,fontsize=12)
 freqTable=function(x,digits=1,lang=getOption("freqTable.lang","en"),vanilla=FALSE,...){
 
     res=freqSummary(x,digits=digits,lang=lang)

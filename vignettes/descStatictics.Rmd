@@ -42,14 +42,6 @@ freqSummary(acs$Dx)
 freqTable(acs$Dx)
 ```
 
-### For Korean
-
-The freqSummary() and freqTable() functions have an argument `lang`. If you want to summarize in Korean, set the `lang` argument `kor`.  
-
-```{r}
-freqSummary(acs$smoking,lang="kor")
-freqTable(acs$smoking,lang="kor")
-```
 
 ### Ready for reproducible research
 
@@ -102,13 +94,7 @@ numSummary(acs$age)
 numSummaryTable(acs$age)
 ```
 
-### For Korean
 
-If you want to summarize in Korean, set the `lang` argument `kor`.  
-
-```{r}
-numSummaryTable(acs$age,lang="kor")
-```
 
 ### Numerical summary of a data.frame or a tibble 
 
