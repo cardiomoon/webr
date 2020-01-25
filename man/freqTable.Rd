@@ -4,8 +4,13 @@
 \alias{freqTable}
 \title{Make flextable summarizing frequency}
 \usage{
-freqTable(x, digits = 1, lang = getOption("freqTable.lang", "en"),
-  vanilla = FALSE, ...)
+freqTable(
+  x,
+  digits = 1,
+  lang = getOption("freqTable.lang", "en"),
+  vanilla = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{A vector}
@@ -26,6 +31,6 @@ Make flextable summarizing frequency
 }
 \examples{
 require(moonBook)
-freqTable(acs$Dx)
+freqTable(acs$Dx,vanilla=FALSE)
 freqTable(acs$smoking,lang="kor",vanilla=TRUE,fontsize=12)
 }

@@ -4,8 +4,16 @@
 \alias{x2summary}
 \title{Summarize chisquare result}
 \usage{
-x2summary(data = NULL, x = NULL, y = NULL, a, b, margin = 1,
-  show.percent = TRUE, show.label = TRUE)
+x2summary(
+  data = NULL,
+  x = NULL,
+  y = NULL,
+  a,
+  b,
+  margin = 1,
+  show.percent = TRUE,
+  show.label = TRUE
+)
 }
 \arguments{
 \item{data}{A data.frame}

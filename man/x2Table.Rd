@@ -4,9 +4,18 @@
 \alias{x2Table}
 \title{Make a chisquare result table}
 \usage{
-x2Table(data, x, y, margin = 1, show.percent = TRUE,
-  show.label = TRUE, show.stat = TRUE, vanilla = FALSE,
-  fontsize = 12, ...)
+x2Table(
+  data,
+  x,
+  y,
+  margin = 1,
+  show.percent = TRUE,
+  show.label = TRUE,
+  show.stat = TRUE,
+  vanilla = FALSE,
+  fontsize = 12,
+  ...
+)
 }
 \arguments{
 \item{data}{A data.frame}

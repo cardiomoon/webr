@@ -33,11 +33,11 @@ Description: Several analysis-related functions for the book entitled
     "Web-based Analysis without R in Your Computer"(written in Korean, ISBN 978-89-5566-185-9)
     by Keon-Woong Moon. The main function plot.htest() shows the distribution of statistic for
     the object of class 'htest'.
-Depends: R (>= 2.1.0)
+Depends: R (>= 2.10)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr
 Suggests: testthat,
     knitr,

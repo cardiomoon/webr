@@ -4,19 +4,40 @@
 \alias{PieDonut}
 \title{Draw a PieDonut plot}
 \usage{
-PieDonut(data, mapping, start = getOption("PieDonut.start", 0),
-  addPieLabel = TRUE, addDonutLabel = TRUE, showRatioDonut = TRUE,
-  showRatioPie = TRUE, ratioByGroup = TRUE,
+PieDonut(
+  data,
+  mapping,
+  start = getOption("PieDonut.start", 0),
+  addPieLabel = TRUE,
+  addDonutLabel = TRUE,
+  showRatioDonut = TRUE,
+  showRatioPie = TRUE,
+  ratioByGroup = TRUE,
   showRatioThreshold = getOption("PieDonut.showRatioThreshold", 0.02),
   labelposition = getOption("PieDonut.labelposition", 2),
-  labelpositionThreshold = 0.1, r0 = getOption("PieDonut.r0", 0.3),
-  r1 = getOption("PieDonut.r1", 1), r2 = getOption("PieDonut.r2", 1.2),
-  explode = NULL, selected = NULL, explodePos = 0.1,
-  color = "white", pieAlpha = 0.8, donutAlpha = 1, maxx = NULL,
-  showPieName = TRUE, showDonutName = FALSE, title = NULL,
-  pieLabelSize = 4, donutLabelSize = 3, titlesize = 5,
-  explodePie = TRUE, explodeDonut = FALSE, use.label = TRUE,
-  use.labels = TRUE, family = getOption("PieDonut.family", ""))
+  labelpositionThreshold = 0.1,
+  r0 = getOption("PieDonut.r0", 0.3),
+  r1 = getOption("PieDonut.r1", 1),
+  r2 = getOption("PieDonut.r2", 1.2),
+  explode = NULL,
+  selected = NULL,
+  explodePos = 0.1,
+  color = "white",
+  pieAlpha = 0.8,
+  donutAlpha = 1,
+  maxx = NULL,
+  showPieName = TRUE,
+  showDonutName = FALSE,
+  title = NULL,
+  pieLabelSize = 4,
+  donutLabelSize = 3,
+  titlesize = 5,
+  explodePie = TRUE,
+  explodeDonut = FALSE,
+  use.label = TRUE,
+  use.labels = TRUE,
+  family = getOption("PieDonut.family", "")
+)
 }
 \arguments{
 \item{data}{A data.frame}

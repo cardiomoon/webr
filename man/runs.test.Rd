@@ -4,8 +4,11 @@
 \alias{runs.test}
 \title{Runs test for randomness}
 \usage{
-runs.test(y, plot.it = FALSE, alternative = c("two.sided",
-  "positive.correlated", "negative.correlated"))
+runs.test(
+  y,
+  plot.it = FALSE,
+  alternative = c("two.sided", "positive.correlated", "negative.correlated")
+)
 }
 \arguments{
 \item{y}{A vector}
