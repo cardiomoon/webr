@@ -29,10 +29,10 @@ Make a table showing numerical summary
 \examples{
 require(moonBook)
 require(dplyr)
-numSummaryTable(acs,lang="kor")
-numSummaryTable(acs$age,lang="kor")
+numSummaryTable(acs)
+numSummaryTable(acs$age)
 acs \%>\% group_by(sex) \%>\% select(age) \%>\% numSummaryTable
 acs \%>\% group_by(sex) \%>\% select(age,EF) \%>\% numSummaryTable
 acs \%>\% group_by(sex,Dx) \%>\% select(age,EF) \%>\% numSummaryTable(vanilla=FALSE)
-acs \%>\% group_by(sex,Dx) \%>\% numSummaryTable(age,EF,lang="kor",add.rownames=FALSE)
+acs \%>\% group_by(sex,Dx) \%>\% numSummaryTable(age,EF,add.rownames=FALSE)
 }
