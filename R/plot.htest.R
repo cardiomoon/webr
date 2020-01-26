@@ -20,7 +20,7 @@ require(ggplot2)
 #' #Welch Two Sample t-test
 #' x=t.test(mpg~am,data=mtcars)
 #' plot(x)
-#'
+#'\donttest{
 #' x=t.test(BMI~sex,data=acs)
 #' plot(x)
 #'
@@ -38,6 +38,7 @@ require(ggplot2)
 #' # Two sample t-test
 #' x=t.test(age~sex, data=acs,conf.level=0.99,alternative="greater",var.equal=TRUE)
 #' plot(x)
+#' }
 plot.htest=function(x,...){
 
      tests=c("Welch Two Sample t-test","Pearson's Chi-squared test"," Two Sample t-test","Pearson's Chi-squared test with Yates' continuity correction",

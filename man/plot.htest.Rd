@@ -28,7 +28,7 @@ plot(x)
 #Welch Two Sample t-test
 x=t.test(mpg~am,data=mtcars)
 plot(x)
-
+\donttest{
 x=t.test(BMI~sex,data=acs)
 plot(x)
 
@@ -46,4 +46,5 @@ plot(t.test(acs$age,mu=63))
 # Two sample t-test
 x=t.test(age~sex, data=acs,conf.level=0.99,alternative="greater",var.equal=TRUE)
 plot(x)
+}
 }
