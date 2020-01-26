@@ -95,6 +95,7 @@ makeSubColor=function(main,no=3){
 #'PieDonut(acs,aes(Dx,smoking),selected=c(1,3,5,7),explodeDonut=TRUE)
 #'PieDonut(acs,aes(Dx,smoking),explode=1,selected=c(2,4,6,8),labelposition=0,explodeDonut=TRUE)
 #'PieDonut(acs,aes(Dx,smoking),explode=1)
+#' \donttest{
 #'PieDonut(acs,aes(Dx,smoking),explode=1,explodeDonut=TRUE,labelposition=0)
 #'PieDonut(acs,aes(Dx,smoking),explode=1,explodePie=FALSE,explodeDonut=TRUE,labelposition=0)
 #'PieDonut(acs,aes(Dx,smoking),selected=c(2,5,8), explodeDonut=TRUE,start=pi/2,labelposition=0)
@@ -104,6 +105,7 @@ makeSubColor=function(main,no=3){
 #'require(dplyr)
 #'df=mtcars %>% group_by(gear,carb) %>% summarize(n=n())
 #'PieDonut(df,aes(pies=gear,donuts=carb,count=n),ratioByGroup=FALSE)
+#'}
 PieDonut=function(data,mapping,
                   start=getOption("PieDonut.start",0),
                   addPieLabel=TRUE,addDonutLabel=TRUE,
