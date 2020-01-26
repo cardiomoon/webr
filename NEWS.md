@@ -1,3 +1,12 @@
+# webr version 0.1.5
+====================
+(25-Jan-2020)
+
+* Bug-fixed
+
+* CRAN release
+
+
 # webr version 0.1.4
 ====================
 (12-Mar-2019)
