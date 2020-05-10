@@ -218,8 +218,8 @@ x2summary=function(data=NULL,x=NULL,y=NULL,a,b,margin=1,show.percent=TRUE,show.l
 #' x2Table(acs,sex,DM)
 x2Table=function(data,x,y,margin=1,show.percent=TRUE,show.label=TRUE,
                  show.stat=TRUE,vanilla=FALSE,fontsize=12,...){
-    # data=acs;x=sex;y=DM;margin=1;show.percent=TRUE;show.label=TRUE;
-    # show.stat=TRUE;vanilla=FALSE;fontsize=12
+     # data=acs;x="sex";y="DM";margin=1;show.percent=TRUE;show.label=TRUE;
+     # show.stat=TRUE;vanilla=FALSE;fontsize=12
 
     x=substitute(x)
     y=as.character(substitute(y))

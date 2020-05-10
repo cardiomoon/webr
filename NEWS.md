@@ -1,3 +1,10 @@
+# webr version 0.1.6
+====================
+(10-May-2020)
+
+* numSummaryTable can deal labelled data
+
+
 # webr version 0.1.5
 ====================
 (25-Jan-2020)

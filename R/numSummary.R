@@ -1,8 +1,21 @@
+#' replace vector with labels
+#' @param x A vector
+#' @importFrom sjlabelled get_labels
+#' @export
+replaceWithLabels=function(x){
+    (labels=get_labels(x,attr.only=TRUE))
+    if(!is.null(labels)) {
+        x=labels[x]
+    }
+    x
+}
+
 #' Numerical Summary
 #' @param x A numeric vector or a data.frame or a grouped_df
 #' @param digits integer indicating the number of decimal places
 #' @param lang Language. choices are one of c("en","kor")
 #' @param ... further arguments to be passed
+#' @importFrom purrr map_dfc
 #' @export
 #' @examples
 #' require(moonBook)
@@ -23,11 +36,12 @@
 numSummary <- function(x,...,digits=2,lang="en") {
      if("grouped_df" %in% class(x)) {
 
-         numSummary2(x,...,digits=digits,lang=lang)
+         result=numSummary2(x,...,digits=digits,lang=lang)
      } else{
 
-         numSummary1(x,...,digits=digits,lang=lang)
+         result=numSummary1(x,...,digits=digits,lang=lang)
      }
+     map_dfc(result,replaceWithLabels)
 
 }
 
@@ -74,7 +88,7 @@ numSummary2 <- function(x,...,digits=2,lang="en") {
     x<-x %>% nest()
     eval(parse(text=temp)) %>%
         select(-c('data')) %>%
-        unnest()
+        unnest(cols=c(summary))
 }
 
 
