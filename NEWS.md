@@ -1,3 +1,5 @@
+* PieDonut, showRatioDonut and showRatioPie parameters take character string or function instead of a logical value
+
 # webr version 0.1.6
 ====================
 (10-May-2020)

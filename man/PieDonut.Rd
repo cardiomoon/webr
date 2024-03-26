@@ -10,8 +10,8 @@ PieDonut(
   start = getOption("PieDonut.start", 0),
   addPieLabel = TRUE,
   addDonutLabel = TRUE,
-  showRatioDonut = TRUE,
-  showRatioPie = TRUE,
+  showRatioDonut = c("percentage", "absolute", "none"),
+  showRatioPie = c("percentage", "absolute", "none"),
   ratioByGroup = TRUE,
   showRatioThreshold = getOption("PieDonut.showRatioThreshold", 0.02),
   labelposition = getOption("PieDonut.labelposition", 2),
@@ -50,9 +50,13 @@ PieDonut(
 
 \item{addDonutLabel}{A logical value. If TRUE, labels are added to the Donuts}
 
-\item{showRatioDonut}{A logical value. If TRUE, ratios are added to the DonutLabels}
-
-\item{showRatioPie}{A logical value. If TRUE, ratios are added to the PieLabels}
+\item{showRatioDonut, showRatioPie}{A character value or a function.
+\itemize{
+ \item{\code{"percentage"}}{: Add ratios below DonutLabels / PieLabels}
+ \item{\code{"absolute"}}{: Add absolute values below DonutLabels / PieLabels}
+ \item{\code{"none"}}{: Hide values}
+ \item{\code{function(a,r)}}{: Add return value of function below DonutLabels / PieLabels. Parameter \code{a} is the vector of absolute values, \code{x} the corresponding vector of ratios.}
+}}
 
 \item{ratioByGroup}{A logical value. If TRUE, ratios ara calculated per group}
 
