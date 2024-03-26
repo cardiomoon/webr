@@ -10,8 +10,8 @@ PieDonut(
   start = getOption("PieDonut.start", 0),
   addPieLabel = TRUE,
   addDonutLabel = TRUE,
-  showRatioDonut = TRUE,
-  showRatioPie = TRUE,
+  showRatioDonut = c("percentage", "absolute", "none"),
+  showRatioPie = c("percentage", "absolute", "none"),
   ratioByGroup = TRUE,
   showRatioThreshold = getOption("PieDonut.showRatioThreshold", 0.02),
   labelposition = getOption("PieDonut.labelposition", 2),
@@ -50,9 +50,13 @@ PieDonut(
 
 \item{addDonutLabel}{A logical value. If TRUE, labels are added to the Donuts}
 
-\item{showRatioDonut}{A logical value. If TRUE, ratios are added to the DonutLabels}
-
-\item{showRatioPie}{A logical value. If TRUE, ratios are added to the PieLabels}
+\item{showRatioDonut, showRatioPie}{A character value or a function.
+\itemize{
+ \item{\code{"percentage"}}{: Add ratios below DonutLabels / PieLabels}
+ \item{\code{"absolute"}}{: Add absolute values below DonutLabels / PieLabels}
+ \item{\code{"none"}}{: Hide values}
+ \item{\code{function(a,r)}}{: Add return value of function below DonutLabels / PieLabels. Parameter \code{a} is the vector of absolute values, \code{x} the corresponding vector of ratios.}
+}}
 
 \item{ratioByGroup}{A logical value. If TRUE, ratios ara calculated per group}
 
@@ -114,12 +118,14 @@ browser=c("MSIE","Firefox","Chrome","Safari","Opera")
 share=c(50,21.9,10.8,6.5,1.8)
 df=data.frame(browser,share)
 PieDonut(df,aes(browser,count=share),r0=0.7,start=3*pi/2,labelpositionThreshold=0.1)
+
 \donttest{
 PieDonut(df,aes(browser,count=share),r0=0.7,explode=5,start=3*pi/2)
 PieDonut(mtcars,aes(gear,carb),start=3*pi/2,explode=3,explodeDonut=TRUE,maxx=1.7)
 PieDonut(mtcars,aes(carb,gear),r0=0)
 PieDonut(acs,aes(smoking,Dx),title="Distribution of smoking status by diagnosis")
 PieDonut(acs,aes(Dx,smoking),ratioByGroup=FALSE,r0=0)
+PieDonut(acs,aes(Dx,smoking),ratioByGroup=FALSE,r0=0,showRatioPie=function(a,r) paste0(a, " [",round(r*100),"\%]"))
 PieDonut(acs,aes(Dx,smoking),selected=c(1,3,5,7),explodeDonut=TRUE)
 PieDonut(acs,aes(Dx,smoking),explode=1,selected=c(2,4,6,8),labelposition=0,explodeDonut=TRUE)
 PieDonut(acs,aes(Dx,smoking),explode=1)

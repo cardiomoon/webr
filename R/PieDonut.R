@@ -44,8 +44,13 @@ makeSubColor=function(main,no=3){
 #'@param start offset of starting point from 12 o'clock in radians
 #'@param addPieLabel A logical value. If TRUE, labels are added to the Pies
 #'@param addDonutLabel A logical value. If TRUE, labels are added to the Donuts
-#'@param showRatioDonut A logical value. If TRUE, ratios are added to the DonutLabels
-#'@param showRatioPie A logical value. If TRUE, ratios are added to the PieLabels
+#'@param showRatioDonut,showRatioPie A character value or a function.
+#'\itemize{
+#'  \item{\code{"percentage"}}{: Add ratios below DonutLabels / PieLabels}
+#'  \item{\code{"absolute"}}{: Add absolute values below DonutLabels / PieLabels}
+#'  \item{\code{"none"}}{: Hide values}
+#'  \item{\code{function(a,r)}}{: Add return value of function below DonutLabels / PieLabels. Parameter \code{a} is the vector of absolute values, \code{x} the corresponding vector of ratios.}
+#'}
 #'@param ratioByGroup A logical value. If TRUE, ratios ara calculated per group
 #'@param showRatioThreshold An integer. Threshold to show label as a ratio of total. default value is 0.02.
 #'@param labelposition A number indicating the label position
@@ -87,12 +92,14 @@ makeSubColor=function(main,no=3){
 #'share=c(50,21.9,10.8,6.5,1.8)
 #'df=data.frame(browser,share)
 #'PieDonut(df,aes(browser,count=share),r0=0.7,start=3*pi/2,labelpositionThreshold=0.1)
+#'
 #' \donttest{
 #'PieDonut(df,aes(browser,count=share),r0=0.7,explode=5,start=3*pi/2)
 #'PieDonut(mtcars,aes(gear,carb),start=3*pi/2,explode=3,explodeDonut=TRUE,maxx=1.7)
 #'PieDonut(mtcars,aes(carb,gear),r0=0)
 #'PieDonut(acs,aes(smoking,Dx),title="Distribution of smoking status by diagnosis")
 #'PieDonut(acs,aes(Dx,smoking),ratioByGroup=FALSE,r0=0)
+#'PieDonut(acs,aes(Dx,smoking),ratioByGroup=FALSE,r0=0,showRatioPie=function(a,r) paste0(a, " [",round(r*100),"%]"))
 #'PieDonut(acs,aes(Dx,smoking),selected=c(1,3,5,7),explodeDonut=TRUE)
 #'PieDonut(acs,aes(Dx,smoking),explode=1,selected=c(2,4,6,8),labelposition=0,explodeDonut=TRUE)
 #'PieDonut(acs,aes(Dx,smoking),explode=1)
@@ -109,7 +116,7 @@ makeSubColor=function(main,no=3){
 PieDonut=function(data,mapping,
                   start=getOption("PieDonut.start",0),
                   addPieLabel=TRUE,addDonutLabel=TRUE,
-                  showRatioDonut=TRUE,showRatioPie=TRUE,
+                  showRatioDonut=c("percentage","absolute","none"),showRatioPie=c("percentage","absolute","none"),
                   ratioByGroup=TRUE,
                   showRatioThreshold=getOption("PieDonut.showRatioThreshold",0.02),
                   labelposition=getOption("PieDonut.labelposition",2),
@@ -134,6 +141,19 @@ PieDonut=function(data,mapping,
                   use.label=TRUE,use.labels=TRUE,
                   family=getOption("PieDonut.family","")){
 
+        if(!is.function(showRatioDonut)) {
+                showRatioDonut <- showRatioDonut[1]
+                # for backwards compatibility, as these parameters were originally logicals
+                if(is.logical(showRatioDonut)) {
+                    showRatioDonut <- if(showRatioDonut) "percentage" else "none"
+                }
+        }
+        if(!is.function(showRatioPie)) {
+                showRatioPie <- showRatioPie[1]
+                if(is.logical(showRatioPie)) {
+                    showRatioPie <- if(showRatioPie) "percentage" else "none"
+                }
+        }
 
 
 
@@ -177,13 +197,17 @@ PieDonut=function(data,mapping,
         df$y=ifelse(df$focus==0,0,df$focus*cos(df$mid))
         df$label=df[[pies]]
         df$ratio=df$Freq/sum(df$Freq)
-        if(showRatioPie) {
 
+        if(is.function(showRatioPie)) {
+                df$label = paste0(df$label, "\n", showRatioPie(df$Freq, df$ratio))
+
+        } else if(showRatioPie == "percentage") {
                 df$label=ifelse(df$ratio>=showRatioThreshold,
                         paste0(df$label,"\n(",scales::percent(df$ratio),")"),
                         as.character(df$label))
 
-
+        } else if(showRatioPie == "absolute") {
+                df$label = paste0(df$label, "\n(", scales::comma(df$Freq), ")")
         }
 
         df$labelx=(r0+r1)/2*sin(df$mid)+df$x
@@ -294,9 +318,15 @@ PieDonut=function(data,mapping,
                 }
                 df3$no=1:nrow(df3)
                 df3$label=df3[[donuts]]
-                if(showRatioDonut) {
+
+                if(is.function(showRatioDonut)) {
+                        df3$label = paste0(df3$label, "\n", showRatioDonut(df3$Freq, df3$ratio))
+
+                } else if(showRatioDonut == "percentage") {
                         if(max(nchar(levels(df3$label)))<=2) df3$label=paste0(df3$label,"(",df3$ratio,")")
                         else df3$label=paste0(df3$label,"\n(",df3$ratio,")")
+                } else if(showRatioDonut == "absolute") {
+                        df3$label = paste0(df3$label, "\n(", scales::comma(df3$Freq), ")")
                 }
                 df3$label[df3$ratio1==0]=""
 
