@@ -318,8 +318,8 @@ PieDonut=function(data,mapping,
                 df3$no=1:nrow(df3)
                 df3$label=df3[[donuts]]
 
-                if(is.function(showRatioPie)) {
-                        df$label = paste0(df$label, "\n", showRatioPie(df$Freq, df$ratio))
+                if(is.function(showRatioDonut)) {
+                        df3$label = paste0(df3$label, "\n", showRatioDonut(df3$Freq, df3$ratio))
 
                 } else if(showRatioDonut == "percentage") {
                         if(max(nchar(levels(df3$label)))<=2) df3$label=paste0(df3$label,"(",df3$ratio,")")
