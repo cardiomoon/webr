@@ -1,11 +1,10 @@
 Package: webr
 Type: Package
 Title: Data and Functions for Web-Based Analysis
-Version: 0.1.6
+Version: 0.1.7
 Imports:
    moonBook,
    ggplot2,
-   shiny,
    stringr,
    sjlabelled,
    flextable,
@@ -16,7 +15,6 @@ Imports:
    purrr,
    rlang,
    tidyr,
-   tidyselect,
    psych,
    grid,
    ztable,
@@ -37,8 +35,8 @@ Depends: R (>= 2.10)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
 VignetteBuilder: knitr
 Suggests: testthat,
     knitr,
     rmarkdown
+Config/roxygen2/version: 8.0.0

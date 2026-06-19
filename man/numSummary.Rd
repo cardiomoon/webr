@@ -26,11 +26,11 @@ Numerical Summary
 }
 \section{Functions}{
 \itemize{
-\item \code{numSummary1}: Numerical Summary of a data.frame or a vector
+\item \code{numSummary1()}: Numerical Summary of a data.frame or a vector
 
-\item \code{numSummary2}: Numerical Summary of a grouped_df
+\item \code{numSummary2()}: Numerical Summary of a grouped_df
+
 }}
-
 \examples{
 require(moonBook)
 require(magrittr)

@@ -3,12 +3,12 @@
 #' @importFrom stats chisq.test fisher.test
 mychisq.test=function(x){
     result=tryCatch(chisq.test(x),warning=function(w) return("warnings present"))
-    if(class(result)!="htest"){
+    if(!inherits(result,"htest")){
         result1=tryCatch(fisher.test(x),
                          error=function(e) return("error present"),
                          warning=function(w) return("warning present"),
                          message = function(c) "message")
-        if(class(result1)=="htest") result<-result1
+        if(inherits(result1,"htest")) result<-result1
     }
     result
 }
@@ -30,7 +30,7 @@ x2result=function(x){
     warning=0
     (result=mychisq.test(x))
     (result1=chisq.test(x))
-    if(class(result)!="htest") {
+    if(!inherits(result,"htest")) {
         result=result1
         warning=1
     }

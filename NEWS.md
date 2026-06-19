@@ -1,3 +1,10 @@
+# webr version 0.1.7
+====================
+(20-Jun-2026)
+
+* compatible with flextable 0.9.12
+
+
 # webr version 0.1.6
 ====================
 (10-May-2020)
